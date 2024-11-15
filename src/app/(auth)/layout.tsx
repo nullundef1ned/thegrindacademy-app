@@ -1,7 +1,14 @@
+'use client';
+
 import Image from 'next/image'
-import React from 'react'
+import React, { Suspense } from 'react'
 import Link from 'next/link'
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
+
+type AuthLayoutProps = {
+  children: React.ReactNode
+}
+
+export function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <div className='grid place-items-center h-screen w-screen bg-background p-4'>
       <div className='flex flex-col items-center gap-10 w-full'>
@@ -11,5 +18,16 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         {children}
       </div>
     </div>
+  )
+}
+
+
+export default function SuspenseWrapper({ children }: AuthLayoutProps) {
+  return (
+    <Suspense>
+      <AuthLayout>
+        {children}
+      </AuthLayout>
+    </Suspense>
   )
 }
