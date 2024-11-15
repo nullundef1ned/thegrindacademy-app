@@ -25,7 +25,7 @@ export default function ForgotPasswordPage() {
     return (
       <AuthCard title='Check Your Email' description='Instructions await'>
         <p className='text-sm text-center'>
-          We've sent an email with instructions to <span className='font-bold'>[{values.email}]</span>. Please check your inbox and follow the instructions to reset your password.
+          We&apos;ve sent an email with instructions to <span className='font-bold'>[{values.email}]</span>. Please check your inbox and follow the instructions to reset your password.
         </p>
       </AuthCard>
     )

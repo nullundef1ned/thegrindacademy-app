@@ -31,7 +31,7 @@ export default function LoginPage() {
       <div className='flex flex-col gap-4 w-full'>
         <Link className='text-sm text-accent font-semibold text-right' href='/forgot-password'>Forgot Password?</Link>
         <p className='text-sm text-accent text-center'>
-          Don't have an account? <Link className='text-primary font-semibold' href='https://thegrindacademy.co'>Create Account</Link>
+          Don&apos;t have an account? <Link className='text-primary font-semibold' href='https://thegrindacademy.co'>Create Account</Link>
         </p>
       </div>
     </AuthCard>
