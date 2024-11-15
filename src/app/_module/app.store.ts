@@ -2,7 +2,6 @@ import { devtools, persist } from "zustand/middleware";
 import { create } from "@/stores";
 import storageUtil, { StorageKey } from "@/utils/storage.util";
 
-
 export type AppState = {
   user: null;
 }
