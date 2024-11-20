@@ -1,14 +1,20 @@
 import useAxios from "@/hooks/useAxios"
 import { useMutation } from "@tanstack/react-query"
 import { ForgotPasswordForm, LoginForm, PasswordForm } from "./auth.interface"
+import { useRouter } from "next/navigation";
+import notificationUtil from "@/utils/notification.util";
 
 export default function useAuthMutations() {
 
-  const axiosHandler = useAxios()
+  const router = useRouter()
+  const axiosHandler = useAxios();
 
   const loginMutation = useMutation({
     mutationFn: (values: LoginForm) => {
       return axiosHandler.post('/auth/login', values)
+    },
+    onSuccess: () => {
+      router.push('/')
     }
   })
 
@@ -21,6 +27,9 @@ export default function useAuthMutations() {
   const resetPasswordMutation = useMutation({
     mutationFn: (values: PasswordForm) => {
       return axiosHandler.post('/auth/reset-password', values)
+    },
+    onSuccess: () => {
+      notificationUtil.success("Success! Your password has been reset.")
     }
   })
 
@@ -29,7 +38,6 @@ export default function useAuthMutations() {
       return axiosHandler.post('/auth/forgot-password', values)
     }
   })
-
 
   return {
     loginMutation,

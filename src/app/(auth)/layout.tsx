@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import React, { Suspense } from 'react'
 import Link from 'next/link'
+import Blur from '@/components/Blur';
 
 type AuthLayoutProps = {
   children: React.ReactNode
@@ -10,8 +11,9 @@ type AuthLayoutProps = {
 
 export function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <div className='grid place-items-center h-screen w-screen bg-background p-4'>
-      <div className='flex flex-col items-center gap-10 w-full'>
+    <div className='grid place-items-center h-screen w-screen bg-background p-4 relative'>
+      <Blur className='absolute top-0 w-1/2 left-1/2 -translate-x-1/2 h-full bg-primary/15 z-0' />
+      <div className='flex flex-col items-center gap-10 w-full z-20'>
         <Link href='/login'>
           <Image src='/logos/logo.svg' alt='Logo' width={166} height={32} />
         </Link>
