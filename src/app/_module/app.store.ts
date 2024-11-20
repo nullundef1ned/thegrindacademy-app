@@ -1,13 +1,15 @@
 import { devtools, persist } from "zustand/middleware";
 import { create } from "@/stores";
 import storageUtil, { StorageKey } from "@/utils/storage.util";
+import { IUser } from "./app.interface";
+import fakerUtil from "@/utils/faker.util";
 
-export type AppState = {
-  user: null;
+export interface AppState {
+  user: IUser | null;
 }
 
 const initialState: AppState = {
-  user: storageUtil.getItem(StorageKey.user) || null,
+  user: storageUtil.getItem(StorageKey.user) || fakerUtil.user || null,
 }
 
 type Actions = {
