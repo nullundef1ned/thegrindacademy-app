@@ -34,11 +34,7 @@ export default function OverviewPage() {
 
   const [activeTab, setActiveTab] = useState<string>('active');
 
-  const activeCourse = {
-    name: 'Introduction to Programming',
-    thumbnail: 'https://via.placeholder.com/150',
-    progress: 50,
-  }
+  const activeCourse: IStudentActiveCourse | undefined = fakerUtil.activeCourses[0]
 
   const tableHeaders: TableHeader<IStudentActiveCourse>[] = [
     { key: 'name', value: 'Course Name' },

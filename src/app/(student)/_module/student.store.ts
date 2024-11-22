@@ -9,7 +9,7 @@ export interface StudentState {
 }
 
 const initialState: StudentState = {
-  banners: fakerUtil.banners || [],
+  banners: [],
 }
 
 type Actions = {

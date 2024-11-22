@@ -4,11 +4,17 @@ export interface IOverviewStatistics {
   enrolledCourses: number;
 }
 
-export interface IStudentActiveCourse {
+export interface ICourse {
   id: number;
   name: string;
+  description: string;
+  thumbnail: string;
+}
+
+export interface IStudentActiveCourse extends ICourse {
   progress: number;
 }
+
 
 export interface IBanner {
   message: string;

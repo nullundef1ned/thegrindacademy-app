@@ -32,9 +32,6 @@ export default function Banner({ banner }: IBannerProps) {
         <p className='text-white text-sm'>
           {banner.message}
         </p>
-        {/* <p className='text-white text-sm font-semibold'>
-                Renew now to continue learning!
-              </p> */}
       </div>
       <div className="flex items-center gap-2">
         {banner.link && banner.buttonText && (
