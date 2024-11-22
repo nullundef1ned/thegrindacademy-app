@@ -28,6 +28,10 @@ const formatTime = (date: string): string => {
   }).format(dateTime);
 }
 
+const convertToNumber = (value: string | number): number => {
+  return typeof value == 'string' ? parseFloat(value) : value;
+}
+
 const getTimeDelta = (date: string) => {
   const pastTime = new Date(date);
   const now = new Date();
@@ -81,6 +85,6 @@ export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs))
 }
 
-const helperUtil = { formatPhoneNumber, getTimeDelta, formatDate, formatTime, capitalize, downloadFile }
+const helperUtil = { formatPhoneNumber, getTimeDelta, formatDate, formatTime, convertToNumber, capitalize, downloadFile }
 
 export default helperUtil
