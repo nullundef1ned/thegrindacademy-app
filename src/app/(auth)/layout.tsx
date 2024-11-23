@@ -9,7 +9,7 @@ type AuthLayoutProps = {
   children: React.ReactNode
 }
 
-export function AuthLayout({ children }: AuthLayoutProps) {
+function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <div className='grid place-items-center h-screen w-screen bg-background p-4 relative'>
       <Blur className='absolute top-0 w-1/2 left-1/2 -translate-x-1/2 h-full bg-primary/15 z-0' />

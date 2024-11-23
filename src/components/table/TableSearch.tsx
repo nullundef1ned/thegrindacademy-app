@@ -11,7 +11,7 @@ type TableSearchProps = {
 export default function TableSearch({ searchable, searchValue }: TableSearchProps) {
   const { updateParams } = useURL();
 
-  const [search, setSearch] = useState<string>('' || searchValue);
+  const [search, setSearch] = useState<string>(searchValue || '');
 
   const handleSearch = (value: string) => {
     updateParams({ key: 'search', value });

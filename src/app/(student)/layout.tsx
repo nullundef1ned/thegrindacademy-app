@@ -1,12 +1,12 @@
 'use client';
 
-import React from 'react'
+import React, { Suspense } from 'react'
 import Header from './_components/Header';
 import { studentRoutes } from './_module/student.routes';
 import { useStudentStore } from './_module/student.store';
 import Banner from './(overview)/_components/Banner';
 
-export default function StudentLayout({ children }: { children: React.ReactNode }) {
+function StudentLayout({ children }: { children: React.ReactNode }) {
   const banners = useStudentStore((state) => state.banners);
 
   const routes = [
@@ -28,5 +28,16 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
         {children}
       </div>
     </div>
+  )
+}
+
+
+export default function SuspenseWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense>
+      <StudentLayout>
+        {children}
+      </StudentLayout>
+    </Suspense>
   )
 }
