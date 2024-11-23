@@ -8,7 +8,7 @@ import helperUtil from '@/utils/helper.util';
 
 export type StatisticsCardType = 'number' | 'percentage' | 'currency';
 
-interface StatisticsCardProps {
+export interface StatisticsCardProps {
   title: string;
   value: number;
   icon: string;

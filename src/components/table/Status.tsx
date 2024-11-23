@@ -34,7 +34,7 @@ export default function Status({ status, showIcon }: StatusProps) {
 
   return (
     <div className={`rounded py-1 px-3 flex items-center space-x-2 w-max ${variation}`}>
-      <p className='body-2 medium capitalize'>{displayText}</p>
+      <p className='text-xs font-medium capitalize'>{displayText}</p>
       {showIcon && status === 'pending' && <IconifyIcon icon="jam:refresh" width={12} />}
     </div>
   )

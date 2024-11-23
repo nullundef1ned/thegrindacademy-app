@@ -1,4 +1,4 @@
-import { IBanner, ICourse, IOverviewStatistics, IStudentActiveCourse } from "@/app/(student)/_module/student.interface"
+import { IBanner, ICourse, IOverviewStatistics, IReferralStatistics, IStudentActiveCourse } from "@/app/(student)/_module/student.interface"
 import { IUser } from "@/app/_module/app.interface"
 
 const user: IUser = {
@@ -12,6 +12,12 @@ const overviewStatistics: IOverviewStatistics = {
   completedCourses: 0,
   activeCourses: 1,
   enrolledCourses: 1,
+}
+
+const referralStatistics: IReferralStatistics = {
+  totalReferrals: 2,
+  totalPayouts: 10,
+  totalEarnings: 500000,
 }
 
 const banners: IBanner[] = [
@@ -99,6 +105,7 @@ const fakerUtil = {
   banners,
   user,
   courses,
+  referralStatistics,
   overviewStatistics,
   activeCourses,
 }

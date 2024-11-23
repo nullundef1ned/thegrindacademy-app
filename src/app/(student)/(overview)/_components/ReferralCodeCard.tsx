@@ -1,3 +1,5 @@
+'use client';
+
 import { useAppStore } from '@/app/_module/app.store';
 import Card from '@/components/Card'
 import IconifyIcon from '@/components/IconifyIcon'
@@ -15,7 +17,7 @@ export default function ReferralCodeCard() {
   }
 
   return (
-    <Card className='w-full space-y-2'>
+    <Card className='space-y-2'>
       <p className='text-muted text-sm'>Your referral code</p>
       <div className='flex items-center justify-between gap-2 py-3 px-3 rounded-md bg-primary/10 border border-primary/20'>
         <div className="flex items-center gap-2">

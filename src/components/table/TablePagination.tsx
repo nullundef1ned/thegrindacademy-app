@@ -51,7 +51,7 @@ const generatePageNumbers = (currentPage: number, totalPages: number): PageItem[
 export default function TablePagination<T>({ pagination, hideLimit }: TablePaginationProps<T>) {
   const { updateParams, replaceParams } = useURL();
 
-  if (!pagination || pagination.totalPages < 1) return null;
+  if (!pagination || pagination.totalPages <= 1) return null;
 
   const pages = generatePageNumbers(pagination.currentPage, pagination.totalPages);
 
@@ -77,12 +77,12 @@ export default function TablePagination<T>({ pagination, hideLimit }: TablePagin
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-center px-4 py-5 border-t border-t-neutral-700 bg-[#151414]">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-center px-4 pt-5 border-t">
       <div className="flex items-center space-x-2">
-        <p className="text-grey-200 body-2 w-max whitespace-nowrap">Page {pagination.currentPage} of {pagination.totalPages}</p>
+        <p className="text-grey-200 text-sm w-max whitespace-nowrap">Page {pagination.currentPage} of {pagination.totalPages}</p>
         {!hideLimit && (
           <div className='flex'>
-            <select onChange={handleLimitChange} className='body-2 bg-transparent text-grey-200 cursor-pointer focus:outline-none'>
+            <select onChange={handleLimitChange} className='text-sm bg-transparent text-grey-200 cursor-pointer focus:outline-none'>
               <Each of={limits} render={(limit) => (
                 <option key={limit} value={limit}>{limit} results</option>
               )} />
@@ -95,9 +95,9 @@ export default function TablePagination<T>({ pagination, hideLimit }: TablePagin
           <Each of={pages} render={(page) => (
             <div
               onClick={() => handlePageClick(page)}
-              className={clsx(pagination.currentPage == page && 'bg-primary-50 text-primary medium',
-                "bg-grey-900 rounded-md h-7 w-7 flex items-center justify-center cursor-pointer hover:bg-primary-50 hover:text-primary")}>
-              <p className="body-2">{page}</p>
+              className={clsx(pagination.currentPage == page && 'text-white medium !border-primary-50',
+                "bg-gray-900 rounded-md h-7 w-7 border border-transparent flex items-center justify-center cursor-pointer hover:border-primary-50")}>
+              <p className="text-sm">{page}</p>
             </div>
           )} />
         </div>

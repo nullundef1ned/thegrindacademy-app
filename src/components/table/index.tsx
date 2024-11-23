@@ -142,7 +142,7 @@ function TableComponent<T>({ data, addComponent, headers, hideLimit, hideFooter,
       )}
       <div className={`w-full flex flex-col bg-neutral-1000 ${tabs && tabs.length > 0 ? 'rounded-tl-none' : ''} overflow-hidden`}>
         {(searchable || addComponent) && (
-          <div className="p-4 grid place-content-center grid-cols-2 gap-4">
+          <div className="pb-4 grid place-content-center grid-cols-2 gap-4">
             <div className="flex items-center space-x-3">
               <TableSearch key={searchValue} searchable={searchable} searchValue={searchValue} />
               {refetch && <IconifyIcon onClick={() => refetch()} icon="ri:refresh-line" className={clsx(fetching && 'animate-spin', "text-grey-100 cursor-pointer")} />}
@@ -154,7 +154,7 @@ function TableComponent<T>({ data, addComponent, headers, hideLimit, hideFooter,
         )}
         <div className="w-full overflow-x-auto">
           <table className="min-w-full overflow-hidden">
-            <thead className=" bg-[#12182B]">
+            <thead className="bg-[#12182B]">
               <tr>
                 {selectRows && (
                   <th
@@ -199,7 +199,7 @@ function TableComponent<T>({ data, addComponent, headers, hideLimit, hideFooter,
                       <Fragment key={index}>
                         <tr
                           onClick={() => handleRowClick(row)}
-                          className={`border-b border-neutral-800 last:border-0 even:bg-neutral-1000 ${onRowClick ? 'hover:bg-neutral-1000 cursor-pointer' : ''}`}
+                          className={`border-b border-[#B0CAFF1A] last:border-0 even:bg-neutral-1000 ${onRowClick ? 'hover:bg-neutral-1000 cursor-pointer' : ''}`}
                         >
                           {selectRows && (
                             <td
