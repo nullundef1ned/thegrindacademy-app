@@ -55,6 +55,10 @@ input:-webkit-autofill {
     @apply root-padding max-w-screen-xl mx-auto;
   }
 
+  .responsive-section {
+    @apply max-w-screen-xl mx-auto;
+  }
+
   .radial-gradient {
     @apply bg-[radial-gradient(circle_at_center, _var(--tw-gradient-stops))];
   }

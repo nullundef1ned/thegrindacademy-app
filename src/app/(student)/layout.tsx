@@ -19,11 +19,13 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className='relative w-screen min-h-screen space-y-6'>
       <Header routes={routes} />
-      <div className='px-4 w-full sticky top-36 z-40 bg-background flex flex-col gap-4'>
-        {banners.map((banner, index) => (
-          <Banner banner={banner} key={index} />
-        ))}
-      </div>
+      {banners.length > 0 && (
+        <div className='px-4 w-full sticky top-36 z-40 bg-background flex flex-col gap-4'>
+          {banners.map((banner, index) => (
+            <Banner banner={banner} key={index} />
+          ))}
+        </div>
+      )}
       <div className='px-4 pb-4'>
         {children}
       </div>

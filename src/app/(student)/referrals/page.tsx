@@ -69,8 +69,8 @@ export default function ReferralsPage() {
   }
 
   return (
-    <div className='w-full space-y-6'>
-      <div className="flex flex-wrap gap-4 justify-between items-end">
+    <div className='w-full responsive-section space-y-6'>
+      <div className="flex flex-wrap gap-4 justify-between items-center">
         <div className='space-y-2 lg:w-2/5'>
           <p className='text-xl font-medium'>Earn Rewards by Referring Friends</p>
           <p className='text-accent text-xs'>Share your unique referral code to earn <b className='text-white'>50% of all their subscription payments</b> everytime they subscribe <b className='text-white'>as long as you remain a member</b></p>

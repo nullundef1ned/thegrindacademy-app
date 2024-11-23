@@ -35,7 +35,7 @@ export default function SupportPage() {
   ]
 
   return (
-    <div className='w-full grid grid-cols-1 lg:grid-cols-7 gap-6'>
+    <div className='w-full responsive-section grid grid-cols-1 lg:grid-cols-7 gap-6'>
       <div className='col-span-1 order-2 lg:order-1 lg:col-span-4 space-y-4'>
         <p className='text-lg font-medium uppercase'>FAQ&apos;s</p>
         <p className='text-sm text-accent'>Answers to common questions about our platform.</p>

@@ -10,12 +10,9 @@ import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
 import { Pagination, PaginationNext, PaginationEllipsis, PaginationLink, PaginationPrevious, PaginationItem, PaginationContent } from "@/components/ui/pagination";
 import SearchInput from "./SearchInput";
+import useURL from "@/hooks/useURL";
 
-interface MyCoursesProps {
-  selectTab: (tab: string) => void;
-}
-
-export default function MyCourses({ selectTab }: MyCoursesProps) {
+export default function MyCourses() {
   const filters = [
     { value: 'all', label: 'All Courses' },
     { value: 'ongoing', label: 'Ongoing' },
@@ -24,8 +21,13 @@ export default function MyCourses({ selectTab }: MyCoursesProps) {
 
   const courses: IStudentActiveCourse[] = fakerUtil.activeCourses;
 
+  const { replaceParams } = useURL();
+
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
 
+  const selectTab = (tab: string) => {
+    replaceParams({ key: 'tab', value: tab });
+  }
 
   if (courses.length === 0) {
     return (

@@ -9,7 +9,7 @@ import SubscriptionSection from './_components/SubscriptionSection';
 export default function ProfilePage() {
 
   return (
-    <div className='w-full space-y-6'>
+    <div className='w-full responsive-section space-y-6'>
       <AccountInformationSection />
       <SubscriptionSection />
       <SecuritySection />
