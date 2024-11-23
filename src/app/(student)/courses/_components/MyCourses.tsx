@@ -34,7 +34,7 @@ export default function MyCourses({ selectTab }: MyCoursesProps) {
         <div className='space-y-4 max-w-sm flex flex-col items-center'>
           <div className='space-y-1'>
             <p className='text-center text-lg font-medium'>No courses available yet</p>
-            <p className='text-center text-accent'>It looks like you haven't enrolled in any courses yet.</p>
+            <p className='text-center text-accent'>It looks like you haven&apos;t enrolled in any courses yet.</p>
           </div>
           <Button onClick={() => selectTab('browse-courses')} size='sm'>Browse Courses</Button>
         </div>
