@@ -1,11 +1,23 @@
-import { IBanner, ICourse, IOverviewStatistics, IReferralStatistics, IStudentActiveCourse } from "@/app/(student)/_module/student.interface"
+import { IBanner, ICourse, IOverviewStatistics, IReferralStatistics, IStudentActiveCourse, ISubscription } from "@/app/(student)/_module/student.interface"
 import { IUser } from "@/app/_module/app.interface"
 
 const user: IUser = {
   firstName: 'Miyagi',
   lastName: 'Kun',
   name: 'Miyagi Kun',
+  email: 'miyagi.kun@thegrind.com',
+  telegramUsername: '@miyagi_kun',
+  profilePicture: 'https://via.placeholder.com/150',
   referralCode: 'REF-GRIND87248',
+}
+
+const subscription: ISubscription = {
+  id: '1',
+  name: 'Yearly Plan',
+  price: 1000000,
+  duration: 365,
+  renewalDate: '2025-01-01',
+  status: 'active',
 }
 
 const overviewStatistics: IOverviewStatistics = {
@@ -105,6 +117,7 @@ const fakerUtil = {
   banners,
   user,
   courses,
+  subscription,
   referralStatistics,
   overviewStatistics,
   activeCourses,

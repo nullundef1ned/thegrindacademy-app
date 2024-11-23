@@ -2,6 +2,9 @@ export interface IUser {
   firstName: string;
   lastName: string;
   name: string;
+  email: string;
+  telegramUsername: string;
+  profilePicture: string;
   referralCode: string;
 }
 

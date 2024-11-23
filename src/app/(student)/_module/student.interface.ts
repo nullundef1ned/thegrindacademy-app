@@ -1,3 +1,12 @@
+export interface ISubscription {
+  id: string;
+  name: string;
+  price: number;
+  duration: number;
+  renewalDate: string;
+  status: 'active' | 'inactive';
+}
+
 export interface IOverviewStatistics {
   completedCourses: number;
   activeCourses: number;

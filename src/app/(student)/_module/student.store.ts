@@ -1,14 +1,17 @@
 import { create } from "@/stores";
 import { devtools, persist } from "zustand/middleware";
 
-import { IBanner } from "./student.interface";
+import { IBanner, ISubscription } from "./student.interface";
+import fakerUtil from "@/utils/faker.util";
 
 export interface StudentState {
   banners: IBanner[];
+  subscription: ISubscription | null;
 }
 
 const initialState: StudentState = {
   banners: [],
+  subscription: fakerUtil.subscription || null,
 }
 
 type Actions = {
