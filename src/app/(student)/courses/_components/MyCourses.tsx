@@ -11,7 +11,11 @@ import { Progress } from "@/components/ui/progress";
 import { Pagination, PaginationNext, PaginationEllipsis, PaginationLink, PaginationPrevious, PaginationItem, PaginationContent } from "@/components/ui/pagination";
 import SearchInput from "./SearchInput";
 
-export default function MyCourses() {
+interface MyCoursesProps {
+  selectTab: (tab: string) => void;
+}
+
+export default function MyCourses({ selectTab }: MyCoursesProps) {
   const filters = [
     { value: 'all', label: 'All Courses' },
     { value: 'ongoing', label: 'Ongoing' },
@@ -21,6 +25,22 @@ export default function MyCourses() {
   const courses: IStudentActiveCourse[] = fakerUtil.activeCourses;
 
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
+
+
+  if (courses.length === 0) {
+    return (
+      <div className='w-full h-[50dvh] grid place-items-center place-content-center space-y-4'>
+        <Image src='/images/empty-state.svg' alt='No courses found' width={150} height={150} className='object-contain' />
+        <div className='space-y-4 max-w-sm flex flex-col items-center'>
+          <div className='space-y-1'>
+            <p className='text-center text-lg font-medium'>No courses available yet</p>
+            <p className='text-center text-accent'>It looks like you haven't enrolled in any courses yet.</p>
+          </div>
+          <Button onClick={() => selectTab('browse-courses')} size='sm'>Browse Courses</Button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className='w-full space-y-6'>

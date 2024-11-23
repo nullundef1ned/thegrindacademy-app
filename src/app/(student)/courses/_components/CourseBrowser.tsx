@@ -11,6 +11,18 @@ import SearchInput from "./SearchInput";
 export default function CourseBrowser() {
   const courses: ICourse[] = fakerUtil.courses;
 
+  if (courses.length === 0) {
+    return (
+      <div className='w-full h-[50dvh] grid place-items-center place-content-center space-y-4'>
+        <Image src='/images/empty-state.svg' alt='No courses found' width={150} height={150} className='object-contain' />
+        <div className='space-y-1 max-w-sm'>
+          <p className='text-center text-lg font-medium'>No courses available at the moment</p>
+          <p className='text-center text-accent'>Please check back soon as new courses are added regularly!</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className='w-full space-y-6'>
       <div className="flex items-center justify-between w-full border-b border-[#B0CAFF1A] pb-6">
