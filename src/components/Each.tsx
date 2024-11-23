@@ -1,7 +1,7 @@
 import { Children } from 'react'
 
 type EachProps<T> = {
-  render: (item: T, index: number) => any;
+  render: (item: T, index: number) => React.ReactNode;
   of?: T[];
 }
 

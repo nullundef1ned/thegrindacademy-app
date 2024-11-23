@@ -1,7 +1,6 @@
 import { create } from "@/stores";
 import { devtools, persist } from "zustand/middleware";
 
-import fakerUtil from "@/utils/faker.util";
 import { IBanner } from "./student.interface";
 
 export interface StudentState {

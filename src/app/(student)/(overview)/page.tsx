@@ -42,7 +42,7 @@ export default function OverviewPage() {
   ]
 
   const tabs: TableTab<IStudentActiveCourse>[] = [
-    { key: 'active', name: 'Active', headers: tableHeaders, data: { result: [], currentPage: 1, totalPages: 1, totalCount: 0, previousPage: null, nextPage: null } },
+    { key: 'active', name: 'Active', headers: tableHeaders, data: { result: [activeCourse], currentPage: 1, totalPages: 1, totalCount: 0, previousPage: null, nextPage: null } },
     { key: 'completed', name: 'Completed', headers: tableHeaders, data: { result: [], currentPage: 1, totalPages: 1, totalCount: 0, previousPage: null, nextPage: null } }
   ]
 
@@ -74,7 +74,13 @@ export default function OverviewPage() {
         <div className='col-span-1 lg:col-span-3 space-y-4'>
           <p className='text-accent font-medium'>Continue Learning</p>
           <Card className=''>
-            <Table hideFooter hideLimit searchable={false} tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} emptyStateMessage={`No ${activeTab} courses found`} skeletonCount={4} />
+            <Table<IStudentActiveCourse> hideFooter hideLimit searchable={false}
+              tabs={tabs}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              emptyStateMessage={`No ${activeTab} courses found`}
+              skeletonCount={4}
+            />
           </Card>
         </div>
         <div className='col-span-1 lg:col-span-2 space-y-4'>

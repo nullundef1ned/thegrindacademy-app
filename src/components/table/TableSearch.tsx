@@ -4,11 +4,11 @@ import { Input } from '../ui/input';
 
 type TableSearchProps = {
   searchable: boolean;
-  fetching: boolean | undefined;
+  // fetching: boolean | undefined;
   searchValue: string;
 }
 
-export default function TableSearch({ searchable, fetching, searchValue }: TableSearchProps) {
+export default function TableSearch({ searchable, searchValue }: TableSearchProps) {
   const { updateParams } = useURL();
 
   const [search, setSearch] = useState<string>('' || searchValue);
@@ -16,8 +16,6 @@ export default function TableSearch({ searchable, fetching, searchValue }: Table
   const handleSearch = (value: string) => {
     updateParams({ key: 'search', value });
   }
-
-  const isFetching = fetching && search.length > 1;
 
   return (
     <div className="flex items-center space-x-4 w-full max-w-80">

@@ -5,8 +5,10 @@ export interface IUser {
   referralCode: string;
 }
 
+export type TData<T> = T & { id: string };
+
 export interface IPagination<T> {
-  result: T[];
+  result: TData<T>[];
   currentPage: number;
   totalPages: number;
   totalCount: number;

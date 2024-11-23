@@ -45,28 +45,28 @@ const banners: IBanner[] = [
 
 const activeCourses: IStudentActiveCourse[] = [
   {
-    id: 1,
+    id: '1',
     name: 'Introduction to Programming',
     description: 'Learn the basics of programming and get started on your coding journey.',
     thumbnail: 'https://via.placeholder.com/150',
     progress: 100,
   },
   {
-    id: 2,
+    id: '2',
     name: 'Web Development Fundamentals',
     description: 'Master HTML, CSS and JavaScript to build modern websites.',
     thumbnail: 'https://via.placeholder.com/150',
     progress: 75,
   },
   {
-    id: 3,
+    id: '3',
     name: 'Data Structures and Algorithms',
     description: 'Learn essential computer science concepts and problem solving.',
-    thumbnail: 'https://via.placeholder.com/150', 
+    thumbnail: 'https://via.placeholder.com/150',
     progress: 0,
   },
   {
-    id: 4,
+    id: '4',
     name: 'Digital Marketing Essentials',
     description: 'Learn modern digital marketing strategies, SEO, social media and analytics.',
     thumbnail: 'https://via.placeholder.com/150',
@@ -76,29 +76,31 @@ const activeCourses: IStudentActiveCourse[] = [
 
 const courses: ICourse[] = [
   {
-    id: 1,
+    id: '1',
     name: 'Introduction to Programming',
     description: 'Learn the basics of programming and get started on your coding journey.',
     thumbnail: 'https://via.placeholder.com/150',
   },
   {
-    id: 2,
+    id: '2',
     name: 'Web Development Fundamentals',
     description: 'Master HTML, CSS and JavaScript to build modern websites.',
     thumbnail: 'https://via.placeholder.com/150',
   },
   {
-    id: 3,
+    id: '3',
     name: 'Data Structures and Algorithms',
     description: 'Learn essential computer science concepts and problem solving.',
     thumbnail: 'https://via.placeholder.com/150',
   },
 ]
 
-export default {
+const fakerUtil = {
   banners,
   user,
   courses,
   overviewStatistics,
   activeCourses,
 }
+
+export default fakerUtil;

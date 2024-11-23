@@ -5,8 +5,8 @@ import clsx from 'clsx';
 import Each from '../Each';
 import { Button } from '../ui/button';
 
-type TablePaginationProps = {
-  pagination: IPagination<any>;
+type TablePaginationProps<T> = {
+  pagination: IPagination<T>;
   hideLimit?: boolean;
 }
 
@@ -48,7 +48,7 @@ const generatePageNumbers = (currentPage: number, totalPages: number): PageItem[
   return pageNumbers;
 }
 
-export default function TablePagination({ pagination, hideLimit }: TablePaginationProps) {
+export default function TablePagination<T>({ pagination, hideLimit }: TablePaginationProps<T>) {
   const { updateParams, replaceParams } = useURL();
 
   if (!pagination || pagination.totalPages < 1) return null;

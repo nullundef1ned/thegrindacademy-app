@@ -1,4 +1,4 @@
-import { IPagination } from "@/app/_module/app.interface";
+import { IPagination, TData } from "@/app/_module/app.interface";
 import { TableHeaderTypeEnum } from "./table.enum";
 
 export interface TableHeader<T> {
@@ -8,18 +8,18 @@ export interface TableHeader<T> {
   fallback?: string;
 }
 
-export interface TableAction {
+export interface TableAction<T> {
   label?: string;
   icon?: string;
   className?: string;
   perform?: (id: number) => void | Promise<void>
-  render?: (row: any) => React.ReactNode;
+  render?: (row: T) => React.ReactNode;
 }
 
 export interface TableTab<T> {
   name: string;
   key: string;
   headers?: TableHeader<T>[];
-  actions?: TableAction[];
+  actions?: TableAction<TData<T>>[];
   data: IPagination<T>;
 }

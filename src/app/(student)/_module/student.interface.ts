@@ -5,7 +5,7 @@ export interface IOverviewStatistics {
 }
 
 export interface ICourse {
-  id: number;
+  id: string;
   name: string;
   description: string;
   thumbnail: string;

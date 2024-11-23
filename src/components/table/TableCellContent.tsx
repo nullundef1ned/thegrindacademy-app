@@ -7,16 +7,18 @@ import { StatusType } from '@/app/_module/app.type';
 import { TableHeader } from './table.interface';
 import { TableHeaderTypeEnum } from './table.enum';
 import { Progress } from '../ui/progress';
+import { TData } from '@/app/_module/app.interface';
 
-type TableCellContentProps = {
-  row: any;
-  header: TableHeader<any>;
+type TableCellContentProps<T> = {
+  row: TData<T>;
+  header: TableHeader<TData<T>>;
 }
 
-export default function TableCellContent({ row, header }: TableCellContentProps) {
+export default function TableCellContent<T>({ row, header }: TableCellContentProps<T>) {
   const { formatCurrency } = useCurrency();
 
   const keys = (header.key as string).split('+');
+  // @ts-expect-error this dynamically accesses the keys
   const values = keys.map((key) => key.split('.').reduce((acc, key) => acc?.[key], row));
   const temp = values.length > 1 ? values.join(' ') : values.toString();
   const value = temp || header.fallback || 'N/A';
@@ -54,8 +56,8 @@ export default function TableCellContent({ row, header }: TableCellContentProps)
     case TableHeaderTypeEnum.LONG_TEXT:
       return <span className="w-40 inline-block truncate">{value}</span>
     case TableHeaderTypeEnum.AVATAR:
-      const name = values[0] || header.fallback;
-      const image = values[1];
+      const name = (values[0] || header.fallback) as unknown as string;
+      const image = (values[1] as unknown as string) || '';
 
       return (
         <div className="flex items-center space-x-2">

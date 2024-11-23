@@ -1,7 +1,6 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import fakerUtil from "@/utils/faker.util";
 import clsx from "clsx";
 import { useState } from "react";
@@ -30,8 +29,9 @@ export default function MyCourses() {
         <div className="flex items-center gap-4">
           <p>Filter by:</p>
           <div className="flex items-center gap-2">
-            {filters.map((filter) => (
+            {filters.map((filter, index) => (
               <div
+                key={index}
                 onClick={() => setSelectedFilter(filter.value)}
                 className={clsx(selectedFilter === filter.value ? 'bg-[#00246B] text-white' : 'bg-transparent border-[#B0CAFF26] text-accent hover:bg-[#00246B] hover:text-white', "flex items-center gap-1 px-3 py-1.5 rounded border cursor-pointer transition-all")}>
                 <p className="text-sm">{filter.label}</p>

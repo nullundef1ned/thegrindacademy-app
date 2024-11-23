@@ -5,7 +5,7 @@ import Each from "../Each";
 import useURL from "@/hooks/useURL";
 import Skeleton from "react-loading-skeleton";
 import clsx from "clsx";
-import { IPagination } from "@/app/_module/app.interface";
+import { IPagination, TData } from "@/app/_module/app.interface";
 import TablePagination from "./TablePagination";
 import TableCell from "./TableCell";
 import TableSearch from "./TableSearch";
@@ -15,38 +15,38 @@ import { TableAction, TableTab } from "./table.interface";
 import { TableHeader } from "./table.interface";
 import Image from "next/image";
 
-export interface TableProps {
-  data?: IPagination<any>;
+export interface TableProps<T> {
+  data?: IPagination<TData<T>>;
   addComponent?: React.ReactNode;
   loading?: boolean;
   fetching?: boolean;
-  headers?: TableHeader<any>[];
+  headers?: TableHeader<TData<T>>[];
   searchable?: boolean;
-  actions?: TableAction[];
+  actions?: TableAction<TData<T>>[];
   exclude?: string[];
   emptyStateMessage?: string;
   className?: string;
   selectedRows?: string[];
   skeletonCount?: number;
   activeTab?: string;
-  tabs?: TableTab<any>[];
+  tabs?: TableTab<T>[];
   hideFooter?: boolean;
   hideLimit?: boolean;
   refetch?: () => void;
   setActiveTab?: (tab: string) => void;
   selectRows?: (row: string[]) => void;
-  onRowClick?: (row: any) => void;
+  onRowClick?: (row: TData<T>) => void;
   onTabChange?: (tab: string) => void;
 };
 
-function TableComponent({ data, addComponent, headers, hideLimit, hideFooter, searchable = true, fetching, className, emptyStateMessage, loading, exclude, activeTab, tabs, selectedRows, actions, refetch, setActiveTab, onRowClick, onTabChange, selectRows, skeletonCount = 8 }: TableProps) {
-  const excludedHeaders = exclude || [];
-  excludedHeaders.push("id");
+function TableComponent<T>({ data, addComponent, headers, hideLimit, hideFooter, searchable = true, fetching, className, emptyStateMessage, loading, exclude, activeTab, tabs, selectedRows, actions, refetch, setActiveTab, onRowClick, onTabChange, selectRows, skeletonCount = 8 }: TableProps<T>) {
 
-  const { searchParams, replaceParams } = useURL();
+  const { searchParams } = useURL();
   const searchValue = searchParams.get('search') || '';
 
   const [selection, setSelection] = useState<string[]>(selectedRows || []);
+
+  const excludedHeaders = useMemo(() => [...(exclude || []), 'id'], [exclude]);
 
   const usableHeaders = useMemo(() => {
     const selectedTabHeaders = tabs?.find((tab) => tab.key === activeTab)?.headers;
@@ -64,7 +64,7 @@ function TableComponent({ data, addComponent, headers, hideLimit, hideFooter, se
     }
 
     return actions || [];
-  }, [tabs, headers, activeTab]);
+  }, [tabs, headers, activeTab, actions])
 
   const usableData = useMemo(() => {
     const selectedTabData = tabs?.find((tab) => tab.key === activeTab)?.data;
@@ -75,8 +75,8 @@ function TableComponent({ data, addComponent, headers, hideLimit, hideFooter, se
     return data || { result: [], currentPage: 1, totalPages: 1, totalCount: 0, previousPage: null, nextPage: null };
   }, [tabs, data, activeTab]);
 
-  if (!usableData.result?.every((row: any) => row.id) && usableData.result?.length > 0) {
-    return ("Table data must have an id field");
+  if (usableData.result?.length > 0 && !usableData.result.every((row) => 'id' in row)) {
+    return "Table data must have an id field";
   }
 
   if (usableHeaders.length === 0) {
@@ -87,16 +87,16 @@ function TableComponent({ data, addComponent, headers, hideLimit, hideFooter, se
   const allSelected = selection?.length === usableData.result?.length && selection.length > 0;
   const headerCount = usableHeaders.length + (selectRows ? 1 : 0) + (hasActions ? 1 : 0);
 
-  const handleRowClick = (row: any) => {
+  const handleRowClick = (row: TData<T>) => {
     onRowClick?.(row);
   }
 
-  const handleActionClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, row: any, perform?: TableAction["perform"]) => {
+  const handleActionClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, row: unknown & { id: string }, perform?: TableAction<TData<T>>["perform"]) => {
     e.stopPropagation();
-    perform?.(row.id);
+    perform?.(Number(row.id));
   }
 
-  const handleTabChange = (tab: TableTab<any>) => {
+  const handleTabChange = (tab: TableTab<T>) => {
     if (tab.key === activeTab) return;
     setActiveTab?.(tab.key);
     onTabChange?.(tab.name);
@@ -107,7 +107,7 @@ function TableComponent({ data, addComponent, headers, hideLimit, hideFooter, se
     selectRows?.(rows);
   }
 
-  const toggleRowSelection = (row: any) => {
+  const toggleRowSelection = (row: unknown & { id: string }) => {
     const updatedRows = [...selection];
 
     if (updatedRows.includes(row.id)) {
@@ -123,7 +123,7 @@ function TableComponent({ data, addComponent, headers, hideLimit, hideFooter, se
     if (allSelected) {
       updateSelection([]);
     } else {
-      updateSelection(usableData.result.map((row: any) => row.id));
+      updateSelection(usableData.result.map((row: TData<T>) => row.id));
     }
   }
 
@@ -131,7 +131,7 @@ function TableComponent({ data, addComponent, headers, hideLimit, hideFooter, se
     <div className={className}>
       {tabs && tabs.length > 0 && (
         <div className="flex gap-4 items-end mb-6">
-          <Each of={tabs} render={(tab: TableTab<any>) => (
+          <Each of={tabs} render={(tab) => (
             <div onClick={() => handleTabChange(tab)}
               className={`cursor-pointer transition-all flex flex-col gap-3 group`}>
               <p className={clsx(activeTab == tab.key && 'font-semibold text-white', 'text-accent font-medium px-2')}>{tab.name}</p>
@@ -144,7 +144,7 @@ function TableComponent({ data, addComponent, headers, hideLimit, hideFooter, se
         {(searchable || addComponent) && (
           <div className="p-4 grid place-content-center grid-cols-2 gap-4">
             <div className="flex items-center space-x-3">
-              <TableSearch key={searchValue} searchable={searchable} fetching={fetching} searchValue={searchValue} />
+              <TableSearch key={searchValue} searchable={searchable} searchValue={searchValue} />
               {refetch && <IconifyIcon onClick={() => refetch()} icon="ri:refresh-line" className={clsx(fetching && 'animate-spin', "text-grey-100 cursor-pointer")} />}
             </div>
             <div className="flex items-center justify-end">
@@ -195,7 +195,7 @@ function TableComponent({ data, addComponent, headers, hideLimit, hideFooter, se
               <Fragment>
                 {usableData.result?.length > 0 ? (
                   <tbody>
-                    {usableData.result?.map((row: any, index: number) => (
+                    {usableData.result?.map((row, index: number) => (
                       <Fragment key={index}>
                         <tr
                           onClick={() => handleRowClick(row)}
@@ -209,7 +209,7 @@ function TableComponent({ data, addComponent, headers, hideLimit, hideFooter, se
                               <Checkbox name={row.id} checked={selection?.includes(row.id)} onCheckedChange={() => toggleRowSelection(row)} />
                             </td>
                           )}
-                          {usableHeaders.map((header: TableHeader<any>, index: number) => {
+                          {usableHeaders.map((header, index: number) => {
                             return <TableCell key={index} header={header} row={row} />
                           })}
                           {hasActions && (
@@ -217,7 +217,7 @@ function TableComponent({ data, addComponent, headers, hideLimit, hideFooter, se
                               className="p-4 whitespace-nowrap text-sm font-normal overflow-hidden"
                             >
                               <div className="flex space-x-3">
-                                <Each of={usableActions} render={({ icon, label, className, perform, render }: TableAction) => {
+                                <Each of={usableActions} render={({ icon, label, className, perform, render }: TableAction<TData<T>>) => {
                                   if (render) return render(row);
                                   return (
                                     <div onClick={(e) => handleActionClick(e, row, perform)} className={clsx('flex items-center space-x-1 cursor-pointer', className)}>
@@ -255,7 +255,7 @@ function TableComponent({ data, addComponent, headers, hideLimit, hideFooter, se
   );
 };
 
-export default function Table(props: TableProps) {
+export default function Table<T>(props: TableProps<T>) {
   return (
     <Suspense>
       <TableComponent {...props} />
