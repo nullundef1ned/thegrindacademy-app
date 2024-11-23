@@ -17,7 +17,7 @@ export default function CourseBrowser() {
         <SearchInput />
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {courses.map((course) => (
           <Card key={course.id} className="flex flex-col gap-4">
             <div className="relative overflow-hidden w-full h-52">

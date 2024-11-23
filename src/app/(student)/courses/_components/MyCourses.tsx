@@ -24,16 +24,16 @@ export default function MyCourses() {
 
   return (
     <div className='w-full space-y-6'>
-      <div className="flex items-center justify-between w-full border-b border-[#B0CAFF1A] pb-6">
+      <div className="flex items-center flex-wrap gap-4 justify-between w-full border-b border-[#B0CAFF1A] pb-6">
         <SearchInput />
-        <div className="flex items-center gap-4">
-          <p>Filter by:</p>
-          <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4 overflow-hidden">
+          <p className="text-sm whitespace-nowrap">Filter by:</p>
+          <div className="flex items-center gap-2 overflow-x-auto">
             {filters.map((filter, index) => (
               <div
                 key={index}
                 onClick={() => setSelectedFilter(filter.value)}
-                className={clsx(selectedFilter === filter.value ? 'bg-[#00246B] text-white' : 'bg-transparent border-[#B0CAFF26] text-accent hover:bg-[#00246B] hover:text-white', "flex items-center gap-1 px-3 py-1.5 rounded border cursor-pointer transition-all")}>
+                className={clsx(selectedFilter === filter.value ? 'bg-[#00246B] text-white' : 'bg-transparent border-[#B0CAFF26] text-accent hover:bg-[#00246B] hover:text-white', "flex items-center gap-1 px-3 py-1.5 rounded border cursor-pointer transition-all whitespace-nowrap")}>
                 <p className="text-sm">{filter.label}</p>
               </div>
             ))}
@@ -41,7 +41,7 @@ export default function MyCourses() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {courses.map((course) => (
           <Card key={course.id} className="flex flex-col gap-4">
             <div className="relative overflow-hidden w-full h-52">
