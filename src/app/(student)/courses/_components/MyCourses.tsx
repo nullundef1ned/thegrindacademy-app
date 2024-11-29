@@ -31,7 +31,7 @@ export default function MyCourses() {
 
   if (courses.length === 0) {
     return (
-      <div className='w-full h-[50dvh] grid place-items-center place-content-center space-y-4'>
+      <div className='w-full h-[50dvh] grid place-items-center place-content-center space-y-4 px-4'>
         <Image src='/images/empty-state.svg' alt='No courses found' width={150} height={150} className='object-contain' />
         <div className='space-y-4 max-w-sm flex flex-col items-center'>
           <div className='space-y-1'>
@@ -71,7 +71,7 @@ export default function MyCourses() {
             </div>
             <div className="flex flex-col gap-2">
               <p className="font-medium">{course.name}</p>
-              <p className="text-sm text-accent">{course.description}</p>
+              <p className="text-sm text-accent">{course.shortDescription}</p>
               <div className="flex items-center justify-between gap-2">
                 <Progress value={course.progress} />
                 <p className="text-sm text-accent">{course.progress}%</p>

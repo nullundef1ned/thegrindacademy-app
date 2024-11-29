@@ -35,11 +35,11 @@ input:-webkit-autofill {
 }
 
 .Toastify__toast-theme--colored.Toastify__toast--warning {
-  @apply !bg-red-900 !border !border-red-700 !text-white;
+  @apply !bg-yellow-900 !border !border-yellow-700 !text-white;
 }
 
 .Toastify__toast-theme--colored.Toastify__toast--error {
-  @apply !bg-yellow-900 !border !border-yellow-700 !text-white;
+  @apply !bg-red-900 !border !border-red-700 !text-white;
 }
 
 @layer utilities {

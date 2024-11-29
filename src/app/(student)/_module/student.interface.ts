@@ -19,11 +19,36 @@ export interface IReferralStatistics {
   totalEarnings: number;
 }
 
+export interface ICourseMaterial {
+  id: string;
+  name: string;
+  link: string;
+  type: 'video' | 'document' | 'image';
+}
+
+export interface ICourseEnrollment {
+  progress: number;
+  lessonsCompleted: number;
+  isCompleted: boolean;
+  certificateLink?: string;
+}
+
+export interface ICourseLesson {
+  id: string;
+  name: string;
+  completed: boolean;
+  studyTime: number;
+}
+
 export interface ICourse {
   id: string;
   name: string;
+  shortDescription: string;
+  materials: ICourseMaterial[];
   description: string;
   thumbnail: string;
+  introVideo: string;
+  lessons: ICourseLesson[];
 }
 
 export interface IStudentActiveCourse extends ICourse {

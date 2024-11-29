@@ -41,8 +41,8 @@ export default function SupportPage() {
         <p className='text-sm text-accent'>Answers to common questions about our platform.</p>
         <Accordion type='single' collapsible className='space-y-4'>
           {faqs.map((faq, index) => (
-            <AccordionItem key={index} value={index.toString()} className='bg-[#00246B14] border border-[#548DFF24] rounded px-4'>
-              <AccordionTrigger className='!no-underline'>
+            <AccordionItem key={index} value={index.toString()}>
+              <AccordionTrigger>
                 <p className='text-lg font-gishaBold text-left'>{faq.question}</p>
               </AccordionTrigger>
               <AccordionContent>
