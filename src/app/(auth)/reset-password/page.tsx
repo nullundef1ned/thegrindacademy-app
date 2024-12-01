@@ -7,21 +7,21 @@ import { Button } from '@/components/ui/button';
 import { PasswordForm } from '../_module/auth.interface';
 import { useFormik } from 'formik';
 import useAuthMutations from '../_module/auth.mutations';
-import useAuthQueries from '../_module/auth.queries';
 import LoadingIcons from 'react-loading-icons';
 import { useTitle } from '@/providers/title.provider';
 import Image from 'next/image';
 import Link from 'next/link';
+import AuthQueries from '../_module/auth.queries';
 
 
 export default function ResetPasswordPage({ searchParams }: { searchParams: { token: string } }) {
   const { setTitle } = useTitle()
   const { resetPasswordMutation } = useAuthMutations()
-  const { verifyResetPasswordTokenQuery } = useAuthQueries()
+  const { useVerifyResetPasswordTokenQuery } = AuthQueries()
 
   const token = searchParams.token;
 
-  const { data: tokenData, isPending, isError } = verifyResetPasswordTokenQuery(token)
+  const { data: tokenData, isPending, isError } = useVerifyResetPasswordTokenQuery(token)
 
   const { values, handleChange, handleSubmit } = useFormik<PasswordForm>({
     initialValues: {

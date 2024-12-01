@@ -1,18 +1,18 @@
 import useAxios from '@/hooks/useAxios';
 import { useQuery } from '@tanstack/react-query';
 
-export default function useAuthQueries() {
+export default function AuthQueries() {
   const axiosHandler = useAxios();
 
-  const verifyTokenQuery = (token: string) => useQuery({
-    queryKey: ['verify-token'],
+  const useVerifyAccountSetupTokenQuery = (token: string) => useQuery({
+    queryKey: ['verify-account-setup-token'],
     queryFn: () => axiosHandler.get(`/student/account-setup?token=${token}`),
   })
 
-  const verifyResetPasswordTokenQuery = (token: string) => useQuery({
+  const useVerifyResetPasswordTokenQuery = (token: string) => useQuery({
     queryKey: ['verify-reset-password-token'],
     queryFn: () => axiosHandler.get(`/student/auth/password/reset?token=${token}`),
   })
 
-  return { verifyTokenQuery, verifyResetPasswordTokenQuery }
+  return { useVerifyAccountSetupTokenQuery, useVerifyResetPasswordTokenQuery }
 }

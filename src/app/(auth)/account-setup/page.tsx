@@ -8,20 +8,20 @@ import Link from 'next/dist/client/link';
 import { PasswordForm } from '../_module/auth.interface';
 import { useFormik } from 'formik';
 import useAuthMutations from '../_module/auth.mutations';
-import useAuthQueries from '../_module/auth.queries';
 import LoadingIcons from 'react-loading-icons';
 import Image from 'next/image';
 import { useTitle } from '@/providers/title.provider';
+import AuthQueries from '../_module/auth.queries';
 
 
 export default function SetupAccountPage({ searchParams }: { searchParams: { token: string } }) {
   const { setTitle } = useTitle();
-  const { verifyTokenQuery } = useAuthQueries();
+  const { useVerifyAccountSetupTokenQuery } = AuthQueries();
   const { setupAccountMutation } = useAuthMutations();
 
   const token = searchParams.token;
 
-  const { data: tokenData, isPending, isError } = verifyTokenQuery(token)
+  const { data: tokenData, isPending, isError } = useVerifyAccountSetupTokenQuery(token)
 
   const { values, handleChange, handleSubmit } = useFormik<PasswordForm>({
     initialValues: {

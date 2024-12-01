@@ -1,5 +1,4 @@
 import { IBanner, ICourse, ICourseEnrollment, IOverviewStatistics, IReferralStatistics, IStudentActiveCourse, ISubscription } from "@/app/(student)/_module/student.interface"
-import { IUser } from "@/app/_module/app.interface"
 
 const subscription: ISubscription = {
   id: '1',
