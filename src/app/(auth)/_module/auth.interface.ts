@@ -8,6 +8,10 @@ export interface PasswordForm {
   confirmPassword: string
 }
 
+export interface SetupAccountRequest extends PasswordForm {
+  token: string
+}
+
 export interface ForgotPasswordForm {
   email: string
 }

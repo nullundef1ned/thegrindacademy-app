@@ -12,7 +12,7 @@ type AuthLayoutProps = {
 function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <div className='grid place-items-center h-screen w-screen bg-background p-4 relative'>
-      <Blur className='absolute top-0 w-1/2 left-1/2 -translate-x-1/2 h-full bg-primary/15 z-0' />
+      <Blur className='absolute top-1/2 w-1/2 left-1/2 -translate-x-1/2 h-1/2 -translate-y-1/2 bg-primary/5 z-0' />
       <div className='flex flex-col items-center gap-10 w-full z-20'>
         <Link href='/login'>
           <Image src='/logos/logo.svg' alt='Logo' width={166} height={32} />

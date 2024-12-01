@@ -33,9 +33,9 @@ const convertToNumber = (value: string | number): number => {
   return typeof value == 'string' ? parseFloat(value) : value;
 }
 
-const converTimeToMinutesAndSeconds = (time: number): string => {
-  const minutes = Math.floor(time / 60);
-  const seconds = Math.floor(time % 60);
+const convertTimeToMinutesAndSeconds = (time: number): string => {
+  const minutes = Math.floor(time / 60) || 0;
+  const seconds = Math.floor(time % 60) || 0;
   return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
@@ -100,6 +100,6 @@ export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs))
 }
 
-const helperUtil = { formatPhoneNumber, getTimeDelta, formatDate, formatTime, converTimeToMinutesAndSeconds, convertToNumber, capitalize, downloadFile }
+const helperUtil = { formatPhoneNumber, getTimeDelta, formatDate, formatTime, convertTimeToMinutesAndSeconds, convertToNumber, capitalize, downloadFile }
 
 export default helperUtil

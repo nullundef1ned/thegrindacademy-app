@@ -23,6 +23,11 @@ export default function CourseHeader({ course, enrollment }: ICourseHeaderProps)
     },
   })
 
+  const completedLessons = course.lessons.filter(lesson => lesson.completed).length;
+
+  const progress = Math.round((completedLessons / course.lessons.length) * 100);
+  const isCompleted = completedLessons === course.lessons.length;
+
   return (
     <div className="flex justify-between border-b border-[#B0CAFF1A] pb-4 w-screen -mx-4 px-4">
       <div className='flex flex-col gap-1.5'>
@@ -38,18 +43,18 @@ export default function CourseHeader({ course, enrollment }: ICourseHeaderProps)
         <div className='flex items-end gap-4'>
           <div className="flex flex-col gap-2 w-72">
             <div className="flex items-center gap-2">
-              <p className='text-xs text-muted-foreground'>{enrollment.lessonsCompleted}/{course.lessons.length} completed</p>
-              {enrollment.isCompleted &&
+              <p className='text-xs text-muted-foreground'>{completedLessons}/{course.lessons.length} completed</p>
+              {isCompleted &&
                 <Fragment>
                   <p onClick={() => downloadCertificate()} className='text-xs text-primary-100 hover:underline cursor-pointer'>Download Certificate</p>
                 </Fragment>}
             </div>
-            <Progress value={enrollment.progress} />
+            <Progress value={progress} />
           </div>
           <div
             onClick={() => downloadCertificate()}
             className={clsx(
-              enrollment.isCompleted ? "bg-primary text-white cursor-pointer" : "bg-[#00246B66] text-[#E6E6E7] cursor-not-allowed",
+              isCompleted ? "bg-primary text-white cursor-pointer" : "bg-[#00246B66] text-[#E6E6E7] cursor-not-allowed",
               "border border-[#B0CAFF1A]  size-10 grid place-items-center rounded")}>
             {isPending ?
               <LoadingIcons.TailSpin className="size-3" /> :

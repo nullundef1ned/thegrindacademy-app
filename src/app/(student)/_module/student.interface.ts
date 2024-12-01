@@ -26,8 +26,15 @@ export interface ICourseMaterial {
   type: 'video' | 'document' | 'image';
 }
 
+export type ICourseLessonContent = {
+  video: string;
+  html?: string;
+} | {
+  video?: string;
+  html: string;
+};
+
 export interface ICourseEnrollment {
-  progress: number;
   lessonsCompleted: number;
   isCompleted: boolean;
   certificateLink?: string;
@@ -36,6 +43,7 @@ export interface ICourseEnrollment {
 export interface ICourseLesson {
   id: string;
   name: string;
+  content: ICourseLessonContent;
   completed: boolean;
   studyTime: number;
 }

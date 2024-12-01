@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import IconifyIcon from './IconifyIcon';
 import helperUtil from '@/utils/helper.util';
+import { clsx } from 'clsx';
 
 interface IVideoProps {
   src: string;
@@ -79,9 +80,11 @@ export default function Video({ src, poster }: IVideoProps) {
   }, [videoRef])
 
   return (
-    <div className="relative w-full aspect-auto rounded-lg overflow-hidden">
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-full px-8 z-10">
-        <div className='bg-[#07090F] rounded-full flex items-center gap-4 justify-between w-full p-3'>
+    <div className="relative group w-full aspect-video rounded-lg overflow-hidden bg-white/30">
+      <div className={clsx(
+        isPlaying ? 'group-hover:!translate-y-0 translate-y-40' : 'translate-y-0',
+        "absolute bottom-4 left-1/2 -translate-x-1/2 w-full px-8 z-20 transition-all duration-500 ease-linear")}>
+        <div className={'bg-[#07090F] rounded-full flex items-center gap-4 justify-between w-full p-3'}>
           <div className="flex items-center gap-4 w-full">
             <div
               onClick={togglePlay}
@@ -96,7 +99,7 @@ export default function Video({ src, poster }: IVideoProps) {
               <div onClick={handleSeekClick} className='w-full relative rounded-full bg-[#1B2239] h-1.5'>
                 <div style={{ width: `${percentageWatched}%` }} className='absolute left-0 top-0 h-full rounded-full bg-primary-50 cursor-pointer transition-all ease-linear' />
               </div>
-              <p className='text-xs text-white'>{helperUtil.converTimeToMinutesAndSeconds(currentVideoTime)}</p>
+              <p className='text-xs text-white whitespace-nowrap'>{helperUtil.convertTimeToMinutesAndSeconds(currentVideoTime)}</p>
 
             </div>
             <div
@@ -107,8 +110,19 @@ export default function Video({ src, poster }: IVideoProps) {
           </div>
         </div>
       </div>
-      <video poster={poster} className="w-full object-contain" controls={false} playsInline ref={videoRef}>
+      <div
+        className="absolute inset-0 grid place-items-center z-10 w-full h-full group-hover:bg-[#07090F]/30 transition-all ease-linear">
+        <div
+          onClick={togglePlay}
+          className='rounded-full flex-shrink-0 bg-white size-20 z-20 grid place-items-center cursor-pointer opacity-0 group-hover:opacity-100 transition-all ease-linear'
+        >
+          <IconifyIcon icon={isPlaying ? 'ri:pause-mini-fill' : 'ri:play-mini-fill'} className="size-10 text-[#07090F]" size={40} />
+        </div>
+
+      </div>
+      <video poster={poster} preload='auto' className="object-contain !h-full w-full" controls={false} playsInline ref={videoRef}>
         <source src={src} type="video/mp4" />
+        Your browser does not support the video tag.
       </video>
     </div>
   )

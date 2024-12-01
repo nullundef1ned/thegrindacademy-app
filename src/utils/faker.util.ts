@@ -1,16 +1,6 @@
 import { IBanner, ICourse, ICourseEnrollment, IOverviewStatistics, IReferralStatistics, IStudentActiveCourse, ISubscription } from "@/app/(student)/_module/student.interface"
 import { IUser } from "@/app/_module/app.interface"
 
-const user: IUser = {
-  firstName: 'Miyagi',
-  lastName: 'Kun',
-  name: 'Miyagi Kun',
-  email: 'miyagi.kun@thegrind.com',
-  telegramUsername: '@miyagi_kun',
-  profilePicture: 'https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=3308&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  referralCode: 'REF-GRIND87248',
-}
-
 const subscription: ISubscription = {
   id: '1',
   name: 'Yearly Plan',
@@ -135,19 +125,59 @@ const courses: ICourse[] = [
         id: '1',
         name: 'Introduction to HTML',
         completed: false,
-        studyTime: 10,
+        content: {
+          video: 'https://firebasestorage.googleapis.com/v0/b/suya-truck.appspot.com/o/Zahn%20Studios%2Fdammer-coffee.mp4?alt=media&token=437793d0-bd66-4544-aa6c-c7eee601cb02',
+        },
+        studyTime: 1,
       },
       {
         id: '2',
         name: 'Introduction to CSS',
         completed: false,
-        studyTime: 10,
+        content: {
+          video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+          html: `
+            <div class="space-y-4">
+              <h2 class="text-xl font-semibold">Introduction to CSS</h2>
+              
+              <div class="space-y-2">
+                <p>CSS (Cascading Style Sheets) is the language used to style and layout web pages. It works alongside HTML to control the visual presentation of content.</p>
+                
+                <h3 class="text-lg font-medium mt-4">Key Concepts:</h3>
+                <ul class="list-disc pl-6 space-y-1">
+                  <li>Selectors - Target HTML elements to style</li>
+                  <li>Properties - Visual attributes you can modify</li>
+                  <li>Values - Settings for the properties</li>
+                  <li>Box Model - How elements are sized and spaced</li>
+                </ul>
+
+                <h3 class="text-lg font-medium mt-4">Basic Syntax:</h3>
+                <pre class="bg-gray-100 p-3 rounded">
+selector {
+  property: value;
+}
+                </pre>
+
+                <p class="mt-4">CSS can be added to HTML documents in 3 ways:</p>
+                <ol class="list-decimal pl-6 space-y-1">
+                  <li>Inline styles using the style attribute</li>
+                  <li>Internal stylesheet in a &lt;style&gt; tag</li>
+                  <li>External stylesheet linked with &lt;link&gt;</li>
+                </ol>
+              </div>
+            </div>
+          `
+        },
+        studyTime: 20,
       },
       {
         id: '3',
         name: 'Introduction to JavaScript',
         completed: false,
-        studyTime: 10,
+        content: {
+          video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        },
+        studyTime: 20,
       }
     ],
   },
@@ -164,12 +194,22 @@ const courses: ICourse[] = [
         id: '1',
         name: 'Introduction to HTML',
         completed: false,
+        content: {
+          video: 'https://firebasestorage.googleapis.com/v0/b/suya-truck.appspot.com/o/Zahn%20Studios%2Fdammer-coffee.mp4?alt=media&token=437793d0-bd66-4544-aa6c-c7eee601cb02',
+        },
         studyTime: 10,
       },
       {
         id: '2',
         name: 'Introduction to CSS',
         completed: false,
+        content: {
+          html: `
+            <div class="space-y-4">
+              <h2 class="text-xl font-semibold">Introduction to CSS</h2>
+            </div>
+          `
+        },
         studyTime: 10,
       },
     ],
@@ -187,14 +227,12 @@ const courses: ICourse[] = [
 ]
 
 const enrollment: ICourseEnrollment = {
-  progress: 50,
-  lessonsCompleted: 1,
+  lessonsCompleted: 3,
   isCompleted: false,
 }
 
 const fakerUtil = {
   banners,
-  user,
   courses,
   enrollment,
   subscription,

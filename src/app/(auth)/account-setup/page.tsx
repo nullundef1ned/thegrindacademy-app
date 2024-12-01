@@ -4,24 +4,24 @@ import React from 'react'
 import AuthCard from '../_components/AuthCard'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button';
+import Link from 'next/dist/client/link';
 import { PasswordForm } from '../_module/auth.interface';
 import { useFormik } from 'formik';
 import useAuthMutations from '../_module/auth.mutations';
 import useAuthQueries from '../_module/auth.queries';
 import LoadingIcons from 'react-loading-icons';
-import { useTitle } from '@/providers/title.provider';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useTitle } from '@/providers/title.provider';
 
 
-export default function ResetPasswordPage({ searchParams }: { searchParams: { token: string } }) {
-  const { setTitle } = useTitle()
-  const { resetPasswordMutation } = useAuthMutations()
-  const { verifyResetPasswordTokenQuery } = useAuthQueries()
+export default function SetupAccountPage({ searchParams }: { searchParams: { token: string } }) {
+  const { setTitle } = useTitle();
+  const { verifyTokenQuery } = useAuthQueries();
+  const { setupAccountMutation } = useAuthMutations();
 
   const token = searchParams.token;
 
-  const { data: tokenData, isPending, isError } = verifyResetPasswordTokenQuery(token)
+  const { data: tokenData, isPending, isError } = verifyTokenQuery(token)
 
   const { values, handleChange, handleSubmit } = useFormik<PasswordForm>({
     initialValues: {
@@ -29,14 +29,18 @@ export default function ResetPasswordPage({ searchParams }: { searchParams: { to
       confirmPassword: ''
     },
     onSubmit: (values) => {
-      resetPasswordMutation.mutate({ ...values, token })
+      setupAccountMutation.mutate({ ...values, token })
     }
   })
 
   if (isPending) {
-    return <div className='flex items-center justify-center h-full'>
-      <LoadingIcons.TailSpin stroke="#FFF" />
-    </div>
+    setTitle('Loading...')
+
+    return (
+      <div className='flex items-center justify-center h-full'>
+        <LoadingIcons.TailSpin stroke="#FFF" />
+      </div>
+    )
   }
 
   if (!token || isError || !tokenData) {
@@ -45,7 +49,7 @@ export default function ResetPasswordPage({ searchParams }: { searchParams: { to
     return (
       <div className='flex flex-col items-center space-y-3 justify-center h-full max-w-md'>
         <Image src='/images/invite-error-state.svg' alt='Invalid Token' width={140} height={140} />
-        <p className='text-center text-2xl font-semibold'>This link you used appears to be invalid</p>
+        <p className='text-center text-2xl font-semibold'>The invitation link you used appears to be invalid</p>
         <p className='text-center text-sm text-accent'>Please verify the link or reach out to <Link
           className='underline'
           href='mailto:support@thegrindacademy.com'>support</Link> for further assistance</p>
@@ -54,12 +58,15 @@ export default function ResetPasswordPage({ searchParams }: { searchParams: { to
   }
 
   return (
-    <AuthCard title='Reset Password' description='Create your new password'>
+    <AuthCard title='Welcome to The Grind Academy' description="Let's set up your account so you can start learning. Create your password to get access to your dashboard">
       <form className='space-y-6 w-full' onSubmit={handleSubmit}>
         <Input icon='ri:lock-fill' type='password' name='password' className='w-full' placeholder='Password' value={values.password} onChange={handleChange} />
         <Input icon='ri:lock-fill' type='password' name='confirmPassword' className='w-full' placeholder='Confirm Password' value={values.confirmPassword} onChange={handleChange} />
-        <Button className='w-full'>Reset Password</Button>
+        <Button loading={setupAccountMutation.isPending} className='w-full'>Proceed</Button>
       </form>
+      <p className='text-sm text-accent text-center'>
+        Already have an account? <Link className='text-primary font-semibold' href='/login'>Log In</Link>
+      </p>
     </AuthCard>
   )
 }

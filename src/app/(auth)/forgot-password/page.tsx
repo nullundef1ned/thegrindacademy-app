@@ -23,7 +23,7 @@ export default function ForgotPasswordPage() {
 
   if (forgotPasswordMutation.isSuccess) {
     return (
-      <AuthCard title='Check Your Email' description='Instructions await'>
+      <AuthCard title='Check Your Email' description='Instructions await you'>
         <p className='text-sm text-center'>
           We&apos;ve sent an email with instructions to <span className='font-bold'>[{values.email}]</span>. Please check your inbox and follow the instructions to reset your password.
         </p>
@@ -35,7 +35,7 @@ export default function ForgotPasswordPage() {
     <AuthCard title='Forgot Password?' description="Enter your email address, and we'll send you instructions to reset your password">
       <form className='space-y-6 w-full' onSubmit={handleSubmit}>
         <Input icon='ri:mail-fill' type='email' name='email' className='w-full' placeholder='Email' value={values.email} onChange={handleChange} />
-        <Button className='w-full'>Send Reset Link</Button>
+        <Button loading={forgotPasswordMutation.isPending} className='w-full'>Send Reset Link</Button>
       </form>
     </AuthCard>
   )

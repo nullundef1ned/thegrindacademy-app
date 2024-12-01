@@ -4,6 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/utils/helper.util"
 import Link from "next/link"
+import LoadingIcons from "react-loading-icons"
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[2px] text-xs font-semibold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 uppercase",
@@ -42,10 +43,11 @@ export interface ButtonProps
   href?: string;
   target?: string;
   asChild?: boolean
+  loading?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, href, target, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, href, target, loading = false, children, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
 
     if (href) {
@@ -65,7 +67,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
-      />
+      >
+        {loading ? <LoadingIcons.TailSpin stroke="#FFF" /> : children}
+      </Comp>
     )
   }
 )

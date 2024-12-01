@@ -1,11 +1,33 @@
+export type UserRole = 'student' | 'admin' | 'super-admin';
+export type UserStatus = 'active' | 'inactive' | 'suspended';
+
 export interface IUser {
+  id: string;
+  email: string;
+  role: UserRole;
+  status: UserStatus;
+  lastLogin: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  info: IUserInfo;
+}
+
+export interface IUserInfo {
+  id: string;
+  userId: string;
   firstName: string;
   lastName: string;
-  name: string;
-  email: string;
-  telegramUsername: string;
-  profilePicture: string;
-  referralCode: string;
+  telegramUserName: string;
+  avi: string | null;
+  phoneNumber: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IAuthResponse {
+  user: IUser;
+  accessToken: string;
 }
 
 export type TData<T> = T & { id: string };

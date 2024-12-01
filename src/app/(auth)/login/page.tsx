@@ -27,7 +27,7 @@ export default function LoginPage() {
       <form className='space-y-6 w-full' onSubmit={handleSubmit}>
         <Input icon='ri:mail-fill' type='email' name='email' className='w-full' placeholder='Email' value={values.email} onChange={handleChange} />
         <Input icon='ri:lock-fill' type='password' name='password' className='w-full' placeholder='Password' value={values.password} onChange={handleChange} />
-        <Button className='w-full'>Log In</Button>
+        <Button loading={loginMutation.isPending} className='w-full'>Log In</Button>
       </form>
       <div className='flex flex-col gap-4 w-full'>
         <Link className='text-sm text-accent font-semibold text-right' href='/forgot-password'>Forgot Password?</Link>
