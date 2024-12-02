@@ -1,3 +1,33 @@
+export interface IReferral {
+  id: string;
+  userId: string;
+  code: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IBankDetails {
+  id: string;
+  userId: string;
+  bankName: string;
+  bankCode: string;
+  accountNumber: string;
+  accountName: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IBankDetailForm {
+  bankName: string;
+  bankCode: string;
+  accountNumber: string;
+}
+
+export interface IBankDetailCreationResponse {
+  bankDetail: IBankDetails;
+  referralCode: IReferral;
+}
+
 export interface ISubscription {
   id: string;
   name: string;

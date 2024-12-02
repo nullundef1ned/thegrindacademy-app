@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import notificationUtil from "@/utils/notification.util";
 import { useAppStore } from "@/app/_module/app.store";
 import { IAuthResponse } from "@/app/_module/app.interface";
+import useStudentHooks from "@/app/(student)/_module/student.hooks";
 
 export default function useAuthMutations() {
 
@@ -12,13 +13,21 @@ export default function useAuthMutations() {
   const axiosHandler = useAxios();
   const initialize = useAppStore(state => state.initialize);
 
+  const { fetchReferral, fetchBankDetails } = useStudentHooks();
+
+  const setupStudentAccount = (payload: IAuthResponse) => {
+    initialize(payload);
+    fetchReferral();
+    fetchBankDetails();
+  }
+
   const loginMutation = useMutation({
     mutationFn: async (values: LoginForm) => {
       const response = await axiosHandler.post('/student/auth/login', values)
       return response.data
     },
     onSuccess: (data: IAuthResponse) => {
-      initialize(data);
+      setupStudentAccount(data);
       notificationUtil.success("Welcome back!")
       router.push('/')
     }
@@ -34,7 +43,7 @@ export default function useAuthMutations() {
       return response.data
     },
     onSuccess: (data: IAuthResponse) => {
-      initialize(data)
+      setupStudentAccount(data)
       notificationUtil.success("Success! Your account has been setup.")
       router.push('/')
     }

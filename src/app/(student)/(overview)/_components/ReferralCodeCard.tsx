@@ -5,9 +5,10 @@ import Card from '@/components/Card'
 import IconifyIcon from '@/components/IconifyIcon'
 import notificationUtil from '@/utils/notification.util';
 import React from 'react'
+import { useStudentStore } from '../../_module/student.store';
 
 export default function ReferralCodeCard() {
-  const referralCode = useAppStore((state) => state.user?.referralCode);
+  const referralCode = useStudentStore((state) => state.referral?.code);
 
   const handleCopyReferralCode = () => {
     if (referralCode) {
@@ -15,6 +16,8 @@ export default function ReferralCodeCard() {
       notificationUtil.success('Referral code copied to clipboard');
     }
   }
+
+  if (!referralCode) return null;
 
   return (
     <Card className='space-y-2'>
