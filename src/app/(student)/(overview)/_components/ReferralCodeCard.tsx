@@ -1,6 +1,5 @@
 'use client';
 
-import { useAppStore } from '@/app/_module/app.store';
 import Card from '@/components/Card'
 import IconifyIcon from '@/components/IconifyIcon'
 import notificationUtil from '@/utils/notification.util';

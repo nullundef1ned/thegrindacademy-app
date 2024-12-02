@@ -1,4 +1,3 @@
-import React from 'react'
 import { IReferral } from './student.interface';
 import { IBankDetails } from './student.interface';
 import useAxios from '@/hooks/useAxios';
