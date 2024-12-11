@@ -12,7 +12,7 @@ type ModalProviderProps = {
 };
 
 const ModalContext: Context<ModalContextType> = createContext({
-  showModal: (modal: ReactNode) => { },
+  showModal: (modal: ReactNode) => { if (!modal) throw new Error("Modal is required") },
   hideModal: () => { },
   hideAllModals: () => { },
 });

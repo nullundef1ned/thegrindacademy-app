@@ -3,7 +3,6 @@ import { IBankDetailCreationResponse, IBankDetailForm, IStudentAccountInformatio
 import { useMutation } from '@tanstack/react-query';
 import useAppHooks from '@/app/_module/app.hooks';
 import { IUser } from '@/app/_module/app.interface';
-import notificationUtil from '@/utils/notification.util';
 import { useAppStore } from '@/app/_module/app.store';
 
 export default function useStudentMutations() {
