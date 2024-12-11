@@ -51,7 +51,6 @@ export default function SecuritySection() {
       } else {
         setupBankDetailsMutation.mutate(values, {
           onSuccess: ((data) => {
-            console.log(data)
             setReferral(data.referralCode);
             setBankDetails(data.bankDetail);
             notificationUtil.success("Bank details setup successfully, your referral code is now available")
@@ -84,9 +83,9 @@ export default function SecuritySection() {
         </Fragment>}
         <form onSubmit={handleSubmit} className='grid grid-cols-2 gap-4'>
           <Select
-            defaultValue={values.bankCode}
+            defaultValue={values.bankName}
             onValueChange={(value) => {
-              const bank = banks.find(bank => bank.code === value);
+              const bank = banks.find(bank => bank.name === value);
               setFieldValue('bankCode', bank?.code);
               setFieldValue('bankName', bank?.name);
             }}>
@@ -95,7 +94,7 @@ export default function SecuritySection() {
             </SelectTrigger>
             <SelectContent>
               {banks.map((bank, index) =>
-                <SelectItem key={index} value={bank.code}>{bank.name}</SelectItem>)}
+                <SelectItem key={index} value={bank.name}>{bank.name}</SelectItem>)}
             </SelectContent>
           </Select>
           <Input type='text' placeholder='Bank Account Number' name='accountNumber' value={values.accountNumber} onChange={(e) => updateAccountNumber(e.target.value)} />

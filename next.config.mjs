@@ -14,6 +14,14 @@ const nextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      {
+        protocol: "https",
+        hostname: "autox-test.ams3.cdn.digitaloceanspaces.com",
+      },
+      {
+        protocol: "https",
+        hostname: "autox.ams3.cdn.digitaloceanspaces.com",
+      },
     ],
   },
 };

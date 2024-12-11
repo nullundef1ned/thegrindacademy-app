@@ -1,3 +1,5 @@
+import { IUserInfo } from "@/app/_module/app.interface";
+
 export interface IReferral {
   id: string;
   userId: string;
@@ -21,6 +23,10 @@ export interface IBankDetailForm {
   bankName: string;
   bankCode: string;
   accountNumber: string;
+}
+
+export interface IStudentAccountInformationForm {
+  info: Partial<IUserInfo>
 }
 
 export interface IBankDetailCreationResponse {

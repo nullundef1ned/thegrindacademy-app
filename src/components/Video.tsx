@@ -80,7 +80,7 @@ export default function Video({ src, poster }: IVideoProps) {
   }, [videoRef])
 
   return (
-    <div className="relative group w-full aspect-video rounded-lg overflow-hidden bg-white/30">
+    <div className="relative group w-full aspect-video rounded-lg overflow-hidden bg-black">
       <div className={clsx(
         isPlaying ? 'group-hover:!translate-y-0 translate-y-40' : 'translate-y-0',
         "absolute bottom-4 left-1/2 -translate-x-1/2 w-full px-8 z-20 transition-all duration-500 ease-linear")}>

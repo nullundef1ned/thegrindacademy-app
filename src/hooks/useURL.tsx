@@ -1,16 +1,17 @@
 import { NavigateOptions } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-type ParamPayload = {
+export interface IParamPayload {
   key: string;
   value: string | number | boolean;
 }
+
 export default function useURL() {
   const pathname = usePathname();
   const { replace } = useRouter();
   const searchParams = useSearchParams();
 
-  const updateParams = (payload: ParamPayload | ParamPayload[], path?: string, options?: NavigateOptions) => {
+  const updateParams = (payload: IParamPayload | IParamPayload[], path?: string, options?: NavigateOptions) => {
     const params = new URLSearchParams(searchParams)
     if (Array.isArray(payload)) {
       payload.forEach(({ key, value }) => {
@@ -31,7 +32,7 @@ export default function useURL() {
     replace(`${path ?? pathname}?${params.toString()}`, options);
   }
 
-  const replaceParams = (payload: ParamPayload | ParamPayload[], path?: string, options?: NavigateOptions) => {
+  const replaceParams = (payload: IParamPayload | IParamPayload[], path?: string, options?: NavigateOptions) => {
     const params = new URLSearchParams()
     if (Array.isArray(payload)) {
       payload.forEach(({ key, value }) => {
