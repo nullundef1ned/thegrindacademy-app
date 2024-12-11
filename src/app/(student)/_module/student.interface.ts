@@ -19,6 +19,29 @@ export interface IBankDetails {
   updatedAt: string;
 }
 
+export interface IStudentEnrolledCourse {
+  completionPercentage: string;
+  id: string;
+  userId: string;
+  courseId: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  course: ICourse;
+}
+
+export interface IDashboardData {
+  course: {
+    active: IStudentEnrolledCourse,
+    count: {
+      completed: number;
+      active: number;
+      enrolled: number;
+    }
+  }
+}
+
 export interface IBankDetailForm {
   bankName: string;
   bankCode: string;
@@ -84,6 +107,14 @@ export interface ICourseLesson {
   studyTime: number;
 }
 
+export interface ICourseMedia {
+  id: string;
+  courseId: string;
+  thumbnailUrl: string;
+  imageUrls: string[];
+  introVideoUrl: string;
+}
+
 export interface ICourse {
   id: string;
   name: string;
@@ -92,11 +123,14 @@ export interface ICourse {
   description: string;
   thumbnail: string;
   introVideo: string;
+  media: ICourseMedia;
   lessons: ICourseLesson[];
-}
-
-export interface IStudentActiveCourse extends ICourse {
-  progress: number;
+  slug: string;
+  telegramChannelId: string;
+  status: string;
+  isFeatured: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IPayout {
