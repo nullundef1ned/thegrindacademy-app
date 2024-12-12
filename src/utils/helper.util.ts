@@ -80,6 +80,7 @@ const capitalize = (text: string): string => {
 }
 
 const downloadFile = async (url: string, filename: string) => {
+  console.log(url)
   try {
     const response = await fetch(url);
     const blob = await response.blob();

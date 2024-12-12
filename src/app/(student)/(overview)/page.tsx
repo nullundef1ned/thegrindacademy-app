@@ -13,18 +13,21 @@ import { TableHeaderTypeEnum } from '@/components/table/table.enum';
 import { TableHeader, TableTab } from '@/components/table/table.interface';
 import BankDetailsCard from './_components/BankDetailsCard';
 import StudentQueries from '../_module/student.queries';
+import { useRouter } from 'next/navigation';
 
 export default function OverviewPage() {
-  const [activeTab, setActiveTab] = useState<string>('in-progress');
+  const [activeTab, setActiveTab] = useState<string>('pending');
 
   const { useFetchDashboardDataQuery, useFetchEnrolledCoursesQuery } = StudentQueries();
 
+  const router = useRouter();
   const { data } = useFetchDashboardDataQuery();
-  const { data: _activeCourses, isPending: activeCoursesPending } = useFetchEnrolledCoursesQuery({ status: 'in-progress', page: 1, limit: 5 });
+
+  const { data: _activeCourses, isPending: activeCoursesPending } = useFetchEnrolledCoursesQuery({ status: 'pending', page: 1, limit: 5 });
   const { data: _completedCourses, isPending: completedCoursesPending } = useFetchEnrolledCoursesQuery({ status: 'completed', page: 1, limit: 5 });
 
   const tabName = {
-    'in-progress': 'active',
+    'pending': 'active',
     'completed': 'completed',
   }[activeTab]
 
@@ -59,9 +62,17 @@ export default function OverviewPage() {
   ]
 
   const tabs: TableTab<IStudentEnrolledCourse>[] = [
-    { key: 'in-progress', name: 'Active', headers: tableHeaders, data: { result: activeCourses, currentPage: 1, totalPages: 1, totalCount: 0, previousPage: null, nextPage: null } },
-    { key: 'completed', name: 'Completed', headers: tableHeaders, data: { result: completedCourses, currentPage: 1, totalPages: 1, totalCount: 0, previousPage: null, nextPage: null } }
+    { key: 'pending', name: 'Active', headers: tableHeaders,
+      data: { result: activeCourses, currentPage: 1, totalPages: 1, totalCount: 0, previousPage: null, nextPage: null }
+    },
+    { key: 'completed', name: 'Completed', headers: tableHeaders,
+      data: { result: completedCourses, currentPage: 1, totalPages: 1, totalCount: 0, previousPage: null, nextPage: null }
+    }
   ]
+
+  const goToCourse = (course: IStudentEnrolledCourse) => {
+    router.push(`/courses/${course.course.slug}`);
+  }
 
   return (
     <div className='space-y-6 responsive-section'>
@@ -69,7 +80,7 @@ export default function OverviewPage() {
         {activeCourse &&
           <Card className='col-span-1 lg:col-span-5 grid grid-cols-6 gap-4'>
             <div className="relative overflow-hidden rounded-md w-full h-24 col-span-2">
-              <Image src={activeCourse.course.thumbnail} alt={activeCourse.course.name} fill className='absolute object-cover' />
+              <Image src={activeCourse.course.media.thumbnailUrl} alt={activeCourse.course.name} fill className='absolute object-cover' />
             </div>
             <div className='flex flex-col justify-around gap-2 col-span-4'>
               <p className='font-medium'>{activeCourse.course.name}</p>
@@ -78,7 +89,7 @@ export default function OverviewPage() {
                   <p className='text-xs text-accent'>{activeCourse.completionPercentage}% completed</p>
                   <Progress value={Number(activeCourse.completionPercentage)} />
                 </div>
-                <Button size="sm">Resume</Button>
+                <Button href={`/courses/${activeCourse.course.slug}`} size="sm">Resume</Button>
               </div>
             </div>
           </Card>
@@ -99,6 +110,7 @@ export default function OverviewPage() {
               searchable={false}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
+              onRowClick={goToCourse}
               emptyStateMessage={`No ${tabName} courses found`}
               loading={activeCoursesPending || completedCoursesPending}
             />

@@ -1,37 +1,31 @@
 'use client';
 
-import fakerUtil from "@/utils/faker.util";
-import CourseHeader from "./_components/CourseHeader";
+import CourseHeader from "../_components/CourseHeader";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import Card from "@/components/Card";
-// import { useState } from "react";
-import CourseLessonCard from "./_components/CourseLessonCard";
-import { ICourse, ICourseEnrollment } from "../../_module/student.interface";
+import CourseLessonCard from "../_components/CourseLessonCard";
 import Image from "next/image";
 import Link from "next/link";
-import CourseMaterial from "./_components/CourseMaterial";
-import CourseMainContent from "./_components/CourseMainContent";
+import CourseMaterial from "../_components/CourseMaterial";
+import CourseMainContent from "../_components/CourseMainContent";
 import useURL from "@/hooks/useURL";
-import { useState } from "react";
+import StudentQueries from "../../../_module/student.queries";
+import LoadingIcons from "react-loading-icons";
+import { Button } from "@/components/ui/button";
 
-export default function CoursePage() {
-  const [course, setCourse] = useState<ICourse>(fakerUtil.courses[0]);
-
+export default function CoursePage({ params }: { params: { slug: string } }) {
   const { clearParams } = useURL();
 
-  // const [enrollment, setEnrollment] = useState<ICourseEnrollment | null>(fakerUtil.enrollment);
+  const { useFetchEnrolledCourseDetailQuery } = StudentQueries();
 
-  const enrollment: ICourseEnrollment | null = fakerUtil.enrollment;
+  const { data, isPending, isError, refetch } = useFetchEnrolledCourseDetailQuery(params.slug);
+  
+  const course = data || null;
 
-
-  const watchIntroVideo = () => clearParams();
-
-  const toggleLessonCompletion = (lessonId: string) => {
-    const lessonIndex = course.lessons.findIndex(lesson => lesson.id === lessonId);
-    if (lessonIndex === -1) return;
-    const updatedLessons = [...course.lessons];
-    updatedLessons[lessonIndex] = { ...updatedLessons[lessonIndex], completed: !updatedLessons[lessonIndex].completed };
-    setCourse(prev => ({ ...prev, lessons: updatedLessons }));
+  if (isPending) {
+    return <div className="w-full h-[calc(100vh-140px)] grid place-items-center place-content-center px-4">
+      <LoadingIcons.TailSpin className="size-10" />
+    </div>
   }
 
   if (!course) {
@@ -40,16 +34,31 @@ export default function CoursePage() {
         <Image src="/images/course-empty-state.svg" alt="Course not found" width={200} height={200} />
         <div className="space-y-2 max-w-md w-full">
           <p className="text-base text-center">Course not found</p>
-          <p className="text-sm text-accent text-center">The course you are trying to access does not exist or may have been removed. Please return to your
+          <p className="text-sm text-accent text-center">The course you are trying to access either does not exist or may have been removed. Please return to your
             <Link href="/courses" className="text-primary-100 hover:underline"> courses </Link> or <Link href="/support" className="text-primary-100 hover:underline">contact support</Link> for further assistance</p>
         </div>
       </div>
     )
   }
 
+  if (isError) {
+    return <div className="w-full h-[calc(100vh-140px)] grid place-items-center place-content-center px-4 gap-4">
+      <Image src="/images/course-empty-state.svg" alt="Course not found" width={200} height={200} />
+      <div className="space-y-2 flex flex-col items-center max-w-md w-full">
+        <p className="text-base text-center">Something went wrong</p>
+        <p className="text-sm text-accent">Failed to fetch course details</p>
+        <Button size="sm" onClick={() => refetch()}>Try again</Button>
+      </div>
+    </div>
+  }
+
+  const lessons = course?.lessons || [];
+
+  const watchIntroVideo = () => clearParams();
+
   return (
     <div className="w-full space-y-6">
-      <CourseHeader course={course} enrollment={enrollment} />
+      <CourseHeader course={course} />
       <div className="grid grid-cols-6 gap-6">
         <div className="col-span-4">
           <CourseMainContent course={course} />
@@ -60,16 +69,16 @@ export default function CoursePage() {
               <AccordionItem value="overview">
                 <AccordionTrigger>Overview</AccordionTrigger>
                 <AccordionContent>
-                  <p className="text-sm text-accent">{course.description}</p>
+                  <p className="text-sm text-accent">{course.course.description}</p>
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="materials">
                 <AccordionTrigger>Materials</AccordionTrigger>
                 <AccordionContent className="space-y-2.5">
-                  {course.materials.map((material, index) => (
+                  {course.course.materials.map((material, index) => (
                     <CourseMaterial key={index} material={material} />
                   ))}
-                  {course.materials.length === 0 && (
+                  {course.course.materials.length === 0 && (
                     <p className="text-sm text-accent">No materials available for this course.</p>
                   )}
                 </AccordionContent>
@@ -82,8 +91,8 @@ export default function CoursePage() {
               </div>
               <hr className="border-b-[#B0CAFF1A]" />
               <div className="space-y-4">
-                {course.lessons.map((lesson, index) => (
-                  <CourseLessonCard key={index} index={index} lesson={lesson} toggleLessonCompletion={toggleLessonCompletion} courseEnrolled={!!enrollment} />
+                {lessons.map((lesson, index) => (
+                  <CourseLessonCard key={index} index={index} course={course} lesson={lesson} />
                 ))}
               </div>
             </Card>

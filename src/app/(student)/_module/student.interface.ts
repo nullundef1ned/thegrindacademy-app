@@ -1,4 +1,5 @@
 import { IUserInfo } from "@/app/_module/app.interface";
+import { LessonStatusType } from "@/app/_module/app.type";
 
 export interface IReferral {
   id: string;
@@ -20,7 +21,7 @@ export interface IBankDetails {
 }
 
 export interface IStudentEnrolledCourse {
-  completionPercentage: string;
+  completionPercentage: number;
   id: string;
   userId: string;
   courseId: string;
@@ -29,6 +30,25 @@ export interface IStudentEnrolledCourse {
   updatedAt: string;
   deletedAt: string | null;
   course: ICourse;
+}
+
+export interface IStudentEnrolledCourseDetail extends IStudentEnrolledCourse {
+  lessons: IEnrolledCourseLesson[];
+}
+
+export interface ICompletionCertificate {
+  id: string;
+  userId: string;
+  courseId: string;
+  certificateUrl: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
+
+export interface IStudentEnrolledCourseDetail extends IStudentEnrolledCourse {
+  lessons: IEnrolledCourseLesson[];
+  course: ICourseDetail;
 }
 
 export interface IDashboardData {
@@ -80,31 +100,37 @@ export interface IReferralStatistics {
 
 export interface ICourseMaterial {
   id: string;
-  name: string;
-  link: string;
-  type: 'video' | 'document' | 'image';
-}
-
-export type ICourseLessonContent = {
-  video: string;
-  html?: string;
-} | {
-  video?: string;
-  html: string;
-};
-
-export interface ICourseEnrollment {
-  lessonsCompleted: number;
-  isCompleted: boolean;
-  certificateLink?: string;
+  courseId: string;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ICourseLesson {
   id: string;
-  name: string;
-  content: ICourseLessonContent;
-  completed: boolean;
-  studyTime: number;
+  content: string | null;
+  courseId: string;
+  position: number;
+  title: string;
+  slug: string;
+  studyTimeInMinutes: number;
+  description: string | null;
+  videoUrl: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IEnrolledCourseLesson {
+  id: string;
+  userCourseId: string;
+  position: number;
+  lessonId: string;
+  status: LessonStatusType;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  lesson: ICourseLesson;
 }
 
 export interface ICourseMedia {
@@ -119,18 +145,19 @@ export interface ICourse {
   id: string;
   name: string;
   shortDescription: string;
-  materials: ICourseMaterial[];
   description: string;
-  thumbnail: string;
-  introVideo: string;
   media: ICourseMedia;
-  lessons: ICourseLesson[];
   slug: string;
   telegramChannelId: string;
   status: string;
   isFeatured: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface ICourseDetail extends ICourse {
+  lessons: ICourseLesson[];
+  materials: ICourseMaterial[];
 }
 
 export interface IPayout {

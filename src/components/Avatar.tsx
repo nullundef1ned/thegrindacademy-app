@@ -15,6 +15,8 @@ export default function Avatar({ src, alt, size = 40, type = 'rounded' }: Avatar
   const isRounded = type == 'rounded';
   const displayedValue = alt.split(' ').map(word => word.charAt(0)).join('').toUpperCase();
 
+  if (!src && !displayedValue) return null;
+
   return (
     <div style={{ width: size, height: size }}
       className={clsx(isRounded && 'rounded-full', src && 'border-2 bg-gray-50 border-gray-50', 'flex-shrink-0 overflow-hidden relative')}>

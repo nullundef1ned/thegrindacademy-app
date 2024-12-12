@@ -7,10 +7,10 @@ body {
 }
 
 input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 1000px #0B152F inset;
-  box-shadow: 0 0 0 1000px #0B152F inset;
-  -webkit-text-fill-color: #FFFFFF;
-  caret-color: #FFFFFF;
+  -webkit-box-shadow: 0 0 0 1000px #0b152f inset;
+  box-shadow: 0 0 0 1000px #0b152f inset;
+  -webkit-text-fill-color: #ffffff;
+  caret-color: #ffffff;
   outline: none;
 }
 
@@ -61,6 +61,10 @@ input:-webkit-autofill {
 
   .radial-gradient {
     @apply bg-[radial-gradient(circle_at_center, _var(--tw-gradient-stops))];
+  }
+
+  .pagination-button {
+    @apply border rounded-md p-2 size-10 grid place-items-center cursor-pointer hover:bg-primary hover:border-primary aria-disabled:opacity-50 aria-disabled:cursor-not-allowed aria-disabled:hover:bg-gray-800 aria-disabled:hover:border-gray-800;
   }
 }
 

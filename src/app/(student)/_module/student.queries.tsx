@@ -1,6 +1,6 @@
 import { useAppStore } from '@/app/_module/app.store';
-import { useQuery } from '@tanstack/react-query';
-import { IBankDetails, IDashboardData, IReferral, IStudentEnrolledCourse } from './student.interface';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { IBankDetails, IDashboardData, IReferral, IStudentEnrolledCourse, ICourse, IStudentEnrolledCourseDetail, ICourseDetail } from './student.interface';
 import useStudentHooks from './student.hooks';
 import useAxios from '@/hooks/useAxios';
 import { IPagination, ICoursePaginationParams } from '@/app/_module/app.interface';
@@ -30,6 +30,39 @@ export default function StudentQueries() {
       const enrolledCourses = response.data;
       return enrolledCourses;
     },
+    placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+  })
+
+  const useFetchEnrolledCourseDetailQuery = (courseSlug: string) => useQuery({
+    queryKey: [user?.id, 'enrolled-course', courseSlug],
+    queryFn: async (): Promise<IStudentEnrolledCourseDetail> => {
+      const response = await axiosHandler.get(`/student/course/mine/${courseSlug}`)
+      return response.data;
+    },
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+  })
+
+  const useFetchCoursesQuery = (params?: ICoursePaginationParams) => useQuery({
+    queryKey: [user?.id, 'courses', params?.status, params],
+    queryFn: async (): Promise<IPagination<ICourse>> => {
+      const response = await axiosHandler.get(`/student/course/browse`, { params })
+      const enrolledCourses = response.data;
+      return enrolledCourses;
+    },
+    placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+  })
+
+  const useFetchCourseDetailQuery = (courseSlug: string) => useQuery({
+    queryKey: [user?.id, 'course', courseSlug],
+    queryFn: async (): Promise<ICourseDetail> => {
+      const response = await axiosHandler.get(`/student/course/browse/${courseSlug}`)
+      return response.data;
+    },
     refetchOnWindowFocus: false,
     refetchInterval: false,
   })
@@ -48,5 +81,10 @@ export default function StudentQueries() {
     refetchInterval: false,
   })
 
-  return { useFetchReferralQuery, useFetchBankDetailsQuery, useFetchDashboardDataQuery, useFetchEnrolledCoursesQuery }
+
+  return {
+    useFetchReferralQuery, useFetchBankDetailsQuery, useFetchDashboardDataQuery,
+    useFetchEnrolledCoursesQuery, useFetchEnrolledCourseDetailQuery,
+    useFetchCoursesQuery, useFetchCourseDetailQuery,
+  }
 }
