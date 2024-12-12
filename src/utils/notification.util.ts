@@ -5,6 +5,7 @@ const info = (message: string, options?: ToastOptions): void => {
 }
 
 const success = (message: string, options?: ToastOptions): void => {
+
   toast.success(message, options);
 }
 
@@ -15,11 +16,7 @@ const error = (message: string, options?: ToastOptions): void => {
 const warning = (message: string, options?: ToastOptions): void => {
   toast.warning(message, options);
 }
-const playNotificationSound = () => {
-  const sound = new Audio("/sounds/notification.mp3")
-  sound.play()
-}
 
-const notificationUtil = { info, success, error, warning, playNotificationSound }
+const notificationUtil = { info, success, error, warning }
 
 export default notificationUtil;

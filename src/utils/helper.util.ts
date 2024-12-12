@@ -1,6 +1,7 @@
 import { twMerge } from "tailwind-merge";
 import { type ClassValue, clsx } from "clsx";
 import { formatPhoneNumberIntl, isValidPhoneNumber } from "react-phone-number-input"
+import notificationUtil from "./notification.util";
 
 const formatPhoneNumber = (phoneNumber: string): string => {
   if (!isValidPhoneNumber(phoneNumber)) {
@@ -26,6 +27,16 @@ const formatTime = (date: string): string => {
     minute: '2-digit',
     hour12: true
   }).format(dateTime);
+}
+
+const convertToNumber = (value: string | number): number => {
+  return typeof value == 'string' ? parseFloat(value) : value;
+}
+
+const convertTimeToMinutesAndSeconds = (time: number): string => {
+  const minutes = Math.floor(time / 60) || 0;
+  const seconds = Math.floor(time % 60) || 0;
+  return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
 const getTimeDelta = (date: string) => {
@@ -68,19 +79,28 @@ const capitalize = (text: string): string => {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-const downloadFile = (url: string, filename: string) => {
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+const downloadFile = async (url: string, filename: string) => {
+  console.log(url)
+  try {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    const anchor = document.createElement('a');
+    const link = URL.createObjectURL(blob);
+    anchor.href = link;
+    anchor.download = filename;
+    anchor.click();
+    URL.revokeObjectURL(link);
+    anchor.remove();
+  } catch (error) {
+    notificationUtil.error('Failed to download file');
+    throw error;
+  }
 }
 
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs))
 }
 
-const helperUtil = { formatPhoneNumber, getTimeDelta, formatDate, formatTime, capitalize, downloadFile }
+const helperUtil = { formatPhoneNumber, getTimeDelta, formatDate, formatTime, convertTimeToMinutesAndSeconds, convertToNumber, capitalize, downloadFile }
 
 export default helperUtil
