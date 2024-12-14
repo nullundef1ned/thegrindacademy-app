@@ -64,8 +64,15 @@ export default function useStudentMutations() {
     },
   })
 
+  const cancelSubscriptionMutation = useMutation({
+    mutationFn: async () => {
+      const response = await axiosHandler.patch('/student/subscription/cancel')
+      return response.data
+    },
+  })
+
   return {
     setupBankDetailsMutation, updateBankDetailsMutation, resolveAccountNumberMutation, updateStudentAccountInformationMutation,
-    updateLessonStatusMutation, enrollCourseMutation, downloadCertificateMutation
+    updateLessonStatusMutation, enrollCourseMutation, downloadCertificateMutation, cancelSubscriptionMutation
   }
 }

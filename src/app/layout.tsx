@@ -18,6 +18,17 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+const gisha = localFont({
+  src: "./fonts/Gisha.ttf",
+  variable: "--font-gisha",
+  weight: "100 900",
+});
+const gishaBold = localFont({
+  src: "./fonts/GishaBold.ttf",
+  variable: "--font-gisha-bold",
+  weight: "100 900",
+});
+
 export const metadata: Metadata = {
   title: "The Grind Academy",
   description: "The Grind Academy",
@@ -31,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${gisha.variable} ${gishaBold.variable} antialiased`}
       >
         <Provider>
           {children}

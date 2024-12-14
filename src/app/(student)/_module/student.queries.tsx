@@ -3,7 +3,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { IBankDetails, IDashboardData, IReferral, IStudentEnrolledCourse, ICourse, IStudentEnrolledCourseDetail, ICourseDetail } from './student.interface';
 import useStudentHooks from './student.hooks';
 import useAxios from '@/hooks/useAxios';
-import { IPagination, ICoursePaginationParams } from '@/app/_module/app.interface';
+import { IPagination, ICoursePaginationParams, IUser } from '@/app/_module/app.interface';
 
 export default function StudentQueries() {
   const user = useAppStore((state) => state.user);
@@ -81,10 +81,30 @@ export default function StudentQueries() {
     refetchInterval: false,
   })
 
+  const useFetchAuthenticationQuery = () => useQuery({
+    queryKey: [user?.id, 'authentication'],
+    queryFn: async (): Promise<IUser> => {
+      const response = await axiosHandler.get('/student/auth')
+      return response.data;
+    },
+    refetchOnMount: true,
+    refetchInterval: 1000 * 60 * 10,
+  })
+
+  const useFetchSubscriptionQuery = () => useQuery({
+    queryKey: [user?.id, 'subscription'],
+    queryFn: async (): Promise<any> => {
+      const response = await axiosHandler.get('/student/subscription')
+      return response.data;
+    },
+    refetchInterval: 1000 * 60 * 10,
+  })
 
   return {
     useFetchReferralQuery, useFetchBankDetailsQuery, useFetchDashboardDataQuery,
     useFetchEnrolledCoursesQuery, useFetchEnrolledCourseDetailQuery,
     useFetchCoursesQuery, useFetchCourseDetailQuery,
+    useFetchAuthenticationQuery,
+    useFetchSubscriptionQuery,
   }
 }

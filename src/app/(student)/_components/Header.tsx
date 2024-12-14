@@ -8,6 +8,8 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { appRoutes } from '@/app/_module/app.routes';
 import { useMemo } from 'react';
+import { URLKeyEnum } from '@/app/_module/app.enum';
+import useURL from '@/hooks/useURL';
 
 interface HeaderProps {
   routes: { name: string, href: string }[]
@@ -15,10 +17,9 @@ interface HeaderProps {
 
 export default function Header({ routes }: HeaderProps) {
   const user = useAppStore((state) => state.user);
-  const logout = useAppStore((state) => state.logout);
 
   const pathname = usePathname();
-  const router = useRouter();
+  const { updateParams } = useURL();
   const rootPath = `/${pathname.split('/')[1]}`
 
   const greeting = useMemo(() => {
@@ -30,8 +31,7 @@ export default function Header({ routes }: HeaderProps) {
   }, []);
 
   const handleLogout = () => {
-    router.push('/login');
-    logout();
+    updateParams({ key: URLKeyEnum.LOGOUT, value: 'true' }, '/login');
   }
 
   return (
@@ -43,7 +43,7 @@ export default function Header({ routes }: HeaderProps) {
             <div className='flex flex-col'>
               <p className='font-semibold'>Good {greeting} {user?.info.firstName}</p>
               <div className="flex space-x-2">
-                <Link href={appRoutes.profile} className='text-sm hover:text-primary-100'>View Profile</Link>
+                {/* <Link href={appRoutes.profile} className='text-sm hover:text-primary-100'>View Profile</Link> */}
                 <p className='text-sm text-accent hover:text-primary-100 cursor-pointer' onClick={handleLogout}>Logout</p>
               </div>
             </div>

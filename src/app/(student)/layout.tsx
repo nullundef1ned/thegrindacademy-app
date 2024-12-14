@@ -5,16 +5,37 @@ import Header from './_components/Header';
 import { studentRoutes } from './_module/student.routes';
 import { useStudentStore } from './_module/student.store';
 import Banner from './(overview)/_components/Banner';
+import StudentQueries from './_module/student.queries';
+import Image from 'next/image';
+import BrandBars from '@/components/BrandBars';
+import { clsx } from 'clsx';
+import { appRoutes } from '../_module/app.routes';
 
 function StudentLayout({ children }: { children: React.ReactNode }) {
   const banners = useStudentStore((state) => state.banners);
+
+  const { useFetchSubscriptionQuery, useFetchAuthenticationQuery } = StudentQueries();
+  // const { data: subscription } = useFetchSubscriptionQuery();
+  const { data: authentication, isPending } = useFetchAuthenticationQuery();
 
   const routes = [
     { name: 'Overview', href: studentRoutes.overview },
     { name: 'Courses', href: studentRoutes.courses },
     { name: 'Referrals', href: studentRoutes.referrals },
+    { name: 'Profile', href: appRoutes.profile },
     { name: 'Support', href: studentRoutes.support },
   ]
+
+  if (isPending) {
+    return (
+      <div className='relative w-screen min-h-screen grid place-items-center'>
+        <div className='flex flex-col items-center gap-4'>
+          <Image src='/logos/logo.svg' alt='The Grind Academy Logo' width={240} height={60} className={clsx('transition-opacity duration-700')} />
+          <BrandBars containerClassName={clsx('w-52 animate-pulse')} barClassName="!h-12" />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className='relative w-screen min-h-screen space-y-6'>

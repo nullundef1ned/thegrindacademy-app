@@ -6,14 +6,18 @@ import notificationUtil from "@/utils/notification.util";
 import { useAppStore } from "@/app/_module/app.store";
 import { IAuthResponse } from "@/app/_module/app.interface";
 import useStudentHooks from "@/app/(student)/_module/student.hooks";
+import useURL from "@/hooks/useURL";
+import { URLKeyEnum } from "@/app/_module/app.enum";
 
 export default function useAuthMutations() {
-
   const router = useRouter()
   const axiosHandler = useAxios();
+  const { searchParams } = useURL();
   const initialize = useAppStore(state => state.initialize);
 
   const { fetchReferral, fetchBankDetails } = useStudentHooks();
+
+  const redirect = searchParams.get(URLKeyEnum.REDIRECT);
 
   const setupStudentAccount = (payload: IAuthResponse) => {
     initialize(payload);
@@ -29,7 +33,8 @@ export default function useAuthMutations() {
     onSuccess: (data: IAuthResponse) => {
       setupStudentAccount(data);
       notificationUtil.success("Welcome back!")
-      router.push('/')
+
+      router.push(redirect ?? '/')
     }
   })
 
@@ -45,7 +50,7 @@ export default function useAuthMutations() {
     onSuccess: (data: IAuthResponse) => {
       setupStudentAccount(data)
       notificationUtil.success("Success! Your account has been setup.")
-      router.push('/')
+      router.push(redirect ?? '/')
     }
   })
 
@@ -68,7 +73,7 @@ export default function useAuthMutations() {
     },
     onSuccess: () => {
       notificationUtil.success("Success! Your password has been reset.")
-      router.push('/login');
+      router.push(redirect ?? '/login');
     }
   })
 
