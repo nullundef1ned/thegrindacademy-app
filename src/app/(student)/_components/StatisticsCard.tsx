@@ -5,6 +5,7 @@ import Card from '@/components/Card'
 import IconifyIcon from '@/components/IconifyIcon';
 import useCurrency from '@/hooks/useCurrency';
 import helperUtil from '@/utils/helper.util';
+import Skeleton from 'react-loading-skeleton';
 
 export type StatisticsCardType = 'number' | 'percentage' | 'currency';
 
@@ -12,11 +13,12 @@ export interface StatisticsCardProps {
   title: string;
   value: number;
   icon: string;
+  loading?: boolean;
   className?: string;
   type?: StatisticsCardType;
 }
 
-export default function StatisticsCard({ title, value, icon, type = 'number', className }: StatisticsCardProps) {
+export default function StatisticsCard({ title, value, icon, type = 'number', loading, className }: StatisticsCardProps) {
 
   const { formatCurrency } = useCurrency()
 
@@ -32,7 +34,10 @@ export default function StatisticsCard({ title, value, icon, type = 'number', cl
         <p className='text-accent text-sm'>{title}</p>
         <IconifyIcon icon={icon} className='text-primary-100' size={16} />
       </div>
-      <p className='text-primary-50 text-2xl font-bold'>{valueFormatted}</p>
+      {loading ?
+        <Skeleton height={28} width={80} baseColor="#12182B" highlightColor="#0C1227" /> :
+        <p className='text-primary-50 text-2xl font-bold'>{valueFormatted}</p>
+      }
     </Card>
   )
 }

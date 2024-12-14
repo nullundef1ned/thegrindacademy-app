@@ -21,7 +21,7 @@ export default function OverviewPage() {
   const { useFetchDashboardDataQuery, useFetchEnrolledCoursesQuery } = StudentQueries();
 
   const router = useRouter();
-  const { data } = useFetchDashboardDataQuery();
+  const { data, isPending } = useFetchDashboardDataQuery();
 
   const { data: _activeCourses, isPending: activeCoursesPending } = useFetchEnrolledCoursesQuery({ status: 'pending', page: 1, limit: 5 });
   const { data: _completedCourses, isPending: completedCoursesPending } = useFetchEnrolledCoursesQuery({ status: 'completed', page: 1, limit: 5 });
@@ -62,10 +62,12 @@ export default function OverviewPage() {
   ]
 
   const tabs: TableTab<IStudentEnrolledCourse>[] = [
-    { key: 'pending', name: 'Active', headers: tableHeaders,
+    {
+      key: 'pending', name: 'Active', headers: tableHeaders,
       data: { result: activeCourses, currentPage: 1, totalPages: 1, totalCount: 0, previousPage: null, nextPage: null }
     },
-    { key: 'completed', name: 'Completed', headers: tableHeaders,
+    {
+      key: 'completed', name: 'Completed', headers: tableHeaders,
       data: { result: completedCourses, currentPage: 1, totalPages: 1, totalCount: 0, previousPage: null, nextPage: null }
     }
   ]
@@ -95,7 +97,14 @@ export default function OverviewPage() {
           </Card>
         }
         {overviewStatistics.map((item) => (
-          <StatisticsCard className='col-span-1 lg:col-span-2 h-full' key={item.title} title={item.title} value={item.value} icon={item.icon} />
+          <StatisticsCard
+            className='col-span-1 lg:col-span-2 h-full'
+            loading={isPending}
+            key={item.title}
+            title={item.title}
+            value={item.value}
+            icon={item.icon}
+          />
         ))}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
@@ -118,7 +127,6 @@ export default function OverviewPage() {
         </div>
         <div className='col-span-1 lg:col-span-2 space-y-4'>
           <p className='text-accent font-medium'>Quick Links</p>
-          <ReferralCodeCard />
           <BankDetailsCard />
         </div>
       </div>

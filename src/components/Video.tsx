@@ -83,7 +83,7 @@ export default function Video({ src, poster }: IVideoProps) {
     <div className="relative group w-full aspect-video rounded-lg overflow-hidden bg-black">
       <div className={clsx(
         isPlaying ? 'group-hover:!translate-y-0 translate-y-40' : 'translate-y-0',
-        "absolute bottom-4 left-1/2 -translate-x-1/2 w-full px-8 z-20 transition-all duration-500 ease-linear")}>
+        "absolute bottom-4 left-1/2 -translate-x-1/2 w-full px-8 z-10 transition-all duration-500 ease-linear")}>
         <div className={'bg-[#07090F] rounded-full flex items-center gap-4 justify-between w-full p-3'}>
           <div className="flex items-center gap-4 w-full">
             <div
@@ -114,9 +114,9 @@ export default function Video({ src, poster }: IVideoProps) {
         className="absolute inset-0 grid place-items-center z-10 w-full h-full group-hover:bg-[#07090F]/30 transition-all ease-linear">
         <div
           onClick={togglePlay}
-          className='rounded-full flex-shrink-0 bg-white size-20 z-20 grid place-items-center cursor-pointer opacity-0 group-hover:opacity-100 transition-all ease-linear'
+          className='rounded-full flex-shrink-0 bg-white size-16 z-20 grid place-items-center cursor-pointer opacity-0 group-hover:opacity-100 transition-all ease-linear'
         >
-          <IconifyIcon icon={isPlaying ? 'ri:pause-mini-fill' : 'ri:play-mini-fill'} className="size-10 text-[#07090F]" size={40} />
+          <IconifyIcon icon={isPlaying ? 'ri:pause-mini-fill' : 'ri:play-mini-fill'} className="size-8 text-[#07090F]" size={32} />
         </div>
 
       </div>

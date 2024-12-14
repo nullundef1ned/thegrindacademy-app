@@ -28,7 +28,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "autox.ams3.cdn.digitaloceanspaces.com",
+        hostname: "thegrindacademy.ams3.cdn.digitaloceanspaces.com",
       },
     ],
   },

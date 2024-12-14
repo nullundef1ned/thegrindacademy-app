@@ -3,11 +3,15 @@
 import Card from '@/components/Card'
 import IconifyIcon from '@/components/IconifyIcon'
 import notificationUtil from '@/utils/notification.util';
-import React from 'react'
 import { useStudentStore } from '../../_module/student.store';
+import StudentQueries from '../../_module/student.queries';
+import Skeleton from 'react-loading-skeleton';
 
 export default function ReferralCodeCard() {
   const referralCode = useStudentStore((state) => state.referral?.code);
+
+  const { useFetchReferralQuery } = StudentQueries();
+  const { isPending } = useFetchReferralQuery();
 
   const handleCopyReferralCode = () => {
     if (referralCode) {
@@ -15,6 +19,13 @@ export default function ReferralCodeCard() {
       notificationUtil.success('Referral code copied to clipboard');
     }
   }
+
+  if (isPending) return (
+    <Card>
+      <Skeleton height={36} width={120} baseColor="#12182B" highlightColor="#0C1227" />
+      <Skeleton height={48} baseColor="#12182B" highlightColor="#0C1227" />
+    </Card>
+  )
 
   if (!referralCode) return null;
 
