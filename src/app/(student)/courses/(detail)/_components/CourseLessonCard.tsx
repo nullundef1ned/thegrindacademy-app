@@ -1,4 +1,4 @@
-import { ICourseLesson, IEnrolledCourseLesson, IStudentEnrolledCourseDetail } from '@/app/(student)/_module/student.interface';
+import { ICourseLesson, IEnrolledCourseLesson, IEnrolledCourseDetail } from '@/app/(student)/_module/_interfaces/course.interface';
 import useStudentMutations from '@/app/(student)/_module/student.mutations';
 import { useAppStore } from '@/app/_module/app.store';
 import IconifyIcon from '@/components/IconifyIcon';
@@ -11,7 +11,7 @@ import LoadingIcons from 'react-loading-icons';
 
 interface CourseLessonCardProps {
   index: number;
-  course?: IStudentEnrolledCourseDetail;
+  course?: IEnrolledCourseDetail;
   lesson: ICourseLesson | IEnrolledCourseLesson;
   isPreview?: boolean;
 }

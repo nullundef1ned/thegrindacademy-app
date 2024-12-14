@@ -1,10 +1,10 @@
-import { ICourseDetail, ICourseLesson, IEnrolledCourseLesson, IStudentEnrolledCourseDetail } from "@/app/(student)/_module/student.interface";
+import { ICourseDetail, ICourseLesson, IEnrolledCourseDetail, IEnrolledCourseLesson } from "@/app/(student)/_module/_interfaces/course.interface";
 import Video from "@/components/Video";
 import useURL from "@/hooks/useURL";
 import CourseLessonContent from "./CourseLessonContent";
 
 interface ICourseMainContentProps {
-  course: ICourseDetail | IStudentEnrolledCourseDetail;
+  course: ICourseDetail | IEnrolledCourseDetail;
   isPreview?: boolean;
 }
 
@@ -12,7 +12,7 @@ export default function CourseMainContent({ course, isPreview }: ICourseMainCont
   const { searchParams } = useURL();
   const lessonId = searchParams.get('lessonId');
 
-  const media = isPreview ? (course as ICourseDetail).media : (course as IStudentEnrolledCourseDetail).course.media;
+  const media = isPreview ? (course as ICourseDetail).media : (course as IEnrolledCourseDetail).course.media;
 
   if (!lessonId) {
     return (

@@ -1,4 +1,5 @@
-import { ICourseDetail, IStudentEnrolledCourseDetail, IEnrolledCourseLesson, ICompletionCertificate } from '@/app/(student)/_module/student.interface';
+import { ICompletionCertificate, ICourseDetail, IEnrolledCourseLesson } from '@/app/(student)/_module/_interfaces/course.interface';
+import { IEnrolledCourseDetail } from '@/app/(student)/_module/_interfaces/course.interface';
 import useStudentMutations from '@/app/(student)/_module/student.mutations';
 import { useAppStore } from '@/app/_module/app.store';
 import BrandBars from '@/components/BrandBars';
@@ -15,7 +16,7 @@ import LoadingIcons from 'react-loading-icons';
 
 
 interface ICourseHeaderProps {
-  course: ICourseDetail | IStudentEnrolledCourseDetail;
+  course: ICourseDetail | IEnrolledCourseDetail;
   isPreview?: boolean;
 }
 
@@ -25,9 +26,9 @@ export default function CourseHeader({ course, isPreview }: ICourseHeaderProps) 
   const router = useRouter();
   const { downloadCertificateMutation, enrollCourseMutation } = useStudentMutations();
 
-  const name = isPreview ? (course as ICourseDetail).name : (course as IStudentEnrolledCourseDetail).course.name;
+  const name = isPreview ? (course as ICourseDetail).name : (course as IEnrolledCourseDetail).course.name;
 
-  const completedLessons = (course as IStudentEnrolledCourseDetail).lessons.filter((lesson: IEnrolledCourseLesson) => lesson.status === 'completed').length;
+  const completedLessons = (course as IEnrolledCourseDetail).lessons.filter((lesson: IEnrolledCourseLesson) => lesson.status === 'completed').length;
 
   const progress = Math.round((completedLessons / course.lessons.length) * 100);
   const isCompleted = completedLessons === course.lessons.length;

@@ -1,10 +1,11 @@
 import useAxios from '@/hooks/useAxios';
-import { IBankDetailCreationResponse, IBankDetailForm, ICompletionCertificate, IStudentAccountInformationForm } from './student.interface';
+import { IBankDetailCreationResponse, IBankDetailForm, IStudentAccountInformationForm } from './student.interface';
 import { useMutation } from '@tanstack/react-query';
 import useAppHooks from '@/app/_module/app.hooks';
 import { IUser } from '@/app/_module/app.interface';
 import { useAppStore } from '@/app/_module/app.store';
 import { EnrolledCourseStatusType } from '@/app/_module/app.type';
+import { ICompletionCertificate } from './_interfaces/course.interface';
 
 export default function useStudentMutations() {
   const axiosHandler = useAxios();

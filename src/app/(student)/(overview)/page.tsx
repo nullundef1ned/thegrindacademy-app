@@ -6,7 +6,7 @@ import Card from '@/components/Card'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { Progress } from '@/components/ui/progress'
-import { IStudentEnrolledCourse } from '../_module/student.interface';
+import { IEnrolledCourse } from '../_module/student.interface';
 import Table from '@/components/table';
 import { TableHeaderTypeEnum } from '@/components/table/table.enum';
 import { TableHeader, TableTab } from '@/components/table/table.interface';
@@ -52,15 +52,15 @@ export default function OverviewPage() {
     }
   ]
 
-  const activeCourse: IStudentEnrolledCourse | null = dashboardData?.course?.active || null;
+  const activeCourse: IEnrolledCourse | null = dashboardData?.course?.active || null;
 
-  const tableHeaders: TableHeader<IStudentEnrolledCourse>[] = [
+  const tableHeaders: TableHeader<IEnrolledCourse>[] = [
     // @ts-expect-error this is a nested object
     { key: 'course.name', value: 'Course Name' },
     { key: 'completionPercentage', value: 'Progress', type: TableHeaderTypeEnum.PROGRESS },
   ]
 
-  const tabs: TableTab<IStudentEnrolledCourse>[] = [
+  const tabs: TableTab<IEnrolledCourse>[] = [
     {
       key: 'pending', name: 'Active', headers: tableHeaders,
       data: { result: activeCourses, currentPage: 1, totalPages: 1, totalCount: 0, previousPage: null, nextPage: null }
@@ -71,7 +71,7 @@ export default function OverviewPage() {
     }
   ]
 
-  const goToCourse = (course: IStudentEnrolledCourse) => {
+  const goToCourse = (course: IEnrolledCourse) => {
     router.push(`/courses/${course.course.slug}`);
   }
 
@@ -110,7 +110,7 @@ export default function OverviewPage() {
         <div className='col-span-1 lg:col-span-3 space-y-4'>
           <p className='text-accent font-medium'>Continue Learning</p>
           <Card className=''>
-            <Table<IStudentEnrolledCourse>
+            <Table<IEnrolledCourse>
               hideFooter
               hideLimit
               tabs={tabs}

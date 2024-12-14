@@ -1,6 +1,6 @@
 import { useAppStore } from '@/app/_module/app.store';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { IBankDetails, IDashboardData, IReferral, IStudentEnrolledCourse, ICourse, IStudentEnrolledCourseDetail, ICourseDetail } from './student.interface';
+import { IBankDetails, IDashboardData, IReferral, IEnrolledCourse, ICourse, IEnrolledCourseDetail, ICourseDetail } from './student.interface';
 import useStudentHooks from './student.hooks';
 import useAxios from '@/hooks/useAxios';
 import { IPagination, ICoursePaginationParams, IUser } from '@/app/_module/app.interface';
@@ -25,7 +25,7 @@ export default function StudentQueries() {
 
   const useFetchEnrolledCoursesQuery = (params: ICoursePaginationParams) => useQuery({
     queryKey: [user?.id, 'enrolled-courses', params.status, params],
-    queryFn: async (): Promise<IPagination<IStudentEnrolledCourse>> => {
+    queryFn: async (): Promise<IPagination<IEnrolledCourse>> => {
       const response = await axiosHandler.get(`/student/course/mine`, { params })
       const enrolledCourses = response.data;
       return enrolledCourses;
@@ -37,7 +37,7 @@ export default function StudentQueries() {
 
   const useFetchEnrolledCourseDetailQuery = (courseSlug: string) => useQuery({
     queryKey: [user?.id, 'enrolled-course', courseSlug],
-    queryFn: async (): Promise<IStudentEnrolledCourseDetail> => {
+    queryFn: async (): Promise<IEnrolledCourseDetail> => {
       const response = await axiosHandler.get(`/student/course/mine/${courseSlug}`)
       return response.data;
     },

@@ -1,4 +1,4 @@
-import { ICourseMaterial } from "@/app/(student)/_module/student.interface";
+import { ICourseMaterial } from "@/app/(student)/_module/_interfaces/course.interface";
 import IconifyIcon from "@/components/IconifyIcon";
 import helperUtil from "@/utils/helper.util";
 import notificationUtil from "@/utils/notification.util";
