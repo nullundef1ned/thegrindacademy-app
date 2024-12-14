@@ -1,6 +1,6 @@
-import useStudentMutations from '@/app/(student)/_module/student.mutations';
 import { useFetchUser } from '@/app/_module/_apis/useFetchUser';
 import { IAccountInformationForm } from '@/app/_module/app.interface';
+import useAdminMutations from '@/app/i/_module/admin.mutations';
 import Modal from '@/components/Modal'
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input'
@@ -13,7 +13,7 @@ export default function AccountInformationModal() {
   const { data: user } = useFetchUser();
 
   const { hideModal } = useModal();
-  const { updateStudentAccountInformationMutation } = useStudentMutations();
+  const { updateAdminAccountInformationMutation } = useAdminMutations();
 
   const { values, handleSubmit, setFieldValue } = useFormik<IAccountInformationForm>({
     initialValues: {
@@ -26,7 +26,7 @@ export default function AccountInformationModal() {
       }
     },
     onSubmit: (values) => {
-      updateStudentAccountInformationMutation.mutate(values, {
+      updateAdminAccountInformationMutation.mutate(values, {
         onSuccess: () => {
           hideModal()
           notificationUtil.success('Account information updated successfully')
@@ -35,7 +35,7 @@ export default function AccountInformationModal() {
     }
   })
 
-  const isPending = updateStudentAccountInformationMutation.isPending;
+  const isPending = updateAdminAccountInformationMutation.isPending;
 
   return (
     <Modal title='Update Account Information'>

@@ -1,5 +1,5 @@
 import React from 'react'
-import ProfileSection from './ProfileSection';
+import ProfileSection from '../../../../components/ProfileSection';
 import IconifyIcon from '@/components/IconifyIcon';
 import { useStudentStore } from '../../_module/student.store';
 import helperUtil from '@/utils/helper.util';

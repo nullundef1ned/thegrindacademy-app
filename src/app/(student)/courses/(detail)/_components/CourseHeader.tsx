@@ -1,7 +1,7 @@
 import { ICompletionCertificate, ICourseDetail, IEnrolledCourseLesson } from '@/app/(student)/_module/_interfaces/course.interface';
 import { IEnrolledCourseDetail } from '@/app/(student)/_module/_interfaces/course.interface';
 import useStudentMutations from '@/app/(student)/_module/student.mutations';
-import { useAppStore } from '@/app/_module/app.store';
+import { useFetchUser } from '@/app/_module/_apis/useFetchUser';
 import BrandBars from '@/components/BrandBars';
 import IconifyIcon from '@/components/IconifyIcon'
 import { Button } from '@/components/ui/button'
@@ -21,8 +21,7 @@ interface ICourseHeaderProps {
 }
 
 export default function CourseHeader({ course, isPreview }: ICourseHeaderProps) {
-  const user = useAppStore((state) => state.user);
-
+  const { data: user } = useFetchUser();
   const router = useRouter();
   const { downloadCertificateMutation, enrollCourseMutation } = useStudentMutations();
 

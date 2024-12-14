@@ -1,5 +1,5 @@
 import { IUserInfo } from "@/app/_module/app.interface";
-import { IEnrolledCourse } from "./interfaces/course.interface";
+import { IEnrolledCourse } from "./_interfaces/course.interface";
 
 export interface IReferral {
   id: string;
@@ -20,15 +20,6 @@ export interface IBankDetails {
   updatedAt: string;
 }
 
-export interface ICompletionCertificate {
-  id: string;
-  userId: string;
-  courseId: string;
-  certificateUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-}
 export interface IDashboardData {
   course: {
     active: IEnrolledCourse,
@@ -44,10 +35,6 @@ export interface IBankDetailForm {
   bankName: string;
   bankCode: string;
   accountNumber: string;
-}
-
-export interface IStudentAccountInformationForm {
-  info: Partial<IUserInfo>
 }
 
 export interface IBankDetailCreationResponse {

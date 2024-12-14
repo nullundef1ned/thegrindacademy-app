@@ -1,6 +1,6 @@
 import { ICourseLesson, IEnrolledCourseLesson, IEnrolledCourseDetail } from '@/app/(student)/_module/_interfaces/course.interface';
 import useStudentMutations from '@/app/(student)/_module/student.mutations';
-import { useAppStore } from '@/app/_module/app.store';
+import { useFetchUser } from '@/app/_module/_apis/useFetchUser';
 import IconifyIcon from '@/components/IconifyIcon';
 import { Checkbox } from '@/components/ui/checkbox';
 import useURL from '@/hooks/useURL';
@@ -17,7 +17,7 @@ interface CourseLessonCardProps {
 }
 
 export default function CourseLessonCard({ index, course, lesson, isPreview }: CourseLessonCardProps) {
-  const user = useAppStore((state) => state.user);
+  const { data: user } = useFetchUser();
 
   const { searchParams, replaceParams } = useURL();
   const lessonId = searchParams.get('lessonId');

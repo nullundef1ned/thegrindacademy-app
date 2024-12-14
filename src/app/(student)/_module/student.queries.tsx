@@ -1,12 +1,13 @@
-import { useAppStore } from '@/app/_module/app.store';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { IBankDetails, IDashboardData, IReferral, IEnrolledCourse, ICourse, IEnrolledCourseDetail, ICourseDetail } from './student.interface';
+import { IBankDetails, IDashboardData, IReferral } from './student.interface';
 import useStudentHooks from './student.hooks';
 import useAxios from '@/hooks/useAxios';
 import { IPagination, ICoursePaginationParams, IUser } from '@/app/_module/app.interface';
+import { ICourse, ICourseDetail, IEnrolledCourse, IEnrolledCourseDetail } from './_interfaces/course.interface';
+import { useFetchUser } from '@/app/_module/_apis/useFetchUser';
 
 export default function StudentQueries() {
-  const user = useAppStore((state) => state.user);
+  const { data: user } = useFetchUser()
 
   const axiosHandler = useAxios();
 

@@ -1,15 +1,14 @@
 import useAxios from '@/hooks/useAxios';
-import { IBankDetailCreationResponse, IBankDetailForm, IStudentAccountInformationForm } from './student.interface';
+import { IBankDetailCreationResponse, IBankDetailForm } from './student.interface';
 import { useMutation } from '@tanstack/react-query';
 import useAppHooks from '@/app/_module/app.hooks';
-import { IUser } from '@/app/_module/app.interface';
-import { useAppStore } from '@/app/_module/app.store';
+import { IAccountInformationForm } from '@/app/_module/app.interface';
 import { EnrolledCourseStatusType } from '@/app/_module/app.type';
 import { ICompletionCertificate } from './_interfaces/course.interface';
+import { queryClient } from '@/providers/tanstack-query.provder';
 
 export default function useStudentMutations() {
   const axiosHandler = useAxios();
-  const setUser = useAppStore(state => state.setUser);
 
   const { resolveAccountNumber } = useAppHooks();
 
@@ -35,12 +34,12 @@ export default function useStudentMutations() {
   })
 
   const updateStudentAccountInformationMutation = useMutation({
-    mutationFn: async (values: IStudentAccountInformationForm) => {
+    mutationFn: async (values: IAccountInformationForm) => {
       const response = await axiosHandler.patch('/student', values)
       return response.data
     },
-    onSuccess: (data: IUser) => {
-      setUser(data)
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ['user'] })
     }
   })
 

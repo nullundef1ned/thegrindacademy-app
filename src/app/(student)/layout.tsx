@@ -1,7 +1,7 @@
 'use client';
 
 import React, { Suspense } from 'react'
-import Header from './_components/Header';
+import Header from '../../components/Header';
 import { studentRoutes } from './_module/student.routes';
 import { useStudentStore } from './_module/student.store';
 import Banner from './(overview)/_components/Banner';

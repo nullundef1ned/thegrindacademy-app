@@ -1,16 +1,16 @@
 'use client';
 
 import React from 'react'
-import AuthCard from '../_components/AuthCard'
+import AuthCard from '../../_components/AuthCard'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button';
-import { ForgotPasswordForm } from '../_module/auth.interface';
+import { ForgotPasswordForm } from '../../_module/auth.interface';
 import { useFormik } from 'formik';
-import useAuthMutations from '../_module/auth.mutations';
+import useStudentAuthMutations from '../_module/student.auth.mutations';
 
 
 export default function ForgotPasswordPage() {
-  const { forgotPasswordMutation } = useAuthMutations()
+  const { forgotPasswordMutation } = useStudentAuthMutations()
 
   const { values, handleChange, handleSubmit } = useFormik<ForgotPasswordForm>({
     initialValues: {

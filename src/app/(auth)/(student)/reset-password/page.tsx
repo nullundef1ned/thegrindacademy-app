@@ -1,27 +1,27 @@
 'use client';
 
 import React from 'react'
-import AuthCard from '../_components/AuthCard'
+import AuthCard from '../../_components/AuthCard'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button';
-import Link from 'next/dist/client/link';
-import { PasswordForm } from '../_module/auth.interface';
+import { PasswordForm } from '../../_module/auth.interface';
 import { useFormik } from 'formik';
-import useAuthMutations from '../_module/auth.mutations';
+import useStudentAuthMutations from '../_module/student.auth.mutations';
 import LoadingIcons from 'react-loading-icons';
-import Image from 'next/image';
 import { useTitle } from '@/providers/title.provider';
-import AuthQueries from '../_module/auth.queries';
+import Image from 'next/image';
+import Link from 'next/link';
+import StudentAuthQueries from '../_module/student.auth.queries';
 
 
-export default function SetupAccountPage({ searchParams }: { searchParams: { token: string } }) {
-  const { setTitle } = useTitle();
-  const { useVerifyAccountSetupTokenQuery } = AuthQueries();
-  const { setupAccountMutation } = useAuthMutations();
+export default function ResetPasswordPage({ searchParams }: { searchParams: { token: string } }) {
+  const { setTitle } = useTitle()
+  const { resetPasswordMutation } = useStudentAuthMutations()
+  const { useVerifyResetPasswordTokenQuery } = StudentAuthQueries()
 
   const token = searchParams.token;
 
-  const { data: tokenData, isPending, isError } = useVerifyAccountSetupTokenQuery(token)
+  const { data: tokenData, isPending, isError } = useVerifyResetPasswordTokenQuery(token)
 
   const { values, handleChange, handleSubmit } = useFormik<PasswordForm>({
     initialValues: {
@@ -29,18 +29,14 @@ export default function SetupAccountPage({ searchParams }: { searchParams: { tok
       confirmPassword: ''
     },
     onSubmit: (values) => {
-      setupAccountMutation.mutate({ ...values, token })
+      resetPasswordMutation.mutate({ ...values, token })
     }
   })
 
   if (isPending) {
-    setTitle('Loading...')
-
-    return (
-      <div className='flex items-center justify-center h-full'>
-        <LoadingIcons.TailSpin stroke="#FFF" />
-      </div>
-    )
+    return <div className='flex items-center justify-center h-full'>
+      <LoadingIcons.TailSpin stroke="#FFF" />
+    </div>
   }
 
   if (!token || isError || !tokenData) {
@@ -49,7 +45,7 @@ export default function SetupAccountPage({ searchParams }: { searchParams: { tok
     return (
       <div className='flex flex-col items-center space-y-3 justify-center h-full max-w-md'>
         <Image src='/images/invite-error-state.svg' alt='Invalid Token' width={140} height={140} />
-        <p className='text-center text-2xl font-semibold'>The invitation link you used appears to be invalid</p>
+        <p className='text-center text-2xl font-semibold'>This link you used appears to be invalid</p>
         <p className='text-center text-sm text-accent'>Please verify the link or reach out to <Link
           className='underline'
           href='mailto:support@thegrindacademy.com'>support</Link> for further assistance</p>
@@ -58,15 +54,12 @@ export default function SetupAccountPage({ searchParams }: { searchParams: { tok
   }
 
   return (
-    <AuthCard title='Welcome to The Grind Academy' description="Let's set up your account so you can start learning. Create your password to get access to your dashboard">
+    <AuthCard title='Reset Password' description='Create your new password'>
       <form className='space-y-6 w-full' onSubmit={handleSubmit}>
         <Input icon='ri:lock-fill' type='password' name='password' className='w-full' placeholder='Password' value={values.password} onChange={handleChange} />
         <Input icon='ri:lock-fill' type='password' name='confirmPassword' className='w-full' placeholder='Confirm Password' value={values.confirmPassword} onChange={handleChange} />
-        <Button loading={setupAccountMutation.isPending} className='w-full'>Proceed</Button>
+        <Button className='w-full'>Reset Password</Button>
       </form>
-      <p className='text-sm text-accent text-center'>
-        Already have an account? <Link className='text-primary font-semibold' href='/login'>Log In</Link>
-      </p>
     </AuthCard>
   )
 }

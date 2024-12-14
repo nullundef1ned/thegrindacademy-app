@@ -1,15 +1,15 @@
 import IconifyIcon from '@/components/IconifyIcon'
 import React, { useRef } from 'react'
-import ProfileSection from '../../../../components/ProfileSection'
 import { Button } from '@/components/ui/button'
 import Avatar from '@/components/Avatar';
 import { useModal } from '@/providers/modal.provider';
 import AccountInformationModal from './_modals/AccountInformationModal';
 import useAppMutations from '@/app/_module/app.mutations';
-import useStudentMutations from '../../_module/student.mutations';
 import notificationUtil from '@/utils/notification.util';
 import LoadingIcons from 'react-loading-icons';
 import { useFetchUser } from '@/app/_module/_apis/useFetchUser';
+import ProfileSection from '@/components/ProfileSection';
+import useAdminMutations from '../../_module/admin.mutations';
 
 export default function AccountInformationSection() {
   const { data: user } = useFetchUser();
@@ -18,7 +18,7 @@ export default function AccountInformationSection() {
 
   const { showModal } = useModal();
   const { uploadFileMutation } = useAppMutations();
-  const { updateStudentAccountInformationMutation } = useStudentMutations();
+  const { updateAdminAccountInformationMutation } = useAdminMutations();
 
   const fullName = `${user?.info.firstName} ${user?.info.lastName}`
   const telegramUserName = user?.info.telegramUserName;
@@ -30,7 +30,7 @@ export default function AccountInformationSection() {
     e.target.value = '';
     if (file) {
       const response = await uploadFileMutation.mutateAsync({ file, type: 'avi' });
-      updateStudentAccountInformationMutation.mutate({ info: { avi: response } }, {
+      updateAdminAccountInformationMutation.mutate({ info: { avi: response } }, {
         onSuccess: () => {
           notificationUtil.success('Avatar updated successfully')
         }
@@ -39,14 +39,14 @@ export default function AccountInformationSection() {
   }
 
   const handleAvatarRemoval = () => {
-    updateStudentAccountInformationMutation.mutate({ info: { avi: '' } }, {
+    updateAdminAccountInformationMutation.mutate({ info: { avi: '' } }, {
       onSuccess: () => {
         notificationUtil.success('Avatar removed successfully')
       }
     });
   }
 
-  const isAvatarUpdating = uploadFileMutation.isPending || updateStudentAccountInformationMutation.isPending;
+  const isAvatarUpdating = uploadFileMutation.isPending || updateAdminAccountInformationMutation.isPending;
 
   return (
     <ProfileSection title='Account Information' description='Manage your personal information'>

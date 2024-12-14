@@ -13,7 +13,7 @@ function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <div className='grid place-items-center h-screen w-screen bg-background p-4 relative'>
       <div className='absolute bottom-0 left-0 p-4 group transition-all'>
-        <p className='text-sm text-accent hidden group-hover:block transition-all cursor-pointer'>Log in as admin</p>
+        <Link href='/i/login' className='text-sm text-accent hidden group-hover:block transition-all cursor-pointer'>Log in as admin</Link>
       </div>
       <Blur className='absolute top-1/2 w-1/2 left-1/2 -translate-x-1/2 h-1/2 -translate-y-1/2 bg-primary/5 z-0' />
       <div className='flex flex-col items-center gap-10 w-full z-20'>

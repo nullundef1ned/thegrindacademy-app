@@ -1,6 +1,6 @@
 import useAxios from "@/hooks/useAxios"
 import { useMutation } from "@tanstack/react-query"
-import { ForgotPasswordForm, LoginForm, PasswordForm, SetupAccountRequest } from "./auth.interface"
+import { ForgotPasswordForm, LoginForm, PasswordForm, SetupAccountRequest } from "../../_module/auth.interface"
 import { useRouter } from "next/navigation";
 import notificationUtil from "@/utils/notification.util";
 import { useAppStore } from "@/app/_module/app.store";
@@ -9,7 +9,7 @@ import useStudentHooks from "@/app/(student)/_module/student.hooks";
 import useURL from "@/hooks/useURL";
 import { URLKeyEnum } from "@/app/_module/app.enum";
 
-export default function useAuthMutations() {
+export default function useStudentAuthMutations() {
   const router = useRouter()
   const axiosHandler = useAxios();
   const { searchParams } = useURL();

@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react'
-import ProfileSection from './ProfileSection'
+import ProfileSection from '../../../../components/ProfileSection'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input';
 import ReferralCodeCard from '../../(overview)/_components/ReferralCodeCard';

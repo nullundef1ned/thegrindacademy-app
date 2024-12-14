@@ -32,6 +32,11 @@ export interface IAuthResponse {
   accessToken: string;
 }
 
+export interface IAccountInformationForm {
+  info: Partial<IUserInfo>
+}
+
+
 export type TData<T> = T & { id: string };
 
 export interface IPaginationParams {

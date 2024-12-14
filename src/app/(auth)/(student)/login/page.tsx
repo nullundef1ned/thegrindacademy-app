@@ -1,22 +1,22 @@
 'use client';
 
 import React, { useEffect } from 'react'
-import AuthCard from '../_components/AuthCard'
+import AuthCard from '@/app/(auth)/_components/AuthCard'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button';
 import Link from 'next/dist/client/link';
-import { LoginForm } from '../_module/auth.interface';
+import { LoginForm } from '@/app/(auth)/_module/auth.interface';
 import { useFormik } from 'formik';
-import useAuthMutations from '../_module/auth.mutations';
 import useURL from '@/hooks/useURL';
 import { URLKeyEnum } from '@/app/_module/app.enum';
 import { useAppStore } from '@/app/_module/app.store';
+import useStudentAuthMutations from '../_module/student.auth.mutations';
 
 export default function LoginPage() {
   const logout = useAppStore((state) => state.logout);
 
   const { searchParams, clearParams } = useURL();
-  const { loginMutation } = useAuthMutations();
+  const { loginMutation } = useStudentAuthMutations();
 
   const logoutParam = searchParams.get(URLKeyEnum.LOGOUT);
 

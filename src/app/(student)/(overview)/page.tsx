@@ -6,13 +6,13 @@ import Card from '@/components/Card'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { Progress } from '@/components/ui/progress'
-import { IEnrolledCourse } from '../_module/student.interface';
 import Table from '@/components/table';
 import { TableHeaderTypeEnum } from '@/components/table/table.enum';
 import { TableHeader, TableTab } from '@/components/table/table.interface';
 import BankDetailsCard from './_components/BankDetailsCard';
 import StudentQueries from '../_module/student.queries';
 import { useRouter } from 'next/navigation';
+import { IEnrolledCourse } from '../_module/_interfaces/course.interface';
 
 export default function OverviewPage() {
   const [activeTab, setActiveTab] = useState<string>('pending');

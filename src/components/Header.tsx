@@ -1,6 +1,5 @@
 'use client';
 
-import { useAppStore } from '@/app/_module/app.store';
 import Avatar from '@/components/Avatar'
 import clsx from 'clsx'
 import Image from 'next/image'
@@ -10,17 +9,18 @@ import { appRoutes } from '@/app/_module/app.routes';
 import { useMemo } from 'react';
 import { URLKeyEnum } from '@/app/_module/app.enum';
 import useURL from '@/hooks/useURL';
+import { useFetchUser } from '@/app/_module/_apis/useFetchUser';
 
 interface HeaderProps {
   routes: { name: string, href: string }[]
 }
 
 export default function Header({ routes }: HeaderProps) {
-  const user = useAppStore((state) => state.user);
+  const { data: user } = useFetchUser();
 
   const pathname = usePathname();
   const { updateParams } = useURL();
-  const rootPath = `/${pathname.split('/')[1]}`
+  const rootPath = pathname.startsWith('/i') ? `/i/${pathname.split('/')[2]}` : `/${pathname.split('/')[1]}`
 
   const greeting = useMemo(() => {
     const date = new Date();
