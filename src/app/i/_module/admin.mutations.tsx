@@ -7,7 +7,7 @@ export default function useAdminMutations() {
   const axiosHandler = useAxios();
 
   const updateAdminAccountInformationMutation = useMutation({
-    mutationFn: async (values: IAccountInformationForm) => {
+    mutationFn: async (values: Partial<IAccountInformationForm>) => {
       const response = await axiosHandler.patch('/admin', values)
       return response.data
     },
