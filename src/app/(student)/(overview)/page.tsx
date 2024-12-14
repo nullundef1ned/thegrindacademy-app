@@ -6,7 +6,6 @@ import Card from '@/components/Card'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { Progress } from '@/components/ui/progress'
-import ReferralCodeCard from './_components/ReferralCodeCard';
 import { IStudentEnrolledCourse } from '../_module/student.interface';
 import Table from '@/components/table';
 import { TableHeaderTypeEnum } from '@/components/table/table.enum';

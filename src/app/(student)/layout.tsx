@@ -14,9 +14,9 @@ import { appRoutes } from '../_module/app.routes';
 function StudentLayout({ children }: { children: React.ReactNode }) {
   const banners = useStudentStore((state) => state.banners);
 
-  const { useFetchSubscriptionQuery, useFetchAuthenticationQuery } = StudentQueries();
+  const { useFetchAuthenticationQuery } = StudentQueries();
   // const { data: subscription } = useFetchSubscriptionQuery();
-  const { data: authentication, isPending } = useFetchAuthenticationQuery();
+  const { isPending } = useFetchAuthenticationQuery();
 
   const routes = [
     { name: 'Overview', href: studentRoutes.overview },

@@ -23,14 +23,14 @@ export default function SubscriptionPage() {
   const { formatCurrency } = useCurrency();
 
 
-  const { data, isPending, error, refetch } = useQuery<ISubscriptionPlan[]>({
+  const { data, isPending, error } = useQuery<ISubscriptionPlan[]>({
     queryKey: ['subscription-plans'],
     queryFn: async () => {
       return (await axiosHandler.get('website-content/subscription/plan')).data
     },
   })
-  const { mutate: createSubscription, isPending: createSubscriptionLoading, error: createSubscriptionError, isSuccess: createSubscriptionSuccess } = useMutation({
-    mutationFn: async (data) => {
+  const { mutate: createSubscription, isPending: createSubscriptionLoading, error: createSubscriptionError } = useMutation({
+    mutationFn: async () => {
       return (await axiosHandler.post('student/register', data)).data
     },
     onSuccess: (data) => {
@@ -94,6 +94,8 @@ export default function SubscriptionPage() {
                 <LoadingIcons.TailSpin />
               </div>
             }
+
+            {error && <p className='text-sm text-destructive text-center'>{error.message}</p>}
           </div>
 
           <div className='space-y-1'>
@@ -105,7 +107,7 @@ export default function SubscriptionPage() {
           </div>
           <div className='flex flex-col gap-4'>
             <Button disabled={!selectedPlan}
-              loading={createSubscriptionLoading} onClick={() => { }} variant='default' className='w-max mx-auto'>Subscribe to the Grind</Button>
+              loading={createSubscriptionLoading} onClick={() => createSubscription()} variant='default' className='w-max mx-auto'>Subscribe to the Grind</Button>
             {createSubscriptionError && <p className='text-sm text-destructive text-center'>{createSubscriptionError.message}</p>}
           </div>
         </div>

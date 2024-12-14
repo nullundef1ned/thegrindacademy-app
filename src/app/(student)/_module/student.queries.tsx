@@ -93,7 +93,7 @@ export default function StudentQueries() {
 
   const useFetchSubscriptionQuery = () => useQuery({
     queryKey: [user?.id, 'subscription'],
-    queryFn: async (): Promise<any> => {
+    queryFn: async (): Promise<unknown> => {
       const response = await axiosHandler.get('/student/subscription')
       return response.data;
     },

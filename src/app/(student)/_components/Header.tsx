@@ -5,7 +5,7 @@ import Avatar from '@/components/Avatar'
 import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { appRoutes } from '@/app/_module/app.routes';
 import { useMemo } from 'react';
 import { URLKeyEnum } from '@/app/_module/app.enum';
