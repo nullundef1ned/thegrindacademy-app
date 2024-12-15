@@ -72,7 +72,7 @@ export default function FileUploader({ provider, type, fileType, onChange }: Fil
       {!uploading && error &&
         <Fragment>
           <IconifyIcon icon="ri:error-warning-line" className='text-red-500 text-4xl' />
-          <p className='text-sm text-red-500'>{'error.message'}</p>
+          <p className='text-sm text-red-500 text-center'>{error.message}</p>
           <p className='text-sm text-[#548DFF] cursor-pointer' onClick={() => inputRef.current?.click()}>Try again</p>
         </Fragment>
       }

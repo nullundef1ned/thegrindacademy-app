@@ -20,11 +20,13 @@ import ConfirmDynamicContentDeletionModal from './_modals/ConfirmDynamicContentD
 import Link from 'next/link';
 import LoadingIcons from 'react-loading-icons';
 import Status from '@/components/table/Status';
+import { useTitle } from '@/providers/title.provider';
 
 export default function DynamicContentDetailPage({ params }: { params: { id: string } }) {
   const { id } = params;
 
   const router = useRouter();
+  const { setTitle } = useTitle();
   const { showModal } = useModal();
   const { data, isPending } = useFetchDynamicContentSection(id);
   const { createDynamicContentMutation, updateDynamicContentMutation, deleteDynamicContentMutation } = useDynamicContentMutations();
@@ -75,6 +77,8 @@ export default function DynamicContentDetailPage({ params }: { params: { id: str
     { name: 'Dynamic Content', link: adminRoutes.websiteContent.dynamicContent },
     { name: id === 'new' ? 'Add New Section' : data?.title || 'Content not found' },
   ]
+
+  setTitle(`${id === 'new' ? 'Add New Section' : data?.title || 'Content not found'} | Dynamic Content`);
 
   const loading = createDynamicContentMutation.isPending || updateDynamicContentMutation.isPending;
   const isFormValid = values.title && values.content && values.mediaUrl;

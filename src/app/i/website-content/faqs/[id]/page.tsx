@@ -17,11 +17,13 @@ import Link from 'next/link';
 import LoadingIcons from 'react-loading-icons';
 import ConfirmFAQDeletionModal from '../_modals/ConfirmFAQDeletionModal';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { useTitle } from '@/providers/title.provider';
 
 export default function DynamicContentDetailPage({ params }: { params: { id: string } }) {
   const { id } = params;
 
   const { showModal } = useModal();
+  const { setTitle } = useTitle();
   const { data, isPending } = useFetchFAQ(id);
   const { updateFAQMutation, deleteFAQMutation } = useFAQMutations();
 
@@ -62,6 +64,8 @@ export default function DynamicContentDetailPage({ params }: { params: { id: str
 
   const loading = updateFAQMutation.isPending;
   const isFormValid = values.question && values.answer;
+
+  setTitle(`${data?.question || 'FAQ not found'} | FAQs`);
 
   const openDeleteModal = (data: IFAQ) => showModal(<ConfirmFAQDeletionModal faq={data} />);
 
