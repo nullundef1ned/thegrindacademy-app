@@ -1,4 +1,3 @@
-import { IUserInfo } from "@/app/_module/app.interface";
 import { IEnrolledCourse } from "./_interfaces/course.interface";
 
 export interface IReferral {

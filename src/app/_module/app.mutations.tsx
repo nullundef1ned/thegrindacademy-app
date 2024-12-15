@@ -6,7 +6,7 @@ export default function useAppMutations() {
   const axiosHandler = useAxios();
 
   const uploadFileMutation = useMutation({
-    mutationFn: async (values: { file: File, type: FileType }) => {
+    mutationFn: async (values: { file: File, type: FileType }): Promise<string> => {
       const formData = new FormData();
       formData.append('file', values.file);
       formData.append('type', values.type);
@@ -20,7 +20,7 @@ export default function useAppMutations() {
   })
 
   const uploadVideoFileMutation = useMutation({
-    mutationFn: async (values: { file: File, type: VideoFileType }) => {
+    mutationFn: async (values: { file: File, type: VideoFileType }): Promise<string> => {
       const formData = new FormData();
       formData.append('file', values.file);
       formData.append('type', values.type);

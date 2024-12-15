@@ -1,7 +1,7 @@
 import { create, resetAllStores } from "@/stores";
 import { devtools, persist } from "zustand/middleware";
 import storageUtil, { StorageKey } from "@/utils/storage.util";
-import { IAuthResponse, IUser } from "./app.interface";
+import { IAuthResponse } from "./app.interface";
 
 export interface AppState {
   token: string | null;

@@ -25,6 +25,8 @@ export default function Status({ status, showIcon }: StatusProps) {
     'disabled': 'bg-grey-900 text-grey-300',
     'kyc-pending': 'bg-yellow-900 text-yellow-100',
     'rejected': 'bg-red-900 text-red-100',
+    'published': 'bg-primary text-primary-100',
+    'draft': 'bg-gray-700 text-gray-50',
   }[status]
 
   const displayText = status.replaceAll('-', ' ');

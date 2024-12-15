@@ -48,7 +48,7 @@ export default function UsersPage() {
   const page = Number(searchParams.get('page')) || 1;
   const limit = Number(searchParams.get('limit')) || 10;
 
-  const { data, isPending, isFetching } = useFetchUsers({ search: searchValue, page, limit });
+  const { data, isPending } = useFetchUsers({ search: searchValue, page, limit });
 
   const goToUser = (user: IUser) => {
     router.push(`/i/users/${user.id}`);

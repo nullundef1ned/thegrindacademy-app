@@ -21,6 +21,7 @@ import LoadingIcons from "react-loading-icons";
 import { useTitle } from "@/providers/title.provider";
 import useAdminMutations from "../../_module/admin.mutations";
 import notificationUtil from "@/utils/notification.util";
+import Breadcrumbs, { BreadcrumbItem } from "@/components/Breadcrumbs";
 
 export default function UserPage({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -45,6 +46,11 @@ export default function UserPage({ params }: { params: { id: string } }) {
     </div>
   )
 
+  const breadcrumbs: BreadcrumbItem[] = [
+    { name: 'Users', link: adminRoutes.users },
+    { name: `${data.info.firstName} ${data.info.lastName}` },
+  ]
+
   const tableHeaders: TableHeader<ICourse>[] = [
     { key: 'name', value: 'Course Name' },
     { key: 'status', value: 'Status' },
@@ -67,11 +73,7 @@ export default function UserPage({ params }: { params: { id: string } }) {
 
   return (
     <div className='w-full responsive-section !max-w-screen-md space-y-8'>
-      <div className="flex items-center gap-1">
-        <Link href={adminRoutes.users} className="text-xs">Users</Link>
-        <IconifyIcon icon="ri:arrow-right-s-line" className="text-xs" />
-        <p className="text-xs font-medium text-accent">{data.info.firstName} {data.info.lastName}</p>
-      </div>
+      <Breadcrumbs items={breadcrumbs} />
       <div className="flex flex-wrap gap-4 items-center justify-between">
         <p className="text-xl font-medium">User Information</p>
         <div className="flex items-center gap-3">

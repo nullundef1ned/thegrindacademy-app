@@ -30,6 +30,9 @@ export default function TableCellContent<T>({ row, header }: TableCellContentPro
       return <span>{value.toLocaleLowerCase()}</span>
     case TableHeaderTypeEnum.STATUS:
       return <Status status={value as StatusType} />
+    case TableHeaderTypeEnum.PUBLISHED:
+      const published = value === 'true' ? 'published' : 'draft';
+      return <Status status={published as StatusType} />
     case TableHeaderTypeEnum.PROGRESS:
       return (
         <div className="flex items-center gap-2">

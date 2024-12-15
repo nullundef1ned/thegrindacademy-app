@@ -4,7 +4,6 @@ import React, { Suspense } from 'react'
 import Image from 'next/image';
 import BrandBars from '@/components/BrandBars';
 import { clsx } from 'clsx';
-import { appRoutes } from '../_module/app.routes';
 import { adminRoutes } from './_module/admin.routes';
 import Header from '@/components/Header';
 import AdminQueries from './_module/admin.queries';
@@ -17,7 +16,7 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
     { name: 'Overview', href: adminRoutes.dashboard },
     { name: 'Courses', href: adminRoutes.courses },
     { name: 'Users', href: adminRoutes.users },
-    { name: 'Website Content', href: adminRoutes.websiteContent },
+    { name: 'Website Content', href: adminRoutes.websiteContent.root },
     { name: 'Reports', href: adminRoutes.reports },
     { name: 'Settings', href: adminRoutes.settings },
   ]
