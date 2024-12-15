@@ -34,3 +34,13 @@ export interface IPrivacyPolicy {
 export interface IPrivacyPolicyForm {
   content: string;
 }
+export interface ITermsOfService {
+  id: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ITermsOfServiceForm {
+  content: string;
+}

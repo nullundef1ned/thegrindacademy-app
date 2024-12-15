@@ -7,24 +7,24 @@ import { Button } from '@/components/ui/button';
 import notificationUtil from '@/utils/notification.util';
 import helperUtil from '@/utils/helper.util';
 import LoadingIcons from 'react-loading-icons';
-import { useFetchPrivacyPolicy } from './_apis/useFetchPrivacyPolicy';
-import usePrivacyPolicyMutations from './_apis/privacy-policy.mutations';
-import { IPrivacyPolicyForm } from '@/interfaces/meta-information';
+import { useFetchTermsOfService } from './_apis/useFetchTermsOfService';
+import useTermsOfServiceMutations from './_apis/terms-of-service.mutations';
+import { ITermsOfServiceForm } from '@/interfaces/meta-information';
 import RichTextEditor from '@/components/RichTextEditor';
 
-export default function PrivacyPolicyPage() {
-  const { data, isPending } = useFetchPrivacyPolicy();
-  const { createOrUpdatePrivacyPolicyMutation } = usePrivacyPolicyMutations();
+export default function TermsOfServicePage() {
+  const { data, isPending } = useFetchTermsOfService();
+  const { createOrUpdateTermsOfServiceMutation } = useTermsOfServiceMutations();
 
-  const { values, handleSubmit, setFieldValue } = useFormik<IPrivacyPolicyForm>({
+  const { values, handleSubmit, setFieldValue } = useFormik<ITermsOfServiceForm>({
     enableReinitialize: true,
     initialValues: {
       content: data?.content || '',
     },
     onSubmit: (values) => {
-      createOrUpdatePrivacyPolicyMutation.mutate(values, {
+      createOrUpdateTermsOfServiceMutation.mutate(values, {
         onSuccess: () => {
-          notificationUtil.success('Privacy policy updated successfully');
+          notificationUtil.success('Terms of service updated successfully');
         }
       });
     },
@@ -38,10 +38,10 @@ export default function PrivacyPolicyPage() {
 
   const breadcrumbs: BreadcrumbItem[] = [
     { name: 'Website Content', link: adminRoutes.websiteContent.root },
-    { name: 'Privacy Policy' },
+    { name: 'Terms of Service' },
   ]
 
-  const loading = createOrUpdatePrivacyPolicyMutation.isPending;
+  const loading = createOrUpdateTermsOfServiceMutation.isPending;
   const isFormValid = values.content && values.content !== '<p><br></p>';
 
   return (
@@ -49,7 +49,7 @@ export default function PrivacyPolicyPage() {
       <Breadcrumbs items={breadcrumbs} />
       <div className="flex items-center justify-between">
         <div className='flex flex-col gap-1'>
-          <p className='text-lg font-medium'>Privacy Policy</p>
+          <p className='text-lg font-medium'>Terms of Service</p>
           {data?.updatedAt &&
             <p className='text-xs text-accent'>Last updated: {helperUtil.formatDate(data.updatedAt)}</p>
           }
