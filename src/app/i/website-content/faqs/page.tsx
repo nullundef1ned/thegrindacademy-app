@@ -14,7 +14,7 @@ import { IFAQ } from "@/interfaces/faq";
 import { useModal } from "@/providers/modal.provider";
 import CreateFAQModal from "./_modals/CreateFAQModal";
 
-export default function DynamicContentPage() {
+export default function FAQsPage() {
 
   const router = useRouter();
   const { showModal } = useModal();

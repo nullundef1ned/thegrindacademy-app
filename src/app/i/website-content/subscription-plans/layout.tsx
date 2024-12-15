@@ -4,6 +4,6 @@ export const metadata = {
   title: 'FAQs | The Grind Academy'
 }
 
-export default function FAQsLayout({ children }: { children: ReactNode }) {
+export default function DynamicContentLayout({ children }: { children: ReactNode }) {
   return <Fragment>{children}</Fragment>
 }

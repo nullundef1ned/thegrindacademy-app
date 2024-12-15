@@ -19,7 +19,7 @@ import ConfirmFAQDeletionModal from '../_modals/ConfirmFAQDeletionModal';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useTitle } from '@/providers/title.provider';
 
-export default function DynamicContentDetailPage({ params }: { params: { id: string } }) {
+export default function FAQPage({ params }: { params: { id: string } }) {
   const { id } = params;
 
   const { showModal } = useModal();
