@@ -1,0 +1,19 @@
+.ql-toolbar {
+  @apply bg-[#00246B33] !border-[#B0CAFF1A] !text-white;
+}
+
+.ql-toolbar .ql-picker-label {
+  @apply !text-white;
+}
+
+.ql-toolbar button {
+  @apply !text-white;
+}
+
+.ql-container {
+  @apply !border-[#B0CAFF1A];
+}
+
+.ql-editor {
+  @apply !text-white min-h-56 max-h-96;
+}

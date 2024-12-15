@@ -23,3 +23,14 @@ export interface IMetaInformationForm {
   supportEmail: string;
   socialMediaLinks: ISocialMediaLink[];
 }
+
+export interface IPrivacyPolicy {
+  id: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IPrivacyPolicyForm {
+  content: string;
+}
