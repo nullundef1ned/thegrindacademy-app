@@ -9,6 +9,7 @@ import { TableHeader } from "@/components/table/table.interface";
 import { useRouter } from "next/navigation";
 import { useFetchUsers } from "../_module/_apis/useFetchUsers";
 import useURL from "@/hooks/useURL";
+import { adminRoutes } from "../_module/admin.routes";
 
 export default function UsersPage() {
   const router = useRouter();
@@ -51,7 +52,7 @@ export default function UsersPage() {
   const { data, isPending } = useFetchUsers({ search: searchValue, page, limit });
 
   const goToUser = (user: IUser) => {
-    router.push(`/i/users/${user.id}`);
+    router.push(`${adminRoutes.users}/${user.id}`);
   }
 
   return (
