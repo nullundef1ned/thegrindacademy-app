@@ -56,7 +56,7 @@ export default function Header({ routes }: HeaderProps) {
           {routes.map((route) => (
             <Link href={route.href} key={route.name}>
               <div className='flex flex-col gap-3 group'>
-                <p className={clsx(rootPath === route.href && 'font-semibold text-white', 'text-accent font-medium px-2')}>{route.name}</p>
+                <p className={clsx(rootPath === route.href && 'font-semibold text-white', 'text-accent font-medium px-2 whitespace-nowrap')}>{route.name}</p>
                 <div className={clsx(rootPath === route.href && 'bg-primary', 'w-full h-0.5 group-hover:bg-primary/50')} />
               </div>
             </Link>

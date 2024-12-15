@@ -109,7 +109,7 @@ export default function OverviewPage() {
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
         <div className='col-span-1 lg:col-span-3 space-y-4'>
           <p className='text-accent font-medium'>Continue Learning</p>
-          <Card className=''>
+          <Card>
             <Table<IEnrolledCourse>
               hideFooter
               hideLimit
