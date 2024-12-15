@@ -2,7 +2,6 @@
 
 import { adminRoutes } from '@/app/i/_module/admin.routes';
 import Breadcrumbs, { BreadcrumbItem } from '@/components/Breadcrumbs';
-import React, { useState } from 'react'
 import { useFormik } from 'formik';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -57,7 +56,11 @@ export default function MetaInformationPage() {
     const updatedLinks = [...values.socialMediaLinks];
     const index = updatedLinks.findIndex(link => link.type === type);
     if (index !== -1) {
-      url ? updatedLinks[index] = { type, url } : updatedLinks.splice(index, 1);
+      if (url) {
+        updatedLinks[index] = { type, url };
+      } else {
+        updatedLinks.splice(index, 1);
+      }
     } else if (url) {
       updatedLinks.push({ type, url });
     }
@@ -130,7 +133,7 @@ export default function MetaInformationPage() {
           <div className="grid grid-cols-2 gap-2">
             {socialMediaTypes.map((type, index) => (
               <Input
-                key={type}
+                key={index}
                 name={type}
                 type='url'
                 icon={`ri:${type}-fill`}
