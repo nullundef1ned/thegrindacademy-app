@@ -6,15 +6,18 @@ import { Button } from "@/components/ui/button";
 import Card from "@/components/Card";
 import Table from "@/components/table";
 import useURL from "@/hooks/useURL";
-import { useFetchDynamicContent } from "./_apis/useFetchDynamicContent";
-import { IDynamicContent } from "@/interfaces/dynamic-content";
+import { useFetchFAQs } from "./_apis/useFetchFAQs";
 import { TableHeader } from "@/components/table/table.interface";
 import { TableHeaderTypeEnum } from "@/components/table/table.enum";
 import { useRouter } from "next/navigation";
+import { IFAQ } from "@/interfaces/faq";
+import { useModal } from "@/providers/modal.provider";
+import CreateFAQModal from "./_modals/CreateFAQModal";
 
 export default function DynamicContentPage() {
 
   const router = useRouter();
+  const { showModal } = useModal();
   const { searchParams } = useURL();
 
   const searchValue = searchParams.get('search') || '';
@@ -23,20 +26,22 @@ export default function DynamicContentPage() {
 
   const breadcrumbs: BreadcrumbItem[] = [
     { name: 'Website Content', link: adminRoutes.websiteContent.root },
-    { name: 'Dynamic Content' },
+    { name: 'FAQs' },
   ]
 
-  const tableHeaders: TableHeader<IDynamicContent>[] = [
-    { key: 'title', value: 'Title' },
-    { key: 'content', value: 'Content' },
-    { key: 'isPublished', value: 'Published', type: TableHeaderTypeEnum.PUBLISHED },
+  const tableHeaders: TableHeader<IFAQ>[] = [
+    { key: 'question', value: 'Question' },
+    { key: 'answer', value: 'Answer' },
+    { key: 'type', value: 'Type', type: TableHeaderTypeEnum.STATUS },
     { key: 'updatedAt', value: 'Last Updated', type: TableHeaderTypeEnum.DATE },
   ]
 
-  const { data, isPending } = useFetchDynamicContent({ search: searchValue, page, limit });
+  const { data, isPending } = useFetchFAQs({ search: searchValue, page, limit });
 
-  const goToDynamicContent = (dynamicContent: IDynamicContent) => {
-    router.push(`${adminRoutes.websiteContent.dynamicContent}/${dynamicContent.id}`);
+  const openCreateFAQModal = () => showModal(<CreateFAQModal />);
+
+  const goToFAQ = (faq: IFAQ) => {
+    router.push(`${adminRoutes.websiteContent.faqs}/${faq.id}`);
   }
 
   return (
@@ -44,20 +49,20 @@ export default function DynamicContentPage() {
       <Breadcrumbs items={breadcrumbs} />
       <div className="flex flex-wrap gap-4 items-center justify-between">
         <div className="space-y-1">
-          <p className="text-lg font-medium">Dynamic Content</p>
-          <p className="text-sm text-accent">Manage dynamic content sections to keep your website fresh and relevant</p>
+          <p className="text-lg font-medium">FAQs</p>
+          <p className="text-sm text-accent">Manage FAQs to keep your website fresh and relevant</p>
         </div>
-        <Button href={`${adminRoutes.websiteContent.dynamicContent}/new`} size="sm">Add New Section</Button>
+        <Button size="sm" onClick={openCreateFAQModal}>Add New FAQ</Button>
       </div>
       <Card>
-        <Table<IDynamicContent>
+        <Table<IFAQ>
           data={data}
           searchable
           skeletonCount={4}
           loading={isPending}
           headers={tableHeaders}
-          onRowClick={goToDynamicContent}
-          emptyStateMessage={'No dynamic content found'}
+          onRowClick={goToFAQ}
+          emptyStateMessage={'No FAQs found'}
         />
       </Card>
     </div>

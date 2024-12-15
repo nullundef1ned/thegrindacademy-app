@@ -27,6 +27,8 @@ export default function Status({ status, showIcon }: StatusProps) {
     'rejected': 'bg-red-900 text-red-100',
     'published': 'bg-primary text-primary-50',
     'draft': 'bg-gray-700 text-gray-50',
+    'student': 'bg-blue-900 text-blue-100',
+    'general': 'bg-gray-700 text-gray-50',
   }[status]
 
   const displayText = status.replaceAll('-', ' ');
