@@ -12,7 +12,7 @@ import useURL from "@/hooks/useURL";
 import StudentQueries from "../../../_module/student.queries";
 import LoadingIcons from "react-loading-icons";
 import { Button } from "@/components/ui/button";
-import { ICourseLesson, ICourseMaterial } from "@/app/(student)/_module/_interfaces/course.interface";
+import { ICourseMaterial, IEnrolledCourseLesson } from "@/app/(student)/_module/_interfaces/course.interface";
 
 export default function CoursePage({ params }: { params: { slug: string } }) {
   const { clearParams } = useURL();
@@ -92,7 +92,7 @@ export default function CoursePage({ params }: { params: { slug: string } }) {
               </div>
               <hr className="border-b-[#B0CAFF1A]" />
               <div className="space-y-4">
-                {lessons.map((lesson: ICourseLesson, index: number) => (
+                {lessons.map((lesson: IEnrolledCourseLesson, index: number) => (
                   <CourseLessonCard key={index} index={index} course={course} lesson={lesson} />
                 ))}
               </div>
