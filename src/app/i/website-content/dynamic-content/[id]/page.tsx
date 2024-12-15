@@ -30,6 +30,7 @@ export default function DynamicContentDetailPage({ params }: { params: { id: str
   const { createDynamicContentMutation, updateDynamicContentMutation, deleteDynamicContentMutation } = useDynamicContentMutations();
 
   const { values, handleChange, handleSubmit, setFieldValue } = useFormik<IDynamicContentForm>({
+    enableReinitialize: true,
     initialValues: {
       title: data?.title || '',
       content: data?.content || '',
@@ -124,22 +125,39 @@ export default function DynamicContentDetailPage({ params }: { params: { id: str
             <Image src={values.mediaUrl} alt='Media' fill className='object-cover absolute' />
           </div>
         }
-        <div className='grid grid-cols-3 gap-4'>
-          <Button disabled={!isFormValid}
-            loading={loading && !values.isPublished}
-            type='submit' size='sm' variant='outline'
-            className='w-full'
-            onClick={() => setFieldValue('isPublished', false)}>
-            {data?.id ? 'Unpublish' : 'Save'}
-          </Button>
-          <Button disabled={!isFormValid}
-            loading={loading && values.isPublished}
-            type='submit' size='sm'
-            className='w-full col-span-2'
-            onClick={() => setFieldValue('isPublished', true)}>
-            {data?.id ? 'Update & Publish' : 'Save & Publish'}
-          </Button>
-        </div>
+        {data ?
+          <div className='grid grid-cols-3 gap-4'>
+            <Button disabled={!isFormValid}
+              loading={loading}
+              type='submit' size='sm' variant='outline'
+              className='w-full'
+              onClick={() => setFieldValue('isPublished', !values.isPublished)}>
+              {data.isPublished ? 'Unpublish' : 'Publish'}
+            </Button>
+            <Button disabled={!isFormValid}
+              loading={loading}
+              type='submit' size='sm'
+              className='w-full col-span-2'>
+              Update
+            </Button>
+          </div> :
+          <div className='grid grid-cols-3 gap-4'>
+            <Button disabled={!isFormValid}
+              // loading={loading && !values.isPublished}
+              type='submit' size='sm' variant='outline'
+              className='w-full'
+              onClick={() => setFieldValue('isPublished', false)}>
+              Save
+            </Button>
+            <Button disabled={!isFormValid}
+              loading={loading && values.isPublished}
+              type='submit' size='sm'
+              className='w-full col-span-2'
+              onClick={() => setFieldValue('isPublished', true)}>
+              Save & Publish
+            </Button>
+          </div>
+        }
       </form>
     </div>
   )

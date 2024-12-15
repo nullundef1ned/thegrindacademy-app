@@ -6,7 +6,7 @@ export function useFetchDynamicContentSection(id: string) {
   const axiosHandler = useAxios();
 
   const query = useQuery({
-    queryKey: ['dynamic-content', id],
+    queryKey: ['dynamic-content-section', id],
     queryFn: async (): Promise<IDynamicContent | null> => {
       if (id === 'new') return null;
       const response = await axiosHandler.get(`/admin/website-content/dynamic-content/${id}`)

@@ -26,8 +26,8 @@ export default function ConfirmDynamicContentDeletionModal({ dynamicContent }: I
   })
 
   return (
-    <Modal title='Delete User?'>
-      <p className='text-sm text-accent'>Are you sure you want to permanently delete this user? This action cannot be undone, and all associated data will be removed</p>
+    <Modal title='Delete Dynaimic Content Section?'>
+      <p className='text-sm text-accent'>Are you sure you want to permanently delete this dynamic content section? This action cannot be undone</p>
       <div className='grid grid-cols-2 gap-4'>
         <Button onClick={hideModal} type='button' variant='outline' size="sm">Cancel</Button>
         <Button loading={deleteDynamicContentMutation.isPending} onClick={handleDeleteDynamicContent} type='submit' variant='destructive' size="sm">Delete Section</Button>
