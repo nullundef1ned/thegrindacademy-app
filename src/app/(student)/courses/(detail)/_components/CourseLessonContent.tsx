@@ -1,4 +1,5 @@
-import { ICourseLesson, IEnrolledCourseLesson } from "@/app/(student)/_module/student.interface";
+import { ICourseLesson } from "@/app/(student)/_module/_interfaces/course.interface";
+import { IEnrolledCourseLesson } from "@/app/(student)/_module/_interfaces/course.interface";
 import Video from "@/components/Video";
 import helperUtil from "@/utils/helper.util";
 import { useEffect, useState } from "react";

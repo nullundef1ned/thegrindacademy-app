@@ -1,13 +1,13 @@
 import React from 'react'
-import ProfileSection from './ProfileSection'
+import ProfileSection from '../../../../components/ProfileSection'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input';
-import useAuthMutations from '@/app/(auth)/_module/auth.mutations';
 import { useFormik } from 'formik';
 import { PasswordForm } from '@/app/(auth)/_module/auth.interface';
+import useStudentAuthMutations from '@/app/(auth)/(student)/_module/student.auth.mutations';
 
 export default function SecuritySection() {
-  const { changePasswordMutation } = useAuthMutations()
+  const { changePasswordMutation } = useStudentAuthMutations()
 
   const { values, handleChange, handleSubmit, resetForm } = useFormik<PasswordForm>({
     initialValues: {

@@ -1,6 +1,7 @@
-import { ICourseDetail, IStudentEnrolledCourseDetail, IEnrolledCourseLesson, ICompletionCertificate } from '@/app/(student)/_module/student.interface';
+import { ICompletionCertificate, ICourseDetail, IEnrolledCourseLesson } from '@/app/(student)/_module/_interfaces/course.interface';
+import { IEnrolledCourseDetail } from '@/app/(student)/_module/_interfaces/course.interface';
 import useStudentMutations from '@/app/(student)/_module/student.mutations';
-import { useAppStore } from '@/app/_module/app.store';
+import { useFetchUser } from '@/app/_module/_apis/useFetchUser';
 import BrandBars from '@/components/BrandBars';
 import IconifyIcon from '@/components/IconifyIcon'
 import { Button } from '@/components/ui/button'
@@ -15,19 +16,18 @@ import LoadingIcons from 'react-loading-icons';
 
 
 interface ICourseHeaderProps {
-  course: ICourseDetail | IStudentEnrolledCourseDetail;
+  course: ICourseDetail | IEnrolledCourseDetail;
   isPreview?: boolean;
 }
 
 export default function CourseHeader({ course, isPreview }: ICourseHeaderProps) {
-  const user = useAppStore((state) => state.user);
-
+  const { data: user } = useFetchUser();
   const router = useRouter();
   const { downloadCertificateMutation, enrollCourseMutation } = useStudentMutations();
 
-  const name = isPreview ? (course as ICourseDetail).name : (course as IStudentEnrolledCourseDetail).course.name;
+  const name = isPreview ? (course as ICourseDetail).name : (course as IEnrolledCourseDetail).course.name;
 
-  const completedLessons = (course as IStudentEnrolledCourseDetail).lessons.filter((lesson: IEnrolledCourseLesson) => lesson.status === 'completed').length;
+  const completedLessons = (course as IEnrolledCourseDetail).lessons.filter((lesson: IEnrolledCourseLesson) => lesson.status === 'completed').length;
 
   const progress = Math.round((completedLessons / course.lessons.length) * 100);
   const isCompleted = completedLessons === course.lessons.length;
@@ -52,42 +52,44 @@ export default function CourseHeader({ course, isPreview }: ICourseHeaderProps) 
 
   return (
     <Fragment>
-      <div className="flex justify-between border-b border-[#B0CAFF1A] pb-4 w-screen -mx-4 px-4">
-        <div className='flex flex-col gap-1.5'>
-          <Link href={isPreview ? '/courses?tab=browse-courses' : '/courses'} className='w-max'>
-            <div className="flex items-center gap-2 cursor-pointer text-muted-foreground">
-              <IconifyIcon icon="ri:arrow-left-line" />
-              <p className='text-xs'>Back to Courses</p>
-            </div>
-          </Link>
-          <p className='text-lg font-semibold'>{name}</p>
-        </div>
-        {!isPreview ?
-          <div className='flex items-end gap-4'>
-            <div className="flex flex-col gap-2 w-72">
-              <div className="flex items-center gap-2">
-                <p className='text-xs text-muted-foreground'>{completedLessons}/{course.lessons.length} completed</p>
-                {isCompleted &&
-                  <Fragment>
-                    <p onClick={() => downloadCertificate()} className='text-xs text-primary-100 hover:underline cursor-pointer'>Download Certificate</p>
-                  </Fragment>}
+      <div className="border-b border-[#B0CAFF1A] pb-4 w-screen -mx-4 px-4">
+        <div className="responsive-section flex flex-wrap gap-4 justify-between">
+          <div className='flex flex-col gap-1.5'>
+            <Link href={isPreview ? '/courses?tab=browse-courses' : '/courses'} className='w-max'>
+              <div className="flex items-center gap-2 cursor-pointer text-muted-foreground">
+                <IconifyIcon icon="ri:arrow-left-line" />
+                <p className='text-xs'>Back to Courses</p>
               </div>
-              <Progress value={progress} />
-            </div>
-            <div
-              onClick={() => downloadCertificate()}
-              className={clsx(
-                isCompleted ? "bg-primary text-white cursor-pointer" : "bg-[#00246B66] text-[#E6E6E7] cursor-not-allowed",
-                "border border-[#B0CAFF1A]  size-10 grid place-items-center rounded")}>
-              {downloadCertificateMutation.isPending ?
-                <LoadingIcons.TailSpin className="size-3" /> :
-                <IconifyIcon icon="ri:award-fill" className='size-5 flex items-center justify-center' />
-              }
-            </div>
+            </Link>
+            <p className='text-lg font-semibold'>{name}</p>
           </div>
-          :
-          <Button loading={enrollCourseMutation.isPending} onClick={enrollCourse}>Enroll</Button>
-        }
+          {!isPreview ?
+            <div className='flex items-end gap-4'>
+              <div className="flex flex-col gap-2 w-72">
+                <div className="flex items-center gap-2">
+                  <p className='text-xs text-muted-foreground'>{completedLessons}/{course.lessons.length} completed</p>
+                  {isCompleted &&
+                    <Fragment>
+                      <p onClick={() => downloadCertificate()} className='text-xs text-primary-100 hover:underline cursor-pointer'>Download Certificate</p>
+                    </Fragment>}
+                </div>
+                <Progress value={progress} />
+              </div>
+              <div
+                onClick={() => downloadCertificate()}
+                className={clsx(
+                  isCompleted ? "bg-primary text-white cursor-pointer" : "bg-[#00246B66] text-[#E6E6E7] cursor-not-allowed",
+                  "border border-[#B0CAFF1A]  size-10 grid place-items-center rounded")}>
+                {downloadCertificateMutation.isPending ?
+                  <LoadingIcons.TailSpin className="size-3" /> :
+                  <IconifyIcon icon="ri:award-fill" className='size-5 flex items-center justify-center' />
+                }
+              </div>
+            </div>
+            :
+            <Button loading={enrollCourseMutation.isPending} onClick={enrollCourse}>Enroll</Button>
+          }
+        </div>
       </div>
       {isPreview && (enrollCourseMutation.isPending || enrollCourseMutation.isSuccess) &&
         <div className='fixed inset-0 w-screen h-screen bg-[#07090FD9] z-50 grid place-items-center place-content-center space-y-6'>

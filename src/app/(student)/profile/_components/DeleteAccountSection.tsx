@@ -1,5 +1,5 @@
 import React from 'react'
-import ProfileSection from './ProfileSection'
+import ProfileSection from '../../../../components/ProfileSection'
 import { Button } from '@/components/ui/button'
 
 export default function DeleteAccountSection() {

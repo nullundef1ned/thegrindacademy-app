@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import '@/styles/quill-editor.css';
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -57,6 +59,10 @@ input:-webkit-autofill {
 
   .responsive-section {
     @apply max-w-screen-xl mx-auto;
+  }
+
+  .responsive-detail-section {
+    @apply max-w-screen-md mx-auto;
   }
 
   .radial-gradient {

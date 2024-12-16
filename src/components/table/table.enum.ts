@@ -12,5 +12,6 @@ export enum TableHeaderTypeEnum {
   PROGRESS = 'progress',
   CURRENCY = 'currency',
   LONG_TEXT = 'long-text',
+  PUBLISHED = 'published',
   DATE_TIME = 'date-time',
 }

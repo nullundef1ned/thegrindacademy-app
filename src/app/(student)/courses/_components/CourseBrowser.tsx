@@ -5,10 +5,10 @@ import Card from "@/components/Card";
 import Image from "next/image";
 import SearchInput from "./SearchInput";
 import StudentQueries from "../../_module/student.queries";
-import { ICourse } from "../../_module/student.interface";
 import useURL from "@/hooks/useURL";
 import Paginator from "./Paginator";
 import LoadingIcons from "react-loading-icons";
+import { ICourse } from "../../_module/_interfaces/course.interface";
 
 
 export default function CourseBrowser() {

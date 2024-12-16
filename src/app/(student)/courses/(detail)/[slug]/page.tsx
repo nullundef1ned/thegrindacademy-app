@@ -12,6 +12,7 @@ import useURL from "@/hooks/useURL";
 import StudentQueries from "../../../_module/student.queries";
 import LoadingIcons from "react-loading-icons";
 import { Button } from "@/components/ui/button";
+import { ICourseMaterial, IEnrolledCourseLesson } from "@/app/(student)/_module/_interfaces/course.interface";
 
 export default function CoursePage({ params }: { params: { slug: string } }) {
   const { clearParams } = useURL();
@@ -19,7 +20,7 @@ export default function CoursePage({ params }: { params: { slug: string } }) {
   const { useFetchEnrolledCourseDetailQuery } = StudentQueries();
 
   const { data, isPending, isError, refetch } = useFetchEnrolledCourseDetailQuery(params.slug);
-  
+
   const course = data || null;
 
   if (isPending) {
@@ -59,13 +60,13 @@ export default function CoursePage({ params }: { params: { slug: string } }) {
   return (
     <div className="w-full space-y-6">
       <CourseHeader course={course} />
-      <div className="grid grid-cols-6 gap-6">
-        <div className="col-span-4">
+      <div className="grid lg:grid-cols-6 gap-6 responsive-section">
+        <div className="lg:col-span-4">
           <CourseMainContent course={course} />
         </div>
-        <div className="relative col-span-2 space-y-8">
-          <div className="sticky top-40 space-y-8">
-            <Accordion defaultValue="overview" type="single" collapsible className="space-y-4">
+        <div className="relative lg:col-span-2 space-y-8">
+          <div className="sticky top-40 gap-8 grid w-full">
+            <Accordion defaultValue="overview" type="single" collapsible className="space-y-4 order-2 lg:order-1">
               <AccordionItem value="overview">
                 <AccordionTrigger>Overview</AccordionTrigger>
                 <AccordionContent>
@@ -75,7 +76,7 @@ export default function CoursePage({ params }: { params: { slug: string } }) {
               <AccordionItem value="materials">
                 <AccordionTrigger>Materials</AccordionTrigger>
                 <AccordionContent className="space-y-2.5">
-                  {course.course.materials.map((material, index) => (
+                  {course.course.materials.map((material: ICourseMaterial, index: number) => (
                     <CourseMaterial key={index} material={material} />
                   ))}
                   {course.course.materials.length === 0 && (
@@ -84,14 +85,14 @@ export default function CoursePage({ params }: { params: { slug: string } }) {
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-            <Card className="space-y-4 !bg-transparent">
+            <Card className="space-y-4 !bg-transparent order-1 lg:order-2">
               <p className="text-sm font-semibold">Course Outline</p>
               <div onClick={watchIntroVideo} className="flex items-center justify-center gap-2 bg-[#00246B] py-2 px-4 rounded cursor-pointer">
                 <p className="text-xs text-center">Intro video</p>
               </div>
               <hr className="border-b-[#B0CAFF1A]" />
               <div className="space-y-4">
-                {lessons.map((lesson, index) => (
+                {lessons.map((lesson: IEnrolledCourseLesson, index: number) => (
                   <CourseLessonCard key={index} index={index} course={course} lesson={lesson} />
                 ))}
               </div>

@@ -1,6 +1,6 @@
-import { IStudentAccountInformationForm } from '@/app/(student)/_module/student.interface';
 import useStudentMutations from '@/app/(student)/_module/student.mutations';
-import { useAppStore } from '@/app/_module/app.store';
+import { useFetchUser } from '@/app/_module/_apis/useFetchUser';
+import { IAccountInformationForm } from '@/app/_module/app.interface';
 import Modal from '@/components/Modal'
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input'
@@ -10,12 +10,12 @@ import { useFormik } from 'formik';
 import React from 'react'
 
 export default function AccountInformationModal() {
-  const user = useAppStore(state => state.user);
+  const { data: user } = useFetchUser();
 
   const { hideModal } = useModal();
   const { updateStudentAccountInformationMutation } = useStudentMutations();
 
-  const { values, handleSubmit, setFieldValue } = useFormik<IStudentAccountInformationForm>({
+  const { values, handleSubmit, setFieldValue } = useFormik<IAccountInformationForm>({
     initialValues: {
       info: {
         firstName: user?.info.firstName || '',

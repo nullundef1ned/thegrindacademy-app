@@ -1,12 +1,15 @@
 import React from 'react'
-import ProfileSection from './ProfileSection';
+import ProfileSection from '../../../../components/ProfileSection';
 import IconifyIcon from '@/components/IconifyIcon';
 import { useStudentStore } from '../../_module/student.store';
 import helperUtil from '@/utils/helper.util';
 import { Button } from '@/components/ui/button';
+import useStudentMutations from '../../_module/student.mutations';
 
 export default function SubscriptionSection() {
   const subscription = useStudentStore(state => state.subscription);
+
+  const { cancelSubscriptionMutation } = useStudentMutations();
 
   const hasPlanExpired = subscription?.renewalDate && new Date(subscription.renewalDate) < new Date();
 
@@ -44,10 +47,13 @@ export default function SubscriptionSection() {
       {{
         'active': (
           <div className='flex items-center gap-4'>
-            <Button size='sm'>
+            <Button href='/subscription' size='sm'>
               Change Subscription
             </Button>
-            <Button variant='destructive' size='sm'>
+            <Button
+              loading={cancelSubscriptionMutation.isPending}
+              onClick={() => cancelSubscriptionMutation.mutate()}
+              variant='destructive' size='sm'>
               Cancel Subscription
             </Button>
           </div>

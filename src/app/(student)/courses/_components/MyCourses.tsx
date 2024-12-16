@@ -8,12 +8,12 @@ import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
 import SearchInput from "./SearchInput";
 import useURL from "@/hooks/useURL";
-import { IStudentEnrolledCourse } from "../../_module/student.interface";
 import StudentQueries from "../../_module/student.queries";
 import { EnrolledCourseStatusType } from "@/app/_module/app.type";
 import Paginator from "./Paginator";
 import LoadingIcons from "react-loading-icons";
 import IconifyIcon from "@/components/IconifyIcon";
+import { IEnrolledCourse } from "../../_module/_interfaces/course.interface";
 
 
 export default function MyCourses() {
@@ -126,7 +126,7 @@ export default function MyCourses() {
         ))}
       </div>
 
-      <Paginator<IStudentEnrolledCourse> pagination={data} />
+      <Paginator<IEnrolledCourse> pagination={data} />
     </div>
   )
 }

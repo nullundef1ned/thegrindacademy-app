@@ -1,5 +1,4 @@
-import { IUserInfo } from "@/app/_module/app.interface";
-import { LessonStatusType } from "@/app/_module/app.type";
+import { IEnrolledCourse } from "./_interfaces/course.interface";
 
 export interface IReferral {
   id: string;
@@ -20,40 +19,9 @@ export interface IBankDetails {
   updatedAt: string;
 }
 
-export interface IStudentEnrolledCourse {
-  completionPercentage: number;
-  id: string;
-  userId: string;
-  courseId: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-  course: ICourse;
-}
-
-export interface IStudentEnrolledCourseDetail extends IStudentEnrolledCourse {
-  lessons: IEnrolledCourseLesson[];
-}
-
-export interface ICompletionCertificate {
-  id: string;
-  userId: string;
-  courseId: string;
-  certificateUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-}
-
-export interface IStudentEnrolledCourseDetail extends IStudentEnrolledCourse {
-  lessons: IEnrolledCourseLesson[];
-  course: ICourseDetail;
-}
-
 export interface IDashboardData {
   course: {
-    active: IStudentEnrolledCourse,
+    active: IEnrolledCourse,
     count: {
       completed: number;
       active: number;
@@ -66,10 +34,6 @@ export interface IBankDetailForm {
   bankName: string;
   bankCode: string;
   accountNumber: string;
-}
-
-export interface IStudentAccountInformationForm {
-  info: Partial<IUserInfo>
 }
 
 export interface IBankDetailCreationResponse {
@@ -98,67 +62,6 @@ export interface IReferralStatistics {
   totalEarnings: number;
 }
 
-export interface ICourseMaterial {
-  id: string;
-  courseId: string;
-  title: string;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface ICourseLesson {
-  id: string;
-  content: string | null;
-  courseId: string;
-  position: number;
-  title: string;
-  slug: string;
-  studyTimeInMinutes: number;
-  description: string | null;
-  videoUrl: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface IEnrolledCourseLesson {
-  id: string;
-  userCourseId: string;
-  position: number;
-  lessonId: string;
-  status: LessonStatusType;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-  lesson: ICourseLesson;
-}
-
-export interface ICourseMedia {
-  id: string;
-  courseId: string;
-  thumbnailUrl: string;
-  imageUrls: string[];
-  introVideoUrl: string;
-}
-
-export interface ICourse {
-  id: string;
-  name: string;
-  shortDescription: string;
-  description: string;
-  media: ICourseMedia;
-  slug: string;
-  telegramChannelId: string;
-  status: string;
-  isFeatured: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface ICourseDetail extends ICourse {
-  lessons: ICourseLesson[];
-  materials: ICourseMaterial[];
-}
 
 export interface IPayout {
   id: string;
@@ -174,4 +77,27 @@ export interface IBanner {
   buttonText?: string;
   permanent: boolean;
   type: 'info' | 'warning' | 'success' | 'error';
+}
+
+export interface ISubscriptionPlanFeature {
+  id: string;
+  planId: string;
+  content: string;
+  label: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ISubscriptionPlan {
+  id: string;
+  name: string;
+  slug: string;
+  frequency: string;
+  duration: number;
+  price: string;
+  isDeal: boolean;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  features: ISubscriptionPlanFeature[];
 }

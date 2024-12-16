@@ -47,9 +47,9 @@ export default function Modal({ title, className, rounded, width, height, positi
   }[position || 'center'];
 
   return ReactDOM.createPortal(
-    <div className={clsx(modalPosition, 'fixed flex inset-0 z-30')}>
-      <div onClick={hideModal} className="w-screen h-screen bg-black bg-opacity-50" />
-      <div className={clsx(className, modalWidth, modalHeight, rounded && 'rounded-lg', 'border border-[#26345F] bg-[#0D1221] p-5 absolute w-full transition-all duration-300 flex flex-col space-y-4')}>
+    <div className={clsx(modalPosition, 'fixed flex inset-0 z-50 p-4')}>
+      <div onClick={hideModal} className="absolute z-30 w-screen h-screen bg-black bg-opacity-50" />
+      <div className={clsx(className, modalWidth, modalHeight, rounded && 'rounded-lg', 'border border-[#26345F] bg-[#0D1221] p-5 w-full transition-all duration-300 flex flex-col space-y-4 z-40')}>
         <div className="flex items-center justify-between">
           {title && <p className='text-lg font-semibold'>{title}</p>}
           <div onClick={hideModal} className='!ml-auto'>
