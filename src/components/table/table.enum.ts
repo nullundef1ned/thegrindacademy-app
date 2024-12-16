@@ -1,0 +1,16 @@
+export enum TableHeaderTypeEnum {
+  TEXT = 'text',
+  DATE = 'date',
+  TIME = 'time',
+  EMAIL = 'email',
+  IMAGE = 'image',
+  STRING = 'string',
+  NUMBER = 'number',
+  STATUS = 'status',
+  AVATAR = 'avatar',
+  SLUGGED = 'slugged',
+  PROGRESS = 'progress',
+  CURRENCY = 'currency',
+  LONG_TEXT = 'long-text',
+  DATE_TIME = 'date-time',
+}

@@ -1,5 +1,6 @@
 'use client';
 
+import { ModalProvider } from "./modal.provider";
 import TanstackQueryProvder from "./tanstack-query.provder";
 import TitleProvider from "./title.provider";
 import ToastProvider from "./toast.provider";
@@ -13,7 +14,9 @@ export default function Provider({ children }: ProviderProps) {
     <TanstackQueryProvder>
       <TitleProvider>
         <ToastProvider>
-          {children}
+          <ModalProvider>
+            {children}
+          </ModalProvider>
         </ToastProvider>
       </TitleProvider>
     </TanstackQueryProvder>
