@@ -34,6 +34,8 @@ export interface ICourseMedia {
   thumbnailUrl: string;
   imageUrls: string[];
   introVideoUrl: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ICourseMaterial {
