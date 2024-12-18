@@ -40,14 +40,14 @@ export default function useAdminCourseMutations() {
     }
   })
 
-  const createCourseMediaMutation = useMutation({
+  const createOrUpdateCourseMediaMutation = useMutation({
     mutationFn: async (payload: IAdminCourseMediaForm): Promise<ICourseMedia> => {
       const { courseId, ...rest } = payload;
       const response = await axiosHandler.post(`/admin/course/${courseId}/media`, rest)
       return response.data;
     },
-    onSettled: () => {
-      queryClient.refetchQueries({ queryKey: ['courses'] })
+    onSettled: (data, variables, context) => {
+      queryClient.refetchQueries({ queryKey: ['course', context.courseId, 'media'] })
     }
   })
 
@@ -57,8 +57,9 @@ export default function useAdminCourseMutations() {
       const response = await axiosHandler.patch(`/admin/course/${id}`, rest)
       return response.data;
     },
-    onSettled: () => {
+    onSettled: (data, variables, context) => {
       queryClient.refetchQueries({ queryKey: ['courses'] })
+      queryClient.refetchQueries({ queryKey: ['course', context.id] })
     }
   })
 
@@ -117,7 +118,7 @@ export default function useAdminCourseMutations() {
     createCourseMutation,
     createOrUpdateCourseMaterialMutation,
     createCourseLessonMutation,
-    createCourseMediaMutation,
+    createOrUpdateCourseMediaMutation,
     updateCourseMutation,
     updateCourseMaterialMutation,
     updateCourseLessonMutation,

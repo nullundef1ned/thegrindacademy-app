@@ -80,16 +80,11 @@ const capitalize = (text: string): string => {
 }
 
 const downloadFile = async (url: string, filename: string) => {
-  console.log(url)
   try {
-    const response = await fetch(url);
-    const blob = await response.blob();
     const anchor = document.createElement('a');
-    const link = URL.createObjectURL(blob);
-    anchor.href = link;
+    anchor.href = url;
     anchor.download = filename;
     anchor.click();
-    URL.revokeObjectURL(link);
     anchor.remove();
   } catch (error) {
     notificationUtil.error('Failed to download file');

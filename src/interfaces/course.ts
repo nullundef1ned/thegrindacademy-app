@@ -1,6 +1,8 @@
 import { ICourse } from "@/app/(student)/_module/_interfaces/course.interface";
+import { CourseStatusType } from "@/app/_module/app.type";
 
 export interface IAdminCourse extends Omit<ICourse, 'media'> {
+  _?: unknown;
 }
 
 export interface IAdminCourseForm {
@@ -13,6 +15,8 @@ export interface IAdminCourseForm {
 
 export interface IAdminCourseUpdateForm extends IAdminCourseForm {
   id: string;
+  status: CourseStatusType;
+  isFeatured: boolean;
 }
 
 export interface IAdminCourseMediaForm {

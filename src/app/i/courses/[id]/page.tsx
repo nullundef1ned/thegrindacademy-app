@@ -2,8 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ICourse } from "@/app/(student)/_module/_interfaces/course.interface";
-import { useRouter } from "next/navigation";
 import { useModal } from "@/providers/modal.provider";
 import { adminRoutes } from "../../_module/admin.routes";
 import LoadingIcons from "react-loading-icons";
@@ -12,11 +10,11 @@ import Breadcrumbs, { BreadcrumbItem } from "@/components/Breadcrumbs";
 import { useFetchAdminCourse } from "../_apis/useFetchAdminCourse";
 import DeleteCourseModal from "./_modals/DeleteCourseModal";
 import CourseInformationSection from "./_components/CourseInformationSection";
+import CourseMediaSection from "./_components/CourseMediaSection";
 
 export default function AdminCourseDetailPage({ params }: { params: { id: string } }) {
   const { id } = params;
 
-  const router = useRouter();
   const { setTitle } = useTitle();
   const { showModal } = useModal();
   const { data, isPending } = useFetchAdminCourse(id);
@@ -39,10 +37,6 @@ export default function AdminCourseDetailPage({ params }: { params: { id: string
     { name: data.name },
   ]
 
-  const goToCourse = (course: ICourse) => {
-    router.push(`/courses/${course.slug}`);
-  }
-
   setTitle(`${data.name} | Course | The Grind Academy`);
 
 
@@ -57,7 +51,8 @@ export default function AdminCourseDetailPage({ params }: { params: { id: string
           <Button onClick={openDeleteCourseModal} size="sm" variant="destructive">Delete Course</Button>
         </div>
       </div>
-      <CourseInformationSection />
+      <CourseInformationSection course={data} />
+      <CourseMediaSection course={data} />
     </div>
   )
 }

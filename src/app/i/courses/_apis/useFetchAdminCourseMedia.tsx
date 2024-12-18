@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "@/hooks/useAxios";
-import { ICourseDetail, ICourseMedia } from "@/app/(student)/_module/_interfaces/course.interface";
+import { ICourseMedia } from "@/app/(student)/_module/_interfaces/course.interface";
 
 export function useFetchAdminCourseMedia(courseId: string) {
   const axiosHandler = useAxios();
