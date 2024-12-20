@@ -32,8 +32,8 @@ export interface IAdminCourseLessonForm {
   title: string;
   studyTimeInMinutes: number;
   description: string | null;
-  videoUrl: string;
-  content: string;
+  videoUrl?: string;
+  content?: string;
 }
 
 export interface IAdminCourseLessonUpdateForm extends IAdminCourseLessonForm {

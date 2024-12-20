@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/providers/tanstack-query.provder';
 import { IAdminCourse } from '@/interfaces/course';
 import { ICourseLesson, ICourseMaterial, ICourseMedia } from '@/app/(student)/_module/_interfaces/course.interface';
+import notificationUtil from '@/utils/notification.util';
 
 export default function useAdminCourseMutations() {
   const axiosHandler = useAxios();
@@ -18,14 +19,14 @@ export default function useAdminCourseMutations() {
     }
   })
 
-  const createOrUpdateCourseMaterialMutation = useMutation({
+  const createCourseMaterialMutation = useMutation({
     mutationFn: async (payload: IAdminCourseMaterialForm): Promise<ICourseMaterial> => {
       const { courseId, ...rest } = payload;
       const response = await axiosHandler.post(`/admin/course/${courseId}/material`, rest)
       return response.data;
     },
-    onSettled: () => {
-      queryClient.refetchQueries({ queryKey: ['courses'] })
+    onSettled: (data, variables, context) => {
+      queryClient.refetchQueries({ queryKey: ['course', context.courseId, 'materials'] })
     }
   })
 
@@ -35,8 +36,8 @@ export default function useAdminCourseMutations() {
       const response = await axiosHandler.post(`/admin/course/${courseId}/lesson`, rest)
       return response.data;
     },
-    onSettled: () => {
-      queryClient.refetchQueries({ queryKey: ['courses'] })
+    onSettled: (data, variables, context) => {
+      queryClient.refetchQueries({ queryKey: ['course', context.courseId, 'lessons'] })
     }
   })
 
@@ -69,10 +70,21 @@ export default function useAdminCourseMutations() {
       const response = await axiosHandler.patch(`/admin/course/${courseId}/material/${materialId}`, rest)
       return response.data;
     },
-    onSettled: () => {
-      queryClient.refetchQueries({ queryKey: ['courses'] })
+    onSettled: (data, variables, context) => {
+      queryClient.refetchQueries({ queryKey: ['course', context.courseId, 'materials'] })
     }
   })
+
+  // const bulkUpdateCourseLessonMutation = useMutation({
+  //   mutationFn: async (payload: { lessons: IAdminCourseLessonForm[], courseId: string }): Promise<ICourseLesson> => {
+  //     const { courseId, lessons } = payload;
+  //     const response = await axiosHandler.patch(`/admin/course/${courseId}/lesson`, lessons)
+  //     return response.data;
+  //   },
+  //   onSettled: () => {
+  //     queryClient.refetchQueries({ queryKey: ['courses'] })
+  //   }
+  // })
 
   const updateCourseLessonMutation = useMutation({
     mutationFn: async (payload: IAdminCourseLessonUpdateForm): Promise<ICourseLesson> => {
@@ -80,8 +92,11 @@ export default function useAdminCourseMutations() {
       const response = await axiosHandler.patch(`/admin/course/${courseId}/lesson/${lessonId}`, rest)
       return response.data;
     },
-    onSettled: () => {
-      queryClient.refetchQueries({ queryKey: ['courses'] })
+    onSuccess: () => {
+      notificationUtil.success('Lesson saved successfully')
+    },
+    onSettled: (data, variables, context) => {
+      queryClient.refetchQueries({ queryKey: ['course', context.courseId, 'lessons'] })
     }
   })
 
@@ -99,8 +114,8 @@ export default function useAdminCourseMutations() {
       const { courseId, materialId } = payload;
       await axiosHandler.delete(`/admin/course/${courseId}/material/${materialId}`)
     },
-    onSettled: () => {
-      queryClient.refetchQueries({ queryKey: ['courses'] })
+    onSettled: (data, variables, context) => {
+      queryClient.refetchQueries({ queryKey: ['course', context.courseId, 'materials'] })
     }
   })
 
@@ -109,14 +124,17 @@ export default function useAdminCourseMutations() {
       const { courseId, lessonId } = payload;
       await axiosHandler.delete(`/admin/course/${courseId}/lesson/${lessonId}`)
     },
-    onSettled: () => {
-      queryClient.refetchQueries({ queryKey: ['courses'] })
+    onSuccess: () => {
+      notificationUtil.success('Lesson deleted successfully')
+    },
+    onSettled: (data, variables, context) => {
+      queryClient.refetchQueries({ queryKey: ['course', context.courseId, 'lessons'] })
     }
   })
 
   return {
     createCourseMutation,
-    createOrUpdateCourseMaterialMutation,
+    createCourseMaterialMutation,
     createCourseLessonMutation,
     createOrUpdateCourseMediaMutation,
     updateCourseMutation,

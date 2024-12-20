@@ -33,6 +33,9 @@ export default function TableCellContent<T>({ row, header }: TableCellContentPro
     case TableHeaderTypeEnum.PUBLISHED:
       const published = value === 'true' ? 'published' : 'draft';
       return <Status status={published as StatusType} />
+    case TableHeaderTypeEnum.FEATURED:
+      const featured = value === 'true' ? 'featured' : 'not featured';
+      return <span className="capitalize">{featured}</span>
     case TableHeaderTypeEnum.PROGRESS:
       return (
         <div className="flex items-center gap-2">

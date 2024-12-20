@@ -48,8 +48,8 @@ export default function CourseInformationSection({ course }: ICourseInformationS
 
   return (
     <div className='space-y-4'>
-      <div className="flex items-center justify-between">
-        <p className="text-lg font-medium text-accent">Course Information</p>
+      <div className="flex items-center gap-4 justify-between">
+        <p className="font-medium text-accent">Course Information</p>
         {isEditing ? (
           <div className="flex items-center gap-4">
             <Button size="sm" variant="outline" onClick={cancelEditing}>

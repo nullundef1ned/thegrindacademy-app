@@ -18,7 +18,7 @@ export default function CoursesPage() {
   const tableHeaders: TableHeader<IAdminCourse>[] = [
     { key: 'name', value: 'Name' },
     { key: 'shortDescription', value: 'Short Description' },
-    { key: 'isFeatured', value: 'Featured' },
+    { key: 'isFeatured', value: 'Featured', type: TableHeaderTypeEnum.FEATURED },
     { key: 'status', value: 'Status', type: TableHeaderTypeEnum.STATUS },
     { key: 'updatedAt', value: 'Last Modified', type: TableHeaderTypeEnum.DATE },
     { key: 'createdAt', value: 'Date Created', type: TableHeaderTypeEnum.DATE },
