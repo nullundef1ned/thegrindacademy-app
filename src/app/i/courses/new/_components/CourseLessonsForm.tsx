@@ -1,10 +1,11 @@
 import { IAdminBulkCourseLessonForm, IAdminCourseLessonForm } from '@/interfaces/course';
 import { Button } from '@/components/ui/button';
-import { newLesson, useCourseForm } from '../page';
 import { useState } from 'react';
 import { Accordion } from '@/components/ui/accordion';
 import CourseLessonForm from '../../[id]/_components/_forms/CourseLessonForm';
 import useAdminCourseMutations from '../../_apis/admin-course.mutations';
+import { newLesson } from './_hooks/course-form.hook';
+import { useCourseForm } from './_hooks/course-form.hook';
 
 export default function CourseLessonsForm() {
 

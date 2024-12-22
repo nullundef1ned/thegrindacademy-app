@@ -4,7 +4,7 @@ import { IAdminCourseForm } from '@/interfaces/course';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { useCourseForm } from '../page';
+import { useCourseForm } from './_hooks/course-form.hook';
 
 export default function CourseBasicDetailsForm() {
 

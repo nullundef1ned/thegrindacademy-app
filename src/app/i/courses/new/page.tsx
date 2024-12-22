@@ -4,7 +4,7 @@
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { BreadcrumbItem } from '@/components/Breadcrumbs';
 import { useTitle } from '@/providers/title.provider';
-import React, { createContext, useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { adminRoutes } from '../../_module/admin.routes';
 import IconifyIcon from '@/components/IconifyIcon';
 import clsx from 'clsx';
@@ -13,56 +13,7 @@ import CourseMediaForm from './_components/CourseMediaForm';
 import CourseLessonsForm from './_components/CourseLessonsForm';
 import CourseExtrasForm from './_components/CourseExtrasForm';
 import { IAdminCourseForm, IAdminCourseMediaForm, IAdminBulkCourseLessonForm, IAdminBulkCourseMaterialForm } from '@/interfaces/course';
-
-interface CourseFormContextType {
-  currentStep: number;
-  course: {
-    id: string;
-    details: IAdminCourseForm;
-    materials: IAdminBulkCourseMaterialForm[];
-    lessons: IAdminBulkCourseLessonForm[];
-    media: IAdminCourseMediaForm;
-  }
-  setCourseDetails: ({ details, id }: { details: IAdminCourseForm, id: string }) => void;
-  setCourseMaterials: (materials: IAdminBulkCourseMaterialForm[]) => void;
-  setCourseLessons: (lessons: IAdminBulkCourseLessonForm[]) => void;
-  setCourseMedia: (media: IAdminCourseMediaForm) => void;
-  goToNextStep: () => void;
-  goToPreviousStep: () => void;
-}
-
-export const newLesson: IAdminBulkCourseLessonForm = { title: 'New Lesson', content: '', position: 1, studyTimeInMinutes: 10, description: '', videoUrl: '' };
-
-const CourseFormContext = createContext<CourseFormContextType>({
-  currentStep: 1,
-  course: {
-    id: "",
-    details: {
-      name: "",
-      shortDescription: "",
-      description: "",
-      telegramChannelId: "",
-    },
-    materials: [],
-    lessons: [newLesson],
-    media: {
-      courseId: "",
-      thumbnailUrl: "",
-      imageUrls: [],
-      introVideoUrl: "",
-    },
-  },
-  setCourseDetails: () => { },
-  setCourseMaterials: () => { },
-  setCourseLessons: () => { },
-  setCourseMedia: () => { },
-  goToNextStep: () => { },
-  goToPreviousStep: () => { },
-});
-
-export const useCourseForm = () => {
-  return useContext(CourseFormContext);
-}
+import { CourseFormContext, CourseFormContextType, newLesson } from './_components/_hooks/course-form.hook';
 
 export default function NewCoursePage() {
   const { setTitle } = useTitle();

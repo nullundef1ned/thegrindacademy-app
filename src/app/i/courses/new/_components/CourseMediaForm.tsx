@@ -2,12 +2,12 @@ import useAdminCourseMutations from '../../_apis/admin-course.mutations';
 import { useFormik } from 'formik';
 import { IAdminCourseMediaForm } from '@/interfaces/course';
 import { Button } from '@/components/ui/button';
-import { useCourseForm } from '../page';
 import FileUploader from '@/components/FileUploader';
 import * as yup from 'yup';
 import Video from '@/components/Video';
 import Image from 'next/image';
 import IconifyIcon from '@/components/IconifyIcon';
+import { useCourseForm } from './_hooks/course-form.hook';
 
 export default function CourseMediaForm() {
 

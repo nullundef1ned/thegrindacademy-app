@@ -1,11 +1,11 @@
 import useAdminCourseMutations from '../../_apis/admin-course.mutations';
 import { IAdminBulkCourseMaterialForm } from '@/interfaces/course';
-import { useCourseForm } from '../page';
 import FileUploader from '@/components/FileUploader';
 import CourseMaterialForm from '../../[id]/_components/_forms/CourseMaterialForm';
 import { Button } from '@/components/ui/button';
 import { useModal } from '@/providers/modal.provider';
 import CourseCreationModal from './_modals/CourseCreationModal';
+import { useCourseForm } from './_hooks/course-form.hook';
 
 export default function CourseExtrasForm() {
 
