@@ -34,6 +34,7 @@ export const useAppStore = create<AppStore>()(
     logout: () => {
       resetAllStores();
       set({ token: null })
+      storageUtil.deleteItem(StorageKey.user)
       storageUtil.deleteItem(StorageKey.token)
     }
   }), { name: 'the-grind::store' }))

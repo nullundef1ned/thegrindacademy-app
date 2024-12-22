@@ -7,6 +7,8 @@ import { clsx } from 'clsx';
 import { adminRoutes } from './_module/admin.routes';
 import Header from '@/components/Header';
 import AdminQueries from './_module/admin.queries';
+import { appRoutes } from '../_module/app.routes';
+import { Button } from '@/components/ui/button';
 
 function AdminLayout({ children }: { children: React.ReactNode }) {
   const { useFetchAuthenticationQuery } = AdminQueries();
@@ -40,6 +42,7 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
           <p className='text-sm text-accent text-center'>
             You are not authorized to access this page
           </p>
+          <Button variant='default' href={appRoutes.home}>Return to Dashboard</Button>
         </div>
       </div>
     )

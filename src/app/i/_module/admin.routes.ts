@@ -1,4 +1,4 @@
-const anchor = 'i'
+export const anchor = 'i'
 
 export const adminRoutes = {
   dashboard: `/${anchor}/overview`,

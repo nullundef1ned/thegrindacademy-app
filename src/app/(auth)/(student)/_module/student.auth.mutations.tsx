@@ -8,6 +8,8 @@ import { IAuthResponse } from "@/app/_module/app.interface";
 import useStudentHooks from "@/app/(student)/_module/student.hooks";
 import useURL from "@/hooks/useURL";
 import { URLKeyEnum } from "@/app/_module/app.enum";
+import { StorageKey } from "@/utils/storage.util";
+import storageUtil from "@/utils/storage.util";
 
 export default function useStudentAuthMutations() {
   const router = useRouter()
@@ -32,6 +34,7 @@ export default function useStudentAuthMutations() {
     },
     onSuccess: (data: IAuthResponse) => {
       setupStudentAccount(data);
+      storageUtil.saveItem(StorageKey.user, data.user);
       notificationUtil.success("Welcome back!")
 
       router.push(redirect ?? '/')

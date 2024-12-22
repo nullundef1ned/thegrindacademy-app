@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import Header from '../../components/Header';
 import { studentRoutes } from './_module/student.routes';
 import { useStudentStore } from './_module/student.store';
@@ -10,13 +10,18 @@ import Image from 'next/image';
 import BrandBars from '@/components/BrandBars';
 import { clsx } from 'clsx';
 import { appRoutes } from '../_module/app.routes';
+import storageUtil, { StorageKey } from '@/utils/storage.util';
+import { adminRoutes } from '../i/_module/admin.routes';
+import { IUser } from '../_module/app.interface';
+import { useRouter } from 'next/navigation';
 
 function StudentLayout({ children }: { children: React.ReactNode }) {
   const banners = useStudentStore((state) => state.banners);
 
+  const router = useRouter();
   const { useFetchAuthenticationQuery } = StudentQueries();
   // const { data: subscription } = useFetchSubscriptionQuery();
-  const { isPending } = useFetchAuthenticationQuery();
+  const { isPending, isError } = useFetchAuthenticationQuery();
 
   const routes = [
     { name: 'Overview', href: studentRoutes.overview },
@@ -26,7 +31,14 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
     { name: 'Support', href: studentRoutes.support },
   ]
 
-  if (isPending) {
+  useEffect(() => {
+    const user = storageUtil.getItem(StorageKey.user) as IUser;
+    if (user?.role === 'admin') {
+      router.push(adminRoutes.dashboard);
+    }
+  }, [isPending]);
+
+  if (isPending || isError) {
     return (
       <div className='relative w-screen min-h-screen grid place-items-center'>
         <div className='flex flex-col items-center gap-4'>
