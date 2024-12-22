@@ -34,7 +34,7 @@ export default function CourseHeader({ course, isPreview }: ICourseHeaderProps) 
 
   const downloadCertificate = () => {
     if (!isCompleted || !course.id || isPreview) return;
-    downloadCertificateMutation.mutate({ courseId: course.id }, {
+    downloadCertificateMutation.mutate({ courseId: (course as IEnrolledCourseDetail).courseId }, {
       onSuccess: async (data: ICompletionCertificate) => {
         await helperUtil.downloadFile(data.certificateUrl, `${user?.info.firstName} ${user?.info.lastName} | ${name} certificate.pdf`);
       }

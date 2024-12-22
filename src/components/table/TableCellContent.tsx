@@ -8,6 +8,8 @@ import { TableHeader } from './table.interface';
 import { TableHeaderTypeEnum } from './table.enum';
 import { Progress } from '../ui/progress';
 import { TData } from '@/app/_module/app.interface';
+import FeaturedToggle from './FeaturedToggle';
+import { ICourseDetail } from '@/app/(student)/_module/_interfaces/course.interface';
 
 type TableCellContentProps<T> = {
   row: TData<T>;
@@ -33,6 +35,10 @@ export default function TableCellContent<T>({ row, header }: TableCellContentPro
     case TableHeaderTypeEnum.PUBLISHED:
       const published = value === 'true' ? 'published' : 'draft';
       return <Status status={published as StatusType} />
+    case TableHeaderTypeEnum.FEATURED:
+      const isFeatured = value === 'true';
+      const isPublished = (row as unknown as ICourseDetail).status === 'published';
+      return <FeaturedToggle courseId={row.id} published={isPublished} isFeatured={isFeatured} />
     case TableHeaderTypeEnum.PROGRESS:
       return (
         <div className="flex items-center gap-2">

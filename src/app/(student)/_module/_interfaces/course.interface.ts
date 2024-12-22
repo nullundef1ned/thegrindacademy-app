@@ -1,4 +1,4 @@
-import { LessonStatusType } from "@/app/_module/app.type";
+import { CourseStatusType, EnrolledCourseStatusType, LessonStatusType } from "@/app/_module/app.type";
 
 export interface ICourse {
   id: string;
@@ -8,7 +8,7 @@ export interface ICourse {
   media: ICourseMedia;
   slug: string;
   telegramChannelId: string;
-  status: string;
+  status: EnrolledCourseStatusType & CourseStatusType;
   isFeatured: boolean;
   createdAt: string;
   updatedAt: string;
@@ -34,6 +34,8 @@ export interface ICourseMedia {
   thumbnailUrl: string;
   imageUrls: string[];
   introVideoUrl: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ICourseMaterial {

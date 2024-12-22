@@ -20,10 +20,6 @@ export default function FileUploader({ provider, type, fileType, onChange }: Fil
     throw new Error('Invalid type for bunny provider');
   }
 
-  if (provider === 'do-spaces' && type === 'course') {
-    throw new Error('Invalid type for do-spaces provider');
-  }
-
   const icon = {
     'image': 'ri:image-2-fill',
     'video': 'ri:video-line',
