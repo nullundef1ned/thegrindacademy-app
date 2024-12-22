@@ -2,7 +2,7 @@ import { ICourseLesson } from "@/app/(student)/_module/_interfaces/course.interf
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import useAdminCourseMutations from "../../../_apis/admin-course.mutations";
-import { IAdminCourseLessonForm, IAdminCourseLessonUpdateForm } from "@/interfaces/course";
+import { IAdminBulkCourseLessonForm, IAdminCourseLessonForm, IAdminCourseLessonUpdateForm } from "@/interfaces/course";
 import { AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { AccordionContent } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
@@ -13,22 +13,26 @@ import RichTextEditor from "@/components/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import useAppMutations from "@/app/_module/app.mutations";
 import notificationUtil from "@/utils/notification.util";
+import clsx from "clsx";
 
 interface ICourseLessonFormProps {
-  lesson: ICourseLesson | IAdminCourseLessonForm;
+  lesson: ICourseLesson | IAdminCourseLessonForm | IAdminBulkCourseLessonForm;
+  lessonCount: number;
   position: number;
+  isNewLesson?: boolean;
+  setLesson?: (lesson: IAdminCourseLessonForm) => void;
   removeLesson: (position: number) => void;
 }
 
-export default function CourseLessonForm({ lesson, position, removeLesson }: ICourseLessonFormProps) {
+export default function CourseLessonForm({ lesson, position, isNewLesson, setLesson, removeLesson, lessonCount }: ICourseLessonFormProps) {
   const { deleteVideoFileMutation } = useAppMutations();
   const { createCourseLessonMutation, updateCourseLessonMutation, deleteCourseLessonMutation } = useAdminCourseMutations();
 
-  const { handleSubmit, handleChange, setFieldValue, values } = useFormik<IAdminCourseLessonUpdateForm>({
+  const { handleSubmit, handleChange: handleChangeFormik, setFieldValue: setFieldValueFormik, values } = useFormik<IAdminCourseLessonUpdateForm>({
     enableReinitialize: true,
     initialValues: {
       lessonId: (lesson as ICourseLesson).id,
-      courseId: lesson.courseId,
+      courseId: (lesson as IAdminCourseLessonForm).courseId,
       title: lesson.title,
       content: lesson.content || '',
       description: lesson.description || '',
@@ -52,6 +56,16 @@ export default function CourseLessonForm({ lesson, position, removeLesson }: ICo
     },
   });
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    handleChangeFormik(e);
+    setLesson?.({ ...values, [e.target.name]: e.target.value });
+  }
+
+  const setFieldValue = (name: string, value: string) => {
+    setFieldValueFormik(name, value);
+    setLesson?.({ ...values, [name]: value });
+  }
+
   const deleteVideo = () => {
     if (!values.videoUrl) return;
     deleteVideoFileMutation.mutate({ url: values.videoUrl });
@@ -71,6 +85,7 @@ export default function CourseLessonForm({ lesson, position, removeLesson }: ICo
     removeLesson(position);
   }
 
+  const showRemoveButton = lessonCount > 1;
   const isLoading = updateCourseLessonMutation.isPending || createCourseLessonMutation.isPending;
 
   return (
@@ -114,10 +129,10 @@ export default function CourseLessonForm({ lesson, position, removeLesson }: ICo
                 variant="destructive"
                 className="col-span-1"
                 loading={deleteCourseLessonMutation.isPending}
-                onClick={() => deleteCourseLessonMutation.mutate({ courseId: lesson.courseId, lessonId: (lesson as ICourseLesson).id })}>
+                onClick={() => deleteCourseLessonMutation.mutate({ courseId: (lesson as IAdminCourseLessonForm).courseId, lessonId: (lesson as ICourseLesson).id })}>
                 Delete
               </Button>
-            ) :
+            ) : showRemoveButton && (
               <Button
                 size="sm"
                 type="button"
@@ -126,10 +141,12 @@ export default function CourseLessonForm({ lesson, position, removeLesson }: ICo
                 onClick={removeLessonHandler}>
                 Remove
               </Button>
-            }
-            <Button size="sm" className="col-span-2" type="submit" loading={isLoading}>
-              Save
-            </Button>
+            )}
+            {!isNewLesson && (
+              <Button size="sm" className={clsx((showRemoveButton || (lesson as ICourseLesson).id) ? "col-span-2" : "col-span-3")} type="submit" loading={isLoading}>
+                Save
+              </Button>
+            )}
           </div>
         </form>
       </AccordionContent>

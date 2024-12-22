@@ -72,6 +72,11 @@ export default function CourseMaterialsSection({ course }: ICourseMaterialsSecti
                     </div>
                   </div>
                 ))}
+                {materials.length === 0 && (
+                  <div className='py-4'>
+                    <p className='text-sm text-primary-50'>No materials found. <span onClick={startEditing} className='text-accent cursor-pointer'>Add new material.</span></p>
+                  </div>
+                )}
               </Fragment>
             ) : (
               <div className="flex flex-col gap-4 py-4">

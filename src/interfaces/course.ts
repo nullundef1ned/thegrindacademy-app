@@ -36,6 +36,15 @@ export interface IAdminCourseLessonForm {
   content?: string;
 }
 
+export interface IAdminBulkCourseLessonForm {
+  position: number;
+  title: string;
+  studyTimeInMinutes: number;
+  description: string | null;
+  videoUrl?: string;
+  content?: string;
+}
+
 export interface IAdminCourseLessonUpdateForm extends IAdminCourseLessonForm {
   lessonId: string;
 }
@@ -47,6 +56,11 @@ export interface IAdminCourseLessonDeleteForm {
 
 export interface IAdminCourseMaterialForm {
   courseId: string;
+  title: string;
+  content: string;
+}
+
+export interface IAdminBulkCourseMaterialForm {
   title: string;
   content: string;
 }

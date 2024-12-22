@@ -9,6 +9,7 @@ import pluralize from 'pluralize';
 import Video from '@/components/Video';
 import CourseLessonForm from './_forms/CourseLessonForm';
 import { IAdminCourseLessonForm, IAdminCourseLessonUpdateForm } from '@/interfaces/course';
+import Card from '@/components/Card';
 
 interface ICourseLessonsSectionProps {
   course: ICourseDetail;
@@ -21,13 +22,12 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
   const startEditing = () => setIsEditing(true);
   const cancelEditing = () => {
     setIsEditing(false)
-    setLessons(data?.result || []);
   };
 
   const { data, isPending } = useFetchAdminCourseLessons(course?.id);
-  const { updateCourseLessonMutation } = useAdminCourseMutations();
+  const { createCourseLessonMutation, updateCourseLessonMutation, deleteCourseLessonMutation } = useAdminCourseMutations();
 
-  const [lessons, setLessons] = useState<(ICourseLesson | IAdminCourseLessonForm)[]>(data?.result || []);
+  const lessons = data?.result || [];
 
   const finishEditing = () => {
     lessons.forEach((lesson, index) => {
@@ -51,15 +51,15 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
 
   const addLesson = () => {
     const position = lessons.length + 1;
-    const newLesson: IAdminCourseLessonForm = { courseId: course.id, title: 'New Lesson', content: '', position, studyTimeInMinutes: 10, description: '', videoUrl: '' };
-    setLessons([...lessons, newLesson]);
+    const newLesson: IAdminCourseLessonForm = { courseId: course.id, title: 'New Lesson ' + position, content: 'Sample content', position, studyTimeInMinutes: 10, description: 'Sample description' };
+    createCourseLessonMutation.mutate(newLesson);
     setActiveLesson(position.toString());
   }
 
-  const removeLesson = (position: number) => {
-    const newLessons = lessons.filter((lesson) => lesson.position !== position);
-    setLessons(newLessons);
-    setActiveLesson(newLessons[newLessons.length - 1].position.toString());
+  const removeLesson = async (position: number) => {
+    const lesson = lessons.find((lesson) => lesson.position === position);
+    await deleteCourseLessonMutation.mutateAsync({ courseId: course.id, lessonId: (lesson as ICourseLesson).id });
+    setActiveLesson(lessons[lessons.length - 1].position.toString());
   }
 
   return (
@@ -74,7 +74,7 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
             <Button size="sm" variant="success" onClick={finishEditing}>
               Finish Editing
             </Button>
-            <Button size="sm" onClick={addLesson}>
+            <Button loading={createCourseLessonMutation.isPending} size="sm" onClick={addLesson}>
               Add Lesson
             </Button>
           </div>
@@ -130,11 +130,16 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
                   </AccordionContent>
                 </AccordionItem>
               ))}
+              {lessons.length === 0 && (
+                <Card className='py-4'>
+                  <p className='text-sm text-primary-50'>No lessons found. <span onClick={() => { startEditing(); addLesson() }} className='text-accent cursor-pointer'>Add a new lesson.</span></p>
+                </Card>
+              )}
             </Accordion>
           ) : (
             <Accordion type='single' value={activeLesson} onValueChange={setActiveLesson} collapsible className='space-y-4'>
               {lessons.map((lesson: ICourseLesson | IAdminCourseLessonForm, index) => (
-                <CourseLessonForm key={index} lesson={lesson} position={index + 1} removeLesson={removeLesson} />
+                <CourseLessonForm key={index} lesson={lesson} position={index + 1} removeLesson={removeLesson} lessonCount={lessons.length} />
               ))}
             </Accordion>
           )}

@@ -1,5 +1,5 @@
 import useAxios from '@/hooks/useAxios';
-import { IAdminCourseForm, IAdminCourseLessonDeleteForm, IAdminCourseLessonForm, IAdminCourseLessonUpdateForm, IAdminCourseMaterialDeleteForm, IAdminCourseMaterialForm, IAdminCourseMaterialUpdateForm, IAdminCourseMediaForm, IAdminCourseUpdateForm } from '@/interfaces/course';
+import { IAdminBulkCourseLessonForm, IAdminBulkCourseMaterialForm, IAdminCourseForm, IAdminCourseLessonDeleteForm, IAdminCourseLessonForm, IAdminCourseLessonUpdateForm, IAdminCourseMaterialDeleteForm, IAdminCourseMaterialForm, IAdminCourseMaterialUpdateForm, IAdminCourseMediaForm, IAdminCourseUpdateForm } from '@/interfaces/course';
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/providers/tanstack-query.provder';
 import { IAdminCourse } from '@/interfaces/course';
@@ -53,7 +53,7 @@ export default function useAdminCourseMutations() {
   })
 
   const updateCourseMutation = useMutation({
-    mutationFn: async (payload: IAdminCourseUpdateForm): Promise<IAdminCourse> => {
+    mutationFn: async (payload: Partial<IAdminCourseUpdateForm>): Promise<IAdminCourse> => {
       const { id, ...rest } = payload;
       const response = await axiosHandler.patch(`/admin/course/${id}`, rest)
       return response.data;
@@ -75,16 +75,28 @@ export default function useAdminCourseMutations() {
     }
   })
 
-  // const bulkUpdateCourseLessonMutation = useMutation({
-  //   mutationFn: async (payload: { lessons: IAdminCourseLessonForm[], courseId: string }): Promise<ICourseLesson> => {
-  //     const { courseId, lessons } = payload;
-  //     const response = await axiosHandler.patch(`/admin/course/${courseId}/lesson`, lessons)
-  //     return response.data;
-  //   },
-  //   onSettled: () => {
-  //     queryClient.refetchQueries({ queryKey: ['courses'] })
-  //   }
-  // })
+  const bulkCreateCourseLessonMutation = useMutation({
+    mutationFn: async (payload: { lessons: IAdminBulkCourseLessonForm[], courseId: string }): Promise<string> => {
+      const { courseId, lessons } = payload;
+      const response = await axiosHandler.post(`/admin/course/${courseId}/lesson/bulk`, lessons)
+      return response.data;
+    },
+    onSettled: (data, variables, context) => {
+      queryClient.refetchQueries({ queryKey: ['course', context.courseId, 'lessons'] })
+    }
+  })
+
+
+  const bulkCreateCourseMaterialMutation = useMutation({
+    mutationFn: async (payload: { materials: IAdminBulkCourseMaterialForm[], courseId: string }): Promise<string> => {
+      const { courseId, materials } = payload;
+      const response = await axiosHandler.post(`/admin/course/${courseId}/material/bulk`, materials)
+      return response.data;
+    },
+    onSettled: (data, variables, context) => {
+      queryClient.refetchQueries({ queryKey: ['course', context.courseId, 'materials'] })
+    }
+  })
 
   const updateCourseLessonMutation = useMutation({
     mutationFn: async (payload: IAdminCourseLessonUpdateForm): Promise<ICourseLesson> => {
@@ -137,6 +149,8 @@ export default function useAdminCourseMutations() {
     createCourseMaterialMutation,
     createCourseLessonMutation,
     createOrUpdateCourseMediaMutation,
+    bulkCreateCourseLessonMutation,
+    bulkCreateCourseMaterialMutation,
     updateCourseMutation,
     updateCourseMaterialMutation,
     updateCourseLessonMutation,

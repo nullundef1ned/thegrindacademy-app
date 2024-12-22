@@ -81,23 +81,35 @@ export default function CourseMediaSection({ course }: ICourseInformationSection
               <Fragment>
                 <div className='flex flex-col gap-3 py-4'>
                   <p className="text-sm font-semibold text-primary-50">Course Thumbnail</p>
-                  <div className="relative w-full h-60">
-                    <Image src={data?.thumbnailUrl || ''} alt="Course Image" fill className='object-cover absolute' />
-                  </div>
+                  {data?.thumbnailUrl ? (
+                    <div className="relative w-full h-60">
+                      <Image src={data?.thumbnailUrl} alt="Course Image" fill className='object-contain absolute' />
+                    </div>
+                  ) : (
+                    <p className='text-sm text-primary-50'>No thumbnail found. <span onClick={startEditing} className='text-accent cursor-pointer'>Add thumbnail.</span></p>
+                  )}
                 </div>
                 <div className='flex flex-col gap-3 py-4'>
                   <p className="text-sm font-semibold text-primary-50">Course Intro Video</p>
-                  <Video src={data?.introVideoUrl || ''} />
+                  {data?.introVideoUrl ? (
+                    <Video src={data?.introVideoUrl} />
+                  ) : (
+                    <p className='text-sm text-primary-50'>No intro video found. <span onClick={startEditing} className='text-accent cursor-pointer'>Add intro video.</span></p>
+                  )}
                 </div>
                 <div className='flex flex-col gap-3 py-4'>
                   <p className="text-sm font-semibold text-primary-50">Course Images</p>
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    {data?.imageUrls.map((imageUrl, index) => (
-                      <div key={index} className="relative w-full h-40">
-                        <Image src={imageUrl} alt="Course Image" fill className='object-cover absolute' />
-                      </div>
-                    ))}
-                  </div>
+                  {data && data?.imageUrls.length > 0 ? (
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                      {data?.imageUrls.map((imageUrl, index) => (
+                        <div key={index} className="relative w-full h-40">
+                          <Image src={imageUrl} alt="Course Image" fill className='object-contain absolute' />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className='text-sm text-primary-50'>No images found. <span onClick={startEditing} className='text-accent cursor-pointer'>Add images.</span></p>
+                  )}
                 </div>
               </Fragment>
             ) : (
@@ -105,28 +117,34 @@ export default function CourseMediaSection({ course }: ICourseInformationSection
                 <div className="flex flex-col gap-3">
                   <p className="text-sm font-semibold text-primary-50">Course Thumbnail</p>
                   <FileUploader provider='do-spaces' type='course' fileType='image' onChange={(url) => setFieldValue('thumbnailUrl', url)} />
-                  <div className="relative w-full h-60">
-                    <Image src={values.thumbnailUrl} alt="Course Image" fill className='object-cover absolute' />
-                  </div>
+                  {values.thumbnailUrl &&
+                    <div className="relative w-full h-60">
+                      <Image src={values.thumbnailUrl} alt="Course Image" fill className='object-contain absolute' />
+                    </div>
+                  }
                 </div>
                 <div className="flex flex-col gap-3">
                   <p className="text-sm font-semibold text-primary-50">Course Intro Video</p>
                   <FileUploader provider='bunny' type='course' fileType='video' onChange={(url) => setFieldValue('introVideoUrl', url)} />
-                  <Video src={values.introVideoUrl} />
+                  {values.introVideoUrl &&
+                    <Video src={values.introVideoUrl} />
+                  }
                 </div>
                 <div className="flex flex-col gap-3">
                   <p className="text-sm font-semibold text-primary-50">Course Images</p>
                   <FileUploader provider='do-spaces' type='course' fileType='image' onChange={(url) => setFieldValue('imageUrls', [...values.imageUrls, url])} />
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    {values?.imageUrls.map((imageUrl, index) => (
-                      <div key={index} className="relative w-full h-40">
-                        <Image src={imageUrl} alt="Course Image" fill className='object-cover absolute' />
-                        <div className="absolute top-2 right-2 cursor-pointer grid place-items-center size-6 rounded-full bg-red-700/60 hover:bg-red-700/90 transition-all duration-300" onClick={() => removeImage(imageUrl)}>
-                          <IconifyIcon icon="ri:close-line" className="text-primary-50" />
+                  {values.imageUrls.length > 0 &&
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                      {values?.imageUrls.map((imageUrl, index) => (
+                        <div key={index} className="relative w-full h-40">
+                          <Image src={imageUrl} alt="Course Image" fill className='object-contain absolute' />
+                          <div className="absolute top-2 right-2 cursor-pointer grid place-items-center size-6 rounded-full bg-red-700/60 hover:bg-red-700/90 transition-all duration-300" onClick={() => removeImage(imageUrl)}>
+                            <IconifyIcon icon="ri:close-line" className="text-primary-50" />
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  }
                 </div>
               </form>
             )}

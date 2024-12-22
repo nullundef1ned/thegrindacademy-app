@@ -8,13 +8,15 @@ type ModalProps = {
   title?: string;
   rounded?: boolean;
   className?: string;
+  disableBackgroundClose?: boolean;
+  hideCloseButton?: boolean;
   height?: 'max' | 'full';
   children: React.ReactNode;
   width?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full';
   position?: 'top' | 'top-left' | 'left' | 'bottom-left' | 'center' | 'bottom-center' | 'bottom-right' | 'right' | 'top-right' | 'top-center';
 }
 
-export default function Modal({ title, className, rounded, width, height, position, children }: ModalProps) {
+export default function Modal({ title, className, rounded, width, height, position, children, hideCloseButton = false, disableBackgroundClose = false }: ModalProps) {
   const { hideModal } = useModal();
 
   const modalWidth = {
@@ -48,13 +50,15 @@ export default function Modal({ title, className, rounded, width, height, positi
 
   return ReactDOM.createPortal(
     <div className={clsx(modalPosition, 'fixed flex inset-0 z-50 p-4')}>
-      <div onClick={hideModal} className="absolute z-30 w-screen h-screen bg-black bg-opacity-50" />
+      <div onClick={disableBackgroundClose ? () => { } : hideModal} className="absolute z-30 w-screen h-screen bg-black bg-opacity-50" />
       <div className={clsx(className, modalWidth, modalHeight, rounded && 'rounded-lg', 'border border-[#26345F] bg-[#0D1221] p-5 w-full transition-all duration-300 flex flex-col space-y-4 z-40')}>
         <div className="flex items-center justify-between">
           {title && <p className='text-lg font-semibold'>{title}</p>}
-          <div onClick={hideModal} className='!ml-auto'>
-            <IconifyIcon className='cursor-pointer size-5 flex-shrink-0 flex items-center ' icon="jam:close-circle" />
-          </div>
+          {!hideCloseButton &&
+            <div onClick={hideModal} className='!ml-auto'>
+              <IconifyIcon className='cursor-pointer size-5 flex-shrink-0 flex items-center ' icon="jam:close-circle" />
+            </div>
+          }
         </div>
         {children}
       </div>
