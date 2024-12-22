@@ -1,5 +1,5 @@
 import useAdminCourseMutations from '../../_apis/admin-course.mutations';
-import { IAdminBulkCourseMaterialForm, IAdminCourseMaterialForm } from '@/interfaces/course';
+import { IAdminBulkCourseMaterialForm } from '@/interfaces/course';
 import { useCourseForm } from '../page';
 import FileUploader from '@/components/FileUploader';
 import CourseMaterialForm from '../../[id]/_components/_forms/CourseMaterialForm';
@@ -17,10 +17,6 @@ export default function CourseExtrasForm() {
     const extension = url.split('.').pop();
     const name = `Course Material ${materials.length + 1}.${extension}`;
     setCourseMaterials([...materials, { title: name, content: url }]);
-  }
-
-  const setMaterial = (material: IAdminBulkCourseMaterialForm) => {
-    setCourseMaterials([...materials, material]);
   }
 
   const updateMaterial = (material: IAdminBulkCourseMaterialForm, index: number) => {
@@ -61,7 +57,6 @@ export default function CourseExtrasForm() {
               key={index}
               material={material}
               isNewMaterial={true}
-              setMaterial={setMaterial}
               updateMaterial={(material) => updateMaterial(material, index)}
               removeMaterial={removeMaterial}
             />

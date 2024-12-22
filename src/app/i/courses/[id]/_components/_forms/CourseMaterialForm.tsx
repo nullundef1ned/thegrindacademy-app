@@ -10,12 +10,11 @@ import clsx from "clsx";
 interface ICourseMaterialFormProps {
   material: ICourseMaterial | IAdminCourseMaterialForm | IAdminBulkCourseMaterialForm;
   isNewMaterial?: boolean;
-  setMaterial?: (material: IAdminCourseMaterialForm) => void;
   removeMaterial?: (material: IAdminCourseMaterialForm) => void;
   updateMaterial?: (material: IAdminBulkCourseMaterialForm) => void;
 }
 
-export default function CourseMaterialForm({ material, isNewMaterial, setMaterial, removeMaterial, updateMaterial }: ICourseMaterialFormProps) {
+export default function CourseMaterialForm({ material, isNewMaterial, removeMaterial, updateMaterial }: ICourseMaterialFormProps) {
   const { updateCourseMaterialMutation, deleteCourseMaterialMutation } = useAdminCourseMutations();
 
   const { handleSubmit, handleChange: handleChangeFormik, handleBlur, values, isValid } = useFormik<IAdminCourseMaterialUpdateForm>({

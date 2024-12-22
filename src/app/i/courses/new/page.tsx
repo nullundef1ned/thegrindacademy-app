@@ -12,7 +12,7 @@ import CourseBasicDetailsForm from './_components/CourseBasicDetailsForm';
 import CourseMediaForm from './_components/CourseMediaForm';
 import CourseLessonsForm from './_components/CourseLessonsForm';
 import CourseExtrasForm from './_components/CourseExtrasForm';
-import { IAdminCourseForm, IAdminCourseMaterialForm, IAdminCourseMediaForm, IAdminBulkCourseLessonForm, IAdminBulkCourseMaterialForm } from '@/interfaces/course';
+import { IAdminCourseForm, IAdminCourseMediaForm, IAdminBulkCourseLessonForm, IAdminBulkCourseMaterialForm } from '@/interfaces/course';
 
 interface CourseFormContextType {
   currentStep: number;
