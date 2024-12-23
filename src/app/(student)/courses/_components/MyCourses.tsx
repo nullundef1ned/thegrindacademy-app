@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import clsx from "clsx";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import Card from "@/components/Card";
 import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
@@ -56,21 +56,6 @@ export default function MyCourses() {
     )
   }
 
-  if (enrolledCourses.length === 0 && !isPending && !search) {
-    return (
-      <div className='w-full h-[50dvh] grid place-items-center place-content-center space-y-4 px-4'>
-        <Image src='/images/empty-state.svg' alt='No courses found' width={150} height={150} className='object-contain' />
-        <div className='space-y-4 max-w-sm flex flex-col items-center'>
-          <div className='space-y-1'>
-            <p className='text-center text-lg font-medium'>No courses available yet</p>
-            <p className='text-center text-accent'>It looks like you haven&apos;t enrolled in any courses yet.</p>
-          </div>
-          <Button onClick={() => selectTab('browse-courses')} size='sm'>Browse Courses</Button>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className='w-full space-y-6'>
       <div className="flex items-center flex-wrap gap-4 justify-between w-full border-b border-[#B0CAFF1A] pb-6">
@@ -100,33 +85,50 @@ export default function MyCourses() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {enrolledCourses.map((course) => (
-          <Card key={course.id} className="flex flex-col justify-between gap-4">
-            <div className="flex flex-col gap-4">
-              <div className="relative overflow-hidden w-full h-52">
-                <Image src={course.course.media.thumbnailUrl} alt={course.course.name} fill className='absolute object-cover' />
-              </div>
-              <div className="flex flex-col gap-2">
-                <p className="font-medium">{course.course.name}</p>
-                <p className="text-sm text-accent">{course.course.shortDescription}</p>
-                <div className="flex items-center justify-between gap-2">
-                  <Progress value={course.completionPercentage} />
-                  <p className="text-sm text-accent">{course.completionPercentage}%</p>
+      {enrolledCourses.length > 0 && (
+        <Fragment>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            {enrolledCourses.map((course) => (
+              <Card key={course.id} className="flex flex-col justify-between gap-4">
+                <div className="flex flex-col gap-4">
+                  <div className="relative overflow-hidden w-full h-52">
+                    <Image src={course.course.media.thumbnailUrl} alt={course.course.name} fill className='absolute object-cover' />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <p className="font-medium">{course.course.name}</p>
+                    <p className="text-sm text-accent">{course.course.shortDescription}</p>
+                    <div className="flex items-center justify-between gap-2">
+                      <Progress value={course.completionPercentage} />
+                      <p className="text-sm text-accent">{course.completionPercentage}%</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <Button href={`/courses/${course.course.slug}`} size='sm' variant={course.completionPercentage === 100 ? 'default' : 'outline'} className="bg-transparent">
-              {course.completionPercentage === 0 && 'Start Course'}
-              {course.completionPercentage > 0 && course.completionPercentage < 100 && 'Continue Course'}
-              {course.completionPercentage === 100 && 'Completed'}
-              {course.completionPercentage === 100 && <IconifyIcon icon="mdi:check" className="size-4" />}
-            </Button>
-          </Card>
-        ))}
-      </div>
+                <Button href={`/courses/${course.course.slug}`} size='sm' variant={course.completionPercentage === 100 ? 'default' : 'outline'} className="bg-transparent w-full">
+                  {course.completionPercentage === 0 && 'Start Course'}
+                  {course.completionPercentage > 0 && course.completionPercentage < 100 && 'Continue Course'}
+                  {course.completionPercentage === 100 && 'Completed'}
+                  {course.completionPercentage === 100 && <IconifyIcon icon="mdi:check" className="size-4" />}
+                </Button>
+              </Card>
+            ))}
+          </div>
+          <Paginator<IEnrolledCourse> pagination={data} />
+        </Fragment>
+      )}
 
-      <Paginator<IEnrolledCourse> pagination={data} />
+      {(enrolledCourses.length === 0 && !isPending && !search) &&
+        <div className='w-full h-[50dvh] grid place-items-center place-content-center space-y-4 px-4'>
+          <Image src='/images/empty-state.svg' alt='No courses found' width={150} height={150} className='object-contain' />
+          <div className='space-y-4 max-w-sm flex flex-col items-center'>
+            <div className='space-y-1'>
+              <p className='text-center text-lg font-medium'>No courses available yet</p>
+              <p className='text-center text-accent'>It looks like you haven&apos;t enrolled in any courses yet.</p>
+            </div>
+            <Button onClick={() => selectTab('browse-courses')} size='sm'>Browse Courses</Button>
+          </div>
+        </div>
+      }
+
     </div>
   )
 }

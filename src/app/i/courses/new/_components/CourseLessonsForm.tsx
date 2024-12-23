@@ -40,7 +40,7 @@ export default function CourseLessonsForm() {
   }
 
   const isValid =
-    lessons.every((lesson) => lesson.title && lesson.content && lesson.studyTimeInMinutes && lesson.description && (lesson.videoUrl || lesson.content !== '<p><br></p>'));
+    lessons.every((lesson) => lesson.title && lesson.studyTimeInMinutes && lesson.description && (lesson.videoUrl || lesson.content !== '<p><br></p>'));
 
   return (
     <div className='flex flex-col gap-10'>

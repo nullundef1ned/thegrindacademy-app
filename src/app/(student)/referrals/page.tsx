@@ -2,29 +2,34 @@
 
 import ReferralCodeCard from '../(overview)/_components/ReferralCodeCard'
 import StatisticsCard, { StatisticsCardProps } from '../_components/StatisticsCard'
-import fakerUtil from '@/utils/faker.util'
 import { IPayout } from '../_module/student.interface';
 import { TableHeader } from '@/components/table/table.interface';
 import { TableHeaderTypeEnum } from '@/components/table/table.enum';
 import Table from '@/components/table';
-import { IPagination } from '@/app/_module/app.interface';
 import Card from '@/components/Card';
+import StudentQueries from '../_module/student.queries';
 
 export default function ReferralsPage() {
+
+  const { useFetchPayoutsQuery, useFetchReferralStatisticsQuery } = StudentQueries();
+
+  const { data: payouts, isPending: isPayoutsLoading } = useFetchPayoutsQuery();
+  const { data, isPending: isReferralStatisticsLoading } = useFetchReferralStatisticsQuery();
+
   const referralStatistics: StatisticsCardProps[] = [
     {
       title: 'Total Referrals',
-      value: fakerUtil.referralStatistics.totalReferrals,
+      value: data?.totalReferredUsers ?? 0,
       icon: 'ri:p2p-fill',
     },
     {
       title: 'Total Payouts',
-      value: fakerUtil.referralStatistics.totalPayouts,
+      value: data?.totalPayoutsProcessed ?? 0,
       icon: 'ri:send-plane-fill',
     },
     {
       title: 'Total Earnings',
-      value: fakerUtil.referralStatistics.totalEarnings,
+      value: data?.totalPayoutsAmount ?? 0,
       icon: 'ri:money-dollar-circle-fill',
       type: 'currency',
     }
@@ -32,41 +37,11 @@ export default function ReferralsPage() {
 
   const tableHeaders: TableHeader<IPayout>[] = [
     { key: 'createdAt', value: 'Date', type: TableHeaderTypeEnum.DATE },
-    { key: 'name', value: 'Name' },
+    // @ts-expect-error: nested object
+    { key: 'userReferral.referee.info.firstName+userReferral.referee.info.lastName', value: 'Name' },
     { key: 'amount', value: 'Amount', type: TableHeaderTypeEnum.CURRENCY },
     { key: 'status', value: 'Status', type: TableHeaderTypeEnum.STATUS },
   ]
-
-  const tableData: IPagination<IPayout> = {
-    result: [
-      {
-        id: '1',
-        name: 'John Doe',
-        amount: 100,
-        status: 'pending',
-        createdAt: '2021-01-01',
-      },
-      {
-        id: '2',
-        name: 'Jane Doe',
-        amount: 200,
-        status: 'paid',
-        createdAt: '2021-01-02',
-      },
-      {
-        id: '3',
-        name: 'John Doe',
-        amount: 300,
-        status: 'pending',
-        createdAt: '2021-01-03',
-      }
-    ],
-    currentPage: 1,
-    totalPages: 3,
-    totalCount: 0,
-    previousPage: null,
-    nextPage: null,
-  }
 
   return (
     <div className='w-full responsive-section space-y-6'>
@@ -79,13 +54,13 @@ export default function ReferralsPage() {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {referralStatistics.map((statistic, index) => (
-          <StatisticsCard key={index} {...statistic} />
+          <StatisticsCard key={index} {...statistic} loading={isReferralStatisticsLoading} />
         ))}
       </div>
       <div className='w-full space-y-3'>
         <p className='text-xl font-medium'>Payout History</p>
         <Card>
-          <Table<IPayout> headers={tableHeaders} data={tableData} emptyStateMessage='No payout history yet' />
+          <Table<IPayout> headers={tableHeaders} loading={isPayoutsLoading} data={payouts} emptyStateMessage='No payouts yet' />
         </Card>
       </div>
     </div>

@@ -1,10 +1,11 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { IBankDetails, IDashboardData, IReferral } from './student.interface';
+import { IBankDetails, IDashboardData, IPayout, IReferral, IReferralStatistics, ISubscriptionResponse } from './student.interface';
 import useStudentHooks from './student.hooks';
 import useAxios from '@/hooks/useAxios';
-import { IPagination, ICoursePaginationParams, IUser } from '@/app/_module/app.interface';
+import { IPagination, ICoursePaginationParams, IUser, IPaginationParams } from '@/app/_module/app.interface';
 import { ICourse, ICourseDetail, IEnrolledCourse, IEnrolledCourseDetail } from './_interfaces/course.interface';
 import { useFetchUser } from '@/app/_module/_apis/useFetchUser';
+import { IFAQ } from '@/interfaces/faq';
 
 export default function StudentQueries() {
   const { data: user } = useFetchUser()
@@ -58,6 +59,17 @@ export default function StudentQueries() {
     refetchInterval: false,
   })
 
+  const useFetchPayoutsQuery = (params?: IPaginationParams) => useQuery({
+    queryKey: [user?.id, 'payouts', params],
+    queryFn: async (): Promise<IPagination<IPayout>> => {
+      const response = await axiosHandler.get(`/student/referral/payout`, { params })
+      return response.data;
+    },
+    placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+  })
+
   const useFetchCourseDetailQuery = (courseSlug: string) => useQuery({
     queryKey: [user?.id, 'course', courseSlug],
     queryFn: async (): Promise<ICourseDetail> => {
@@ -94,15 +106,32 @@ export default function StudentQueries() {
 
   const useFetchSubscriptionQuery = () => useQuery({
     queryKey: [user?.id, 'subscription'],
-    queryFn: async (): Promise<unknown> => {
+    queryFn: async (): Promise<ISubscriptionResponse> => {
       const response = await axiosHandler.get('/student/subscription')
       return response.data;
     },
     refetchInterval: 1000 * 60 * 10,
   })
 
+  const useFetchFAQsQuery = () => useQuery({
+    queryKey: [user?.id, 'faqs'],
+    queryFn: async (): Promise<IFAQ[]> => {
+      const response = await axiosHandler.get(`/student/support/faq`)
+      return response.data;
+    },
+  })
+
+  const useFetchReferralStatisticsQuery = () => useQuery({
+    queryKey: [user?.id, 'referral-statistics'],
+    queryFn: async (): Promise<IReferralStatistics> => {
+      const response = await axiosHandler.get(`/student/referral/dashboard`)
+      return response.data;
+    },
+  })
+
   return {
     useFetchReferralQuery, useFetchBankDetailsQuery, useFetchDashboardDataQuery,
+    useFetchPayoutsQuery, useFetchReferralStatisticsQuery, useFetchFAQsQuery,
     useFetchEnrolledCoursesQuery, useFetchEnrolledCourseDetailQuery,
     useFetchCoursesQuery, useFetchCourseDetailQuery,
     useFetchAuthenticationQuery,
