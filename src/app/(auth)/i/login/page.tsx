@@ -44,12 +44,7 @@ export default function LoginPage() {
         <Input icon='ri:lock-fill' type='password' name='password' className='w-full' placeholder='Password' value={values.password} onChange={handleChange} />
         <Button loading={loginMutation.isPending} className='w-full'>Log In</Button>
       </form>
-      <div className='flex flex-col gap-4 w-full'>
-        <Link className='text-sm text-accent font-semibold text-right' href='/forgot-password'>Forgot Password?</Link>
-        <p className='text-sm text-accent text-center'>
-          Don&apos;t have an account? <Link className='text-primary font-semibold' href='https://thegrindacademy.co'>Create Account</Link>
-        </p>
-      </div>
+      <Link className='text-sm text-accent font-semibold text-right' href='/forgot-password'>Forgot Password?</Link>
     </AuthCard>
   )
 }
