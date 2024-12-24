@@ -8,11 +8,11 @@ import helperUtil from '@/utils/helper.util';
 import Skeleton from 'react-loading-skeleton';
 import { Fragment } from 'react';
 
-export type StatisticsCardType = 'number' | 'percentage' | 'currency';
+export type StatisticsCardType = 'number' | 'percentage' | 'currency' | 'string';
 
 export interface StatisticsCardProps {
   title: string;
-  value: number;
+  value: number | string;
   icon: string;
   loading?: boolean;
   className?: string;
@@ -27,7 +27,8 @@ export default function StatisticsCard({ title, value, icon, type = 'number', lo
   const valueFormatted = {
     number: helperUtil.convertToNumber(value),
     percentage: `${value}%`,
-    currency: formatCurrency(value)
+    currency: formatCurrency(value),
+    string: value
   }[type];
 
   const percentageValue = percentage !== undefined ? Number(percentage) : 0;

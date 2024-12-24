@@ -50,3 +50,31 @@ export function useFetchDashboardReport() {
 
   return query;
 }
+
+export function useFetchActiveInactiveUsers() {
+  const axiosHandler = useAxios();
+
+  const query = useQuery({
+    queryKey: ['active-inactive-users'],
+    queryFn: async (): Promise<IGraphData[]> => {
+      const response = await axiosHandler.get('/admin/dashboard/active-inactive-users')
+      return response.data;
+    },
+  })
+
+  return query;
+}
+
+export function useFetchCourseEnrollmentsAndCompletion() {
+  const axiosHandler = useAxios();
+
+  const query = useQuery({
+    queryKey: ['course-enrollments-and-completion'],
+    queryFn: async (): Promise<IGraphData[]> => {
+      const response = await axiosHandler.get('/admin/dashboard/course-enrollments-and-completion')
+      return response.data;
+    },
+  })
+
+  return query;
+}

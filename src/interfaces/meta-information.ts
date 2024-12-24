@@ -4,6 +4,8 @@ export interface IMetaInformation {
   description: string;
   keywords: string;
   imageUrl: string;
+  landingPageThumbnailUrl: string;
+  landingPageVideoUrl: string;
   supportEmail: string;
   socialMediaLinks: ISocialMediaLink[];
   createdAt: string;
@@ -20,6 +22,8 @@ export interface IMetaInformationForm {
   description: string;
   keywords: string;
   imageUrl: string;
+  landingPageThumbnailUrl: string;
+  landingPageVideoUrl: string;
   supportEmail: string;
   socialMediaLinks: ISocialMediaLink[];
 }

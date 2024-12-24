@@ -100,15 +100,17 @@ export default function GraphCard({ title, amount, percentage, chart, loading, i
             </div>
           }
         </div>
-        <div className='flex-shrink-0 w-max border-black-400 border-opacity-45 border divide-x divide-black-400 divide-opacity-45 flex items-center rounded-md h-max'>
-          {periods.reverse().map((period, index) => (
-            <div key={index}
-              onClick={() => selectPeriod(period)}
-              className={clsx('py-2 px-4 cursor-pointer', activePeriod == period && ' bg-[#00246B]')}>
-              <p className='text-sm'>{period.replace('-', ' ')}</p>
-            </div>
-          ))}
-        </div>
+        {activePeriod == undefined ? null :
+          <div className='flex-shrink-0 w-max border-black-400 border-opacity-45 border divide-x divide-black-400 divide-opacity-45 flex items-center rounded-md h-max'>
+            {periods.reverse().map((period, index) => (
+              <div key={index}
+                onClick={() => selectPeriod(period)}
+                className={clsx('py-2 px-4 cursor-pointer', activePeriod == period && ' bg-[#00246B]')}>
+                <p className='text-sm'>{period.replace('-', ' ')}</p>
+              </div>
+            ))}
+          </div>
+        }
       </div>
       {chart &&
         <Fragment>
