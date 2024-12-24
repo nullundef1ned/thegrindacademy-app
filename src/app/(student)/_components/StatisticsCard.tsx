@@ -56,7 +56,7 @@ export default function StatisticsCard({ title, value, icon, type = 'number', lo
   }[percentageDirection]
 
   return (
-    <Card className={clsx('space-y-3 flex flex-col justify-between', className)}>
+    <Card className={clsx('space-y-4 flex flex-col justify-between', className)}>
       <div className="flex justify-between gap-4">
         <p className='text-accent text-sm'>{title}</p>
         <IconifyIcon icon={icon} className='text-primary-100' size={16} />
