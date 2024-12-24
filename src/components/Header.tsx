@@ -35,7 +35,7 @@ export default function Header({ routes }: HeaderProps) {
   }
 
   return (
-    <div className='border-b border-[#B0CAFF1A] px-4 pt-6 sticky top-0 bg-background z-20'>
+    <div className='border-b border-[#B0CAFF1A] px-4 pt-6 sticky top-0 bg-background z-40'>
       <div className="responsive-section space-y-6">
         <div className='w-full flex items-center justify-between'>
           <div className='flex items-center gap-4'>

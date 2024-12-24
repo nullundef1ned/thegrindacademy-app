@@ -14,6 +14,7 @@ import LoadingIcons from 'react-loading-icons';
 import { useFetchMetaInformation } from './_apis/useFetchMetaInformation';
 import useMetaInformationMutations from './_apis/meta-information.mutations';
 import { IMetaInformationForm } from '@/interfaces/meta-information';
+import Video from '@/components/Video';
 
 export default function MetaInformationPage() {
   const { data, isPending } = useFetchMetaInformation();
@@ -28,6 +29,8 @@ export default function MetaInformationPage() {
       description: data?.description || '',
       keywords: data?.keywords || '',
       imageUrl: data?.imageUrl || '',
+      landingPageThumbnailUrl: data?.landingPageThumbnailUrl || '',
+      landingPageVideoUrl: data?.landingPageVideoUrl || '',
       supportEmail: data?.supportEmail || '',
       socialMediaLinks: data?.socialMediaLinks || [],
     },
@@ -113,6 +116,27 @@ export default function MetaInformationPage() {
           onChange={handleChange}
           placeholder='Support Email'
         />
+        <div className='flex flex-col gap-2'>
+          <p className='font-medium text-accent'>Landing Page Details</p>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <div className='flex flex-col gap-2'>
+              <p className='text-sm text-accent'>Thumbnail</p>
+              <FileUploader provider='do-spaces' type='others' fileType='image' onChange={(url) => setFieldValue('landingPageThumbnailUrl', url)} />
+              {values.landingPageThumbnailUrl &&
+                <div className='w-full h-40 relative group'>
+                  <Image src={values.landingPageThumbnailUrl} alt='Media' fill className='object-cover absolute' />
+                </div>
+              }
+            </div>
+            <div className='flex flex-col gap-2'>
+              <p className='text-sm text-accent'>Video</p>
+              <FileUploader provider='do-spaces' type='others' fileType='video' onChange={(url) => setFieldValue('landingPageVideoUrl', url)} />
+              {values.landingPageVideoUrl &&
+                <Video src={values.landingPageVideoUrl} />
+              }
+            </div>
+          </div>
+        </div>
         <div className='flex flex-col gap-2'>
           <p className='text-sm text-accent'>SEO Image</p>
           <FileUploader provider='do-spaces' type='others' fileType='image' onChange={(url) => setFieldValue('imageUrl', url)} />

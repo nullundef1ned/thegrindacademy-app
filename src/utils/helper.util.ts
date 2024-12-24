@@ -75,6 +75,21 @@ const getTimeDelta = (date: string) => {
   }
 }
 
+const getTimeTo = (date: string): string => {
+  const now = new Date();
+  const futureTime = new Date(date);
+  const delta = futureTime.getTime() - now.getTime();
+  const seconds = Math.floor(delta / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) {
+    return `${days} days`;
+  }
+  return `${hours} hours`;
+}
+
 const capitalize = (text: string): string => {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
@@ -96,6 +111,6 @@ export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs))
 }
 
-const helperUtil = { formatPhoneNumber, getTimeDelta, formatDate, formatTime, convertTimeToMinutesAndSeconds, convertToNumber, capitalize, downloadFile }
+const helperUtil = { formatPhoneNumber, getTimeDelta, getTimeTo, formatDate, formatTime, convertTimeToMinutesAndSeconds, convertToNumber, capitalize, downloadFile }
 
 export default helperUtil

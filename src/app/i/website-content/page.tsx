@@ -1,8 +1,7 @@
 'use client';
 
 import { adminRoutes } from "../_module/admin.routes";
-import IconifyIcon from "@/components/IconifyIcon";
-import Link from "next/link";
+import ModuleCard from "@/components/ModuleCard";
 
 export default function WebsiteContentPage() {
   const modules = [
@@ -71,16 +70,7 @@ export default function WebsiteContentPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {modules.map((module, index) => (
-          <div key={index} className="flex flex-col justify-between rounded overflow-hidden border border-[#1A2031] bg-[#1C347D1A]">
-            <div className="flex flex-col gap-2 p-4">
-              <IconifyIcon icon={module.icon} className='text-2xl' />
-              <p className="text-sm font-medium">{module.name}</p>
-              <p className="text-xs text-accent">{module.description}</p>
-            </div>
-            <Link href={module.link} className="bg-[#1C347D33] p-4 flex items-center justify-center border-t border-[#1A2031]">
-              <p className="text-xs uppercase font-medium text-primary-200">{module.linkText}</p>
-            </Link>
-          </div>
+          <ModuleCard key={index} {...module} />
         ))}
       </div>
     </div>

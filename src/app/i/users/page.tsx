@@ -10,27 +10,30 @@ import { useRouter } from "next/navigation";
 import { useFetchUsers } from "../_module/_apis/useFetchUsers";
 import useURL from "@/hooks/useURL";
 import { adminRoutes } from "../_module/admin.routes";
+import { useFetchUserStatistics } from "../_module/_apis/useFetchUserStatistics";
 
 export default function UsersPage() {
   const router = useRouter();
+
+  const { data: userStatisticsData, isPending: isUserStatisticsPending } = useFetchUserStatistics();
+
   const userStatistics = [
     {
       title: 'Total Users',
-      value: 1200,
+      value: userStatisticsData?.total.count || 0,
       icon: 'ri:user-fill',
-      percentage: 0,
+      percentage: userStatisticsData?.total.percentageChange || 0,
     },
     {
       title: 'Subscribed Users',
-      value: 0,
+      value: userStatisticsData?.subscribed.count || 0,
       icon: 'ri:money-dollar-circle-fill',
-      percentage: 0,
+      percentage: userStatisticsData?.subscribed.percentageChange || 0,
     },
     {
       title: 'Suspended Users',
-      value: 89,
+      value: userStatisticsData?.suspended.count || 0,
       icon: 'ri:alert-fill',
-      percentage: 0,
     },
   ]
 
@@ -59,7 +62,7 @@ export default function UsersPage() {
     <div className='w-full responsive-section space-y-6'>
       <div className="grid lg:grid-cols-3 grid-cols-1 gap-4">
         {userStatistics.map((statistic, index) => (
-          <StatisticsCard key={index} {...statistic} />
+          <StatisticsCard key={index} {...statistic} loading={isUserStatisticsPending} />
         ))}
       </div>
       <Card>
@@ -73,7 +76,6 @@ export default function UsersPage() {
           loading={isPending}
         />
       </Card>
-
     </div>
   )
 }

@@ -35,7 +35,7 @@ export default function CoursePage({ params }: { params: { slug: string } }) {
         <Image src="/images/course-empty-state.svg" alt="Course not found" width={200} height={200} />
         <div className="space-y-2 max-w-md w-full">
           <p className="text-base text-center">Course not found</p>
-          <p className="text-sm text-accent text-center">The course you are trying to access either does not exist or may have been removed. Please return to your
+          <p className="text-sm text-accent text-center">The course has been removed or you are not enrolled in it. Please return to your
             <Link href="/courses" className="text-primary-100 hover:underline"> courses </Link> or <Link href="/support" className="text-primary-100 hover:underline">contact support</Link> for further assistance</p>
         </div>
       </div>

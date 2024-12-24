@@ -19,7 +19,7 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
     { name: 'Courses', href: adminRoutes.courses },
     { name: 'Users', href: adminRoutes.users },
     { name: 'Website Content', href: adminRoutes.websiteContent.root },
-    { name: 'Reports', href: adminRoutes.reports },
+    { name: 'Reports', href: adminRoutes.reports.root },
     { name: 'Settings', href: adminRoutes.settings },
   ]
 

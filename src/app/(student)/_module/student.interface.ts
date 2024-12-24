@@ -1,3 +1,4 @@
+import { IUser } from "@/app/_module/app.interface";
 import { IEnrolledCourse } from "./_interfaces/course.interface";
 
 export interface IReferral {
@@ -43,11 +44,22 @@ export interface IBankDetailCreationResponse {
 
 export interface ISubscription {
   id: string;
-  name: string;
-  price: number;
-  duration: number;
-  renewalDate: string;
+  userId: string;
+  subscriptionPlanId: string;
   status: 'active' | 'inactive';
+  autoRenewal: boolean;
+  startDate: string;
+  endDate: string;
+  paymentAuthorization: string | null;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  subscriptionPlan: Omit<ISubscriptionPlan, 'features'>;
+}
+
+export interface ISubscriptionResponse {
+  active: ISubscription | null;
+  upcoming: ISubscription | null;
 }
 
 export interface IOverviewStatistics {
@@ -57,21 +69,38 @@ export interface IOverviewStatistics {
 }
 
 export interface IReferralStatistics {
-  totalReferrals: number;
-  totalPayouts: number;
-  totalEarnings: number;
+  totalReferredUsers: number;
+  totalPayoutsProcessed: number;
+  totalPayoutsAmount: number;
+}
+
+export interface IUserReferral {
+  id: string;
+  userId: string;
+  refereeId: string;
+  referee: IUser;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
 }
 
 
 export interface IPayout {
   id: string;
-  name: string;
-  amount: number;
-  status: 'pending' | 'paid';
+  userId: string;
+  userReferralId: string;
+  amount: string;
+  status: string;
+  reference: string;
+  paidAt: string | null;
   createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  userReferral: IUserReferral;
 }
 
 export interface IBanner {
+  slug: string;
   message: string;
   link?: string;
   buttonText?: string;

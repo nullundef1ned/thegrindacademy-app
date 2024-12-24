@@ -2,18 +2,17 @@
 
 import React, { Fragment, Suspense, useMemo, useState } from "react";
 import Each from "../Each";
-import useURL from "@/hooks/useURL";
 import Skeleton from "react-loading-skeleton";
 import clsx from "clsx";
 import { IPagination, TData } from "@/app/_module/app.interface";
 import TablePagination from "./TablePagination";
 import TableCell from "./TableCell";
-import TableSearch from "./TableSearch";
 import IconifyIcon from "../IconifyIcon";
 import { Checkbox } from "../ui/checkbox";
 import { TableAction, TableTab } from "./table.interface";
 import { TableHeader } from "./table.interface";
 import Image from "next/image";
+import SearchInput from "@/app/(student)/courses/_components/SearchInput";
 
 export interface TableProps<T> {
   data?: IPagination<TData<T>>;
@@ -40,9 +39,6 @@ export interface TableProps<T> {
 };
 
 function TableComponent<T>({ data, addComponent, headers, hideLimit, hideFooter, searchable = true, fetching, className, emptyStateMessage, loading, exclude, activeTab, tabs, selectedRows, actions, refetch, setActiveTab, onRowClick, onTabChange, selectRows, skeletonCount = 8 }: TableProps<T>) {
-
-  const { searchParams } = useURL();
-  const searchValue = searchParams.get('search') || '';
 
   const [selection, setSelection] = useState<string[]>(selectedRows || []);
 
@@ -144,7 +140,7 @@ function TableComponent<T>({ data, addComponent, headers, hideLimit, hideFooter,
         {(searchable || addComponent) && (
           <div className="pb-4 grid place-content-center grid-cols-2 gap-4">
             <div className="flex items-center space-x-3">
-              <TableSearch key={searchValue} searchable={searchable} searchValue={searchValue} />
+              {searchable && <SearchInput />}
               {refetch && <IconifyIcon onClick={() => refetch()} icon="ri:refresh-line" className={clsx(fetching && 'animate-spin', "text-grey-100 cursor-pointer")} />}
             </div>
             <div className="flex items-center justify-end">

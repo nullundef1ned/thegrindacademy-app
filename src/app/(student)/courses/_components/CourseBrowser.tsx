@@ -9,6 +9,7 @@ import useURL from "@/hooks/useURL";
 import Paginator from "./Paginator";
 import LoadingIcons from "react-loading-icons";
 import { ICourse } from "../../_module/_interfaces/course.interface";
+import { Fragment } from "react";
 
 
 export default function CourseBrowser() {
@@ -41,18 +42,6 @@ export default function CourseBrowser() {
     )
   }
 
-  if (courses.length === 0 && !isLoading && !search) {
-    return (
-      <div className='w-full h-[50dvh] grid place-items-center place-content-center space-y-4 px-4'>
-        <Image src='/images/empty-state.svg' alt='No courses found' width={150} height={150} className='object-contain' />
-        <div className='space-y-1 max-w-sm'>
-          <p className='text-center text-lg font-medium'>No courses available at the moment</p>
-          <p className='text-center text-accent'>Please check back soon as new courses are added regularly!</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className='w-full space-y-6'>
       <div className="flex items-center justify-between w-full border-b border-[#B0CAFF1A] pb-6">
@@ -69,26 +58,40 @@ export default function CourseBrowser() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {courses.map((course: ICourse) => (
-          <Card key={course.id} className="flex flex-col justify-between gap-4">
-            <div className="flex flex-col gap-4">
-              <div className="relative overflow-hidden w-full h-52">
-                <Image src={course.media.thumbnailUrl} alt={course.name} fill className='absolute object-cover' />
-              </div>
-              <div className="flex flex-col gap-2">
-                <p className="font-medium">{course.name}</p>
-                <p className="text-sm text-accent">{course.shortDescription}</p>
-              </div>
-            </div>
-            <Button href={`/courses/preview/${course.slug}`} size='sm' variant='outline' className="bg-transparent">
-              Start Course
-            </Button>
-          </Card>
-        ))}
-      </div>
+      {courses.length > 0 && (
+        <Fragment>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            {courses.map((course: ICourse) => (
+              <Card key={course.id} className="flex flex-col justify-between gap-4">
+                <div className="flex flex-col gap-4">
+                  <div className="relative overflow-hidden w-full h-52">
+                    <Image src={course.media.thumbnailUrl} alt={course.name} fill className='absolute object-cover' />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <p className="font-medium">{course.name}</p>
+                    <p className="text-sm text-accent">{course.shortDescription}</p>
+                  </div>
+                </div>
+                <Button href={`/courses/preview/${course.slug}`} size='sm' variant='outline' className="bg-transparent w-full">
+                  Start Course
+                </Button>
+              </Card>
+            ))}
+          </div>
 
-      <Paginator<ICourse> pagination={data} />
+          <Paginator<ICourse> pagination={data} />
+        </Fragment>
+      )}
+
+      {(courses.length === 0 && !isLoading && !search) &&
+        <div className='w-full h-[50dvh] grid place-items-center place-content-center space-y-4 px-4'>
+          <Image src='/images/empty-state.svg' alt='No courses found' width={150} height={150} className='object-contain' />
+          <div className='space-y-1 max-w-sm'>
+            <p className='text-center text-lg font-medium'>No courses available at the moment</p>
+            <p className='text-center text-accent'>Please check back soon as new courses are added regularly!</p>
+          </div>
+        </div>
+      }
     </div>
   )
 }
