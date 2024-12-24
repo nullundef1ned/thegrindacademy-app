@@ -12,7 +12,7 @@ type DashboardCardProps = {
 
 export default function DashboardCard({ children, className, footer }: DashboardCardProps) {
   return (
-    <div className={clsx(className, "rounded-lg border border-[#B0CAFF1A] border-opacity-45 bg-[#1C347D33] h-full p-5 space-y-4 flex flex-col justify-between")}>
+    <div className={clsx(className, "rounded-lg border border-[#B0CAFF1A] border-opacity-45 bg-[#121B353B] h-full p-5 space-y-4 flex flex-col justify-between")}>
       {children}
       {footer && (
         <div className='border-t border-black-400 border-opacity-45 flex items-center justify-center pt-3'>

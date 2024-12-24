@@ -105,7 +105,7 @@ export default function GraphCard({ title, amount, percentage, chart, loading, i
             {periods.reverse().map((period, index) => (
               <div key={index}
                 onClick={() => selectPeriod(period)}
-                className={clsx('py-2 px-4 cursor-pointer', activePeriod == period && ' bg-[#00246B]')}>
+                className={clsx('py-2 px-4 cursor-pointer hover:bg-[#00246B]/20', activePeriod == period && ' bg-[#00246B]/70')}>
                 <p className='text-sm'>{period.replace('-', ' ')}</p>
               </div>
             ))}
