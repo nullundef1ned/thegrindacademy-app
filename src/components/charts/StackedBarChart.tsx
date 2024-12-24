@@ -1,15 +1,17 @@
 import React from 'react'
 import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart"
-import { Bar, BarChart as Chart, CartesianGrid, XAxis, YAxis, Label } from "recharts"
+import { Bar, BarChart as Chart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 type StackedBarChartProps = {
-  chartData: any[];
+  chartData: unknown[];
   chartConfig: ChartConfig;
 }
 
 export default function StackedBarChart({ chartConfig, chartData }: StackedBarChartProps) {
   const keys = Object.keys(chartConfig);
-  const dataKey = Object.entries(chartData[0]).filter(([_, value]) => typeof value !== 'number').map(([key, _]) => key)[0];
+  const dataKey = Object.entries(chartData[0] as Record<string, unknown>)
+    .filter(([_, value]) => _ && typeof value !== 'number')
+    .map(([key]) => key)[0];
 
   return (
     <ChartContainer config={chartConfig} className="min-h-96 w-full">

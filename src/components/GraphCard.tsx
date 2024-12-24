@@ -41,7 +41,7 @@ type GraphCardProps = {
   type?: 'currency' | 'number';
   chart: {
     type: ChartType;
-    data: any[];
+    data: unknown[];
     config: ChartConfig;
   },
   className?: string;
@@ -123,7 +123,7 @@ export default function GraphCard({ title, amount, percentage, chart, loading, i
                   <LoadingIcons.TailSpin />
                 </div> :
                 <Fragment>
-                  {true ?
+                  {chart.data.length == 0 ?
                     <div className='h-full grid place-items-center place-content-center gap-2 w-full'>
                       <Image src="/images/empty-state.svg" alt="No data" width={100} height={100} />
                       <p className='text-sm text-black-50 text-center'>{errorMessage || 'No data available'}</p>

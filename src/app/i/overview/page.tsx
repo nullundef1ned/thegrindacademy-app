@@ -3,7 +3,6 @@
 import StatisticsCard, { StatisticsCardProps } from '@/app/(student)/_components/StatisticsCard';
 import { Button } from '@/components/ui/button'
 import { adminRoutes } from '../_module/admin.routes';
-import GraphCard, { ChartTypeEnum } from '@/components/GraphCard';
 import UserGrowthOverTimeGraph from './_components/UserGrowthOverTimeGraph';
 import RevenueTrendGraph from './_components/RevenueTrendGraph';
 import { useFetchDashboardReport } from '../_module/_apis/useFetchReports';

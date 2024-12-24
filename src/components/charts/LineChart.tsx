@@ -3,13 +3,15 @@ import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartToo
 import { CartesianGrid, XAxis, YAxis, AreaChart, Area } from "recharts"
 
 type LineChartProps = {
-  chartData: any[];
+  chartData: unknown[];
   chartConfig: ChartConfig;
 }
 
 export default function LineChart({ chartConfig, chartData }: LineChartProps) {
   const keys = Object.keys(chartConfig);
-  const dataKey = Object.entries(chartData[0]).filter(([_, value]) => typeof value !== 'number').map(([key, _]) => key)[0];
+  const dataKey = Object.entries(chartData[0] as Record<string, unknown>)
+    .filter(([_, value]) => _ && typeof value !== 'number')
+    .map(([key]) => key)[0];
 
   return (
     <ChartContainer config={chartConfig} className="min-h-96 w-full">
