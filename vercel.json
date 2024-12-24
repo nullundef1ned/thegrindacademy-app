@@ -9,6 +9,16 @@
         }
       ],
       "destination": "/i"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "admin.staging.thegrindacademy.co"
+        }
+      ],
+      "destination": "/i"
     }
   ]
 }
