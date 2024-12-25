@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import AuthCard from '@/app/(auth)/_components/AuthCard'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button';
@@ -38,13 +38,16 @@ export default function LoginPage() {
   }, [logoutParam])
 
   return (
-    <AuthCard title='Log In' description="Welcome to Dexter's Lab">
-      <form className='space-y-6 w-full' onSubmit={handleSubmit}>
-        <Input icon='ri:mail-fill' type='email' name='email' className='w-full' placeholder='Email' value={values.email} onChange={handleChange} />
-        <Input icon='ri:lock-fill' type='password' name='password' className='w-full' placeholder='Password' value={values.password} onChange={handleChange} />
-        <Button loading={loginMutation.isPending} className='w-full'>Log In</Button>
-      </form>
-      <Link className='text-sm text-accent font-semibold text-right' href='/forgot-password'>Forgot Password?</Link>
-    </AuthCard>
+    <Fragment>
+      <AuthCard title="Welcome to Dexter's Lab" description="Enter your credentials to continue">
+        <form className='space-y-6 w-full' onSubmit={handleSubmit}>
+          <Input icon='ri:mail-fill' type='email' name='email' className='w-full' placeholder='Email' value={values.email} onChange={handleChange} />
+          <Input icon='ri:lock-fill' type='password' name='password' className='w-full' placeholder='Password' value={values.password} onChange={handleChange} />
+          <Button loading={loginMutation.isPending} className='w-full'>Log In</Button>
+        </form>
+        <Link className='text-sm text-accent font-semibold text-right' href='/forgot-password'>Forgot Password?</Link>
+      </AuthCard>
+      <Link href='/login' className='text-sm text-accent'>Return to civilian life</Link>
+    </Fragment>
   )
 }

@@ -13,12 +13,14 @@ import StudentQueries from "../../../_module/student.queries";
 import LoadingIcons from "react-loading-icons";
 import { Button } from "@/components/ui/button";
 import { ICourseMaterial, IEnrolledCourseLesson } from "@/app/(student)/_module/_interfaces/course.interface";
+import IconifyIcon from "@/components/IconifyIcon";
 
 export default function CoursePage({ params }: { params: { slug: string } }) {
   const { clearParams } = useURL();
 
-  const { useFetchEnrolledCourseDetailQuery } = StudentQueries();
+  const { useFetchEnrolledCourseDetailQuery, useFetchCourseTelegramInviteQuery } = StudentQueries();
 
+  const { data: telegramInvite } = useFetchCourseTelegramInviteQuery(params.slug);
   const { data, isPending, isError, refetch } = useFetchEnrolledCourseDetailQuery(params.slug);
 
   const course = data || null;
@@ -66,7 +68,7 @@ export default function CoursePage({ params }: { params: { slug: string } }) {
         </div>
         <div className="relative lg:col-span-2 space-y-8">
           <div className="sticky top-40 gap-8 grid w-full">
-            <Accordion defaultValue="overview" type="single" collapsible className="space-y-4 order-2 lg:order-1">
+            <Accordion defaultValue="overview" type="single" collapsible className="space-y-4 order-last lg:order-first">
               <AccordionItem value="overview">
                 <AccordionTrigger>Overview</AccordionTrigger>
                 <AccordionContent>
@@ -85,7 +87,13 @@ export default function CoursePage({ params }: { params: { slug: string } }) {
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-            <Card className="space-y-4 !bg-transparent order-1 lg:order-2">
+            {telegramInvite &&
+              <Button onClick={() => window.open(telegramInvite, '_blank')} className="w-full order-first lg:order-2">
+                <IconifyIcon icon="ri:telegram-fill" className="flex items-center" size={16} />
+                Join Telegram Community
+              </Button>
+            }
+            <Card className="space-y-4 !bg-transparent order-2 lg:order-last">
               <p className="text-sm font-semibold">Course Outline</p>
               <div onClick={watchIntroVideo} className="flex items-center justify-center gap-2 bg-[#00246B] py-2 px-4 rounded cursor-pointer">
                 <p className="text-xs text-center">Intro video</p>

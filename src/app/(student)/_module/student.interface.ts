@@ -110,7 +110,6 @@ export interface IBanner {
 
 export interface ISubscriptionPlanFeature {
   id: string;
-  planId: string;
   content: string;
   label: string;
   createdAt: string;

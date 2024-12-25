@@ -65,13 +65,13 @@ export default function StatisticsCard({ title, value, icon, type = 'number', lo
       <div className="flex items-end justify-between">
         {loading ?
           <Skeleton height={28} width={80} baseColor="#12182B" highlightColor="#0C1227" /> :
-          <p className='text-primary-50 text-2xl font-bold'>{valueFormatted.toLocaleString()}</p>
+          <p className='text-primary-50 text-2xl font-bold truncate'>{valueFormatted.toLocaleString()}</p>
         }
         {percentage !== undefined && (
           <Fragment>
             {loading ?
               <Skeleton height={28} width={80} baseColor="#12182B" highlightColor="#0C1227" /> :
-              <div className='flex items-center gap-2'>
+              <div className='flex flex-wrap items-center justify-end gap-2'>
                 <p className='text-xs text-accent'>Since last week</p>
                 <div style={{ backgroundColor: percentageColor }}
                   className={clsx("flex items-center gap-1 border h-6 rounded-full px-2 py-0", `border-${percentageColor}`)}>

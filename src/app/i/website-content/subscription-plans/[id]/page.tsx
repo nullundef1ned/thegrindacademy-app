@@ -20,22 +20,26 @@ import ConfirmSubscriptionPlanDeletionModal from '../_modals/ConfirmSubscription
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import pluralize from 'pluralize';
+import { useFetchPlanFeatures } from '../_apis/useSubscriptions';
+import AddFeatureForm from './_components/AddFeatureForm';
+import IconifyIcon from '@/components/IconifyIcon';
 
 export default function SubscriptionPlanDetailPage({ params }: { params: { id: string } }) {
   const { id } = params;
 
   const { showModal } = useModal();
   const { setTitle } = useTitle();
+  const { data: features } = useFetchPlanFeatures();
   const { data, isPending } = useFetchSubscriptionPlan(id);
-  const { updateSubscriptionPlanMutation, deleteSubscriptionPlanMutation, createSubscriptionPlanMutation } = useSubscriptionPlanMutations();
+  const { updateSubscriptionPlanMutation, deleteSubscriptionPlanMutation, createSubscriptionPlanMutation, deletePlanFeatureMutation } = useSubscriptionPlanMutations();
 
   const { values, handleChange, setFieldValue, handleSubmit } = useFormik<ISubscriptionPlanForm>({
     enableReinitialize: true,
     initialValues: {
       name: data?.name || '',
       price: data?.price || '',
-      frequency: data?.frequency || '',
-      duration: data?.duration || 0,
+      frequency: data?.frequency || 'month',
+      duration: data?.duration || 1,
       isDeal: data?.isDeal || false,
       features: data?.features.map((feature) => ({ featureId: feature.id })) || [],
     },
@@ -79,6 +83,18 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
   const isFormValid = values.name && values.price && values.frequency && values.duration
 
   setTitle(`${data?.name || 'Subscription Plan not found'} | Subscription Plans`);
+
+  const toggleFeature = (featureId: string) => {
+    if (values.features.some(feature => feature.featureId === featureId)) {
+      setFieldValue('features', values.features.filter(feature => feature.featureId !== featureId));
+    } else {
+      setFieldValue('features', [...values.features, { featureId }]);
+    }
+  }
+
+  const deleteFeature = (featureId: string) => {
+    deletePlanFeatureMutation.mutate(featureId);
+  }
 
   const openDeleteModal = (data: ISubscriptionPlan) => showModal(<ConfirmSubscriptionPlanDeletionModal subscriptionPlan={data} />);
 
@@ -138,6 +154,30 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
                 <SelectItem value='year'>{pluralize('year', values.duration)}</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+        </div>
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <p className="text-sm font-medium">Features</p>
+            <p className="text-xs text-accent">Select features to add to this subscription plan</p>
+          </div>
+          <AddFeatureForm />
+          <div className="grid grid-cols-2 gap-4">
+            {features?.map((feature, index) => (
+              <div key={index} className="flex items-center gap-4 justify-between border border-[#B0CAFF1A] bg-[#00246B33] py-2.5 px-3 rounded">
+                <label htmlFor={feature.id} className="flex items-center gap-4 w-full cursor-pointer">
+                  <Checkbox
+                    id={feature.id}
+                    checked={values.features.some(f => f.featureId === feature.id)}
+                    onCheckedChange={() => toggleFeature(feature.id)}
+                  />
+                  <label htmlFor={feature.id} className="text-sm cursor-pointer">{feature.content}</label>
+                </label>
+                <div className="cursor-pointer" onClick={() => deleteFeature(feature.id)}>
+                  <IconifyIcon icon='ri:delete-bin-7-fill' className='text-red-500' />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
         <div className="flex flex-col gap-2">

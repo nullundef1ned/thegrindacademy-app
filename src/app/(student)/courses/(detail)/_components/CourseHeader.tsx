@@ -7,7 +7,6 @@ import IconifyIcon from '@/components/IconifyIcon'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress';
 import helperUtil from '@/utils/helper.util';
-import notificationUtil from '@/utils/notification.util';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -22,6 +21,7 @@ interface ICourseHeaderProps {
 
 export default function CourseHeader({ course, isPreview }: ICourseHeaderProps) {
   const { data: user } = useFetchUser();
+  
   const router = useRouter();
   const { downloadCertificateMutation, enrollCourseMutation } = useStudentMutations();
 
@@ -44,7 +44,6 @@ export default function CourseHeader({ course, isPreview }: ICourseHeaderProps) 
   const enrollCourse = () => {
     enrollCourseMutation.mutate({ courseSlug: (course as ICourseDetail).slug }, {
       onSuccess: () => {
-        notificationUtil.success(`You have been enrolled in ${name} successfully`);
         router.push(`/courses/${(course as ICourseDetail).slug}`);
       }
     });
