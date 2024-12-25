@@ -1,17 +1,32 @@
 'use client';
 
 import Image from 'next/image'
-import React, { Suspense } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import Link from 'next/link'
 import Blur from '@/components/Blur';
+import { anchor } from '../i/_module/admin.routes';
+import { useRouter } from 'next/navigation';
 
 type AuthLayoutProps = {
   children: React.ReactNode
 }
 
 function AuthLayout({ children }: AuthLayoutProps) {
+  const router = useRouter();
+
+  useEffect(() => {
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'k' && (e.ctrlKey || e.metaKey)) {
+        router.push(`/${anchor}/login`);
+      }
+    })
+  }, [])
+
   return (
     <div className='grid place-items-center h-screen w-screen bg-background p-4 relative'>
+      <div className='absolute bottom-0 left-0 p-4 group transition-all'>
+        <Link href='/i/login' className='text-sm text-accent hidden group-hover:block transition-all cursor-pointer'>Log in as admin</Link>
+      </div>
       <Blur className='absolute top-1/2 w-1/2 left-1/2 -translate-x-1/2 h-1/2 -translate-y-1/2 bg-primary/5 z-0' />
       <div className='flex flex-col items-center gap-10 w-full z-20'>
         <Link href='/login'>

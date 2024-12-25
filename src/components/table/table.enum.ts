@@ -10,7 +10,9 @@ export enum TableHeaderTypeEnum {
   AVATAR = 'avatar',
   SLUGGED = 'slugged',
   PROGRESS = 'progress',
+  FEATURED = 'featured',
   CURRENCY = 'currency',
   LONG_TEXT = 'long-text',
+  PUBLISHED = 'published',
   DATE_TIME = 'date-time',
 }

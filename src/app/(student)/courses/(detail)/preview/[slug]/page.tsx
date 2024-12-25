@@ -55,13 +55,13 @@ export default function CoursePreviewPage({ params }: { params: { slug: string }
   return (
     <div className="w-full space-y-6">
       <CourseHeader course={course} isPreview />
-      <div className="grid grid-cols-6 gap-6">
-        <div className="col-span-4">
+      <div className="grid lg:grid-cols-6 gap-6 responsive-section">
+        <div className="lg:col-span-4">
           <CourseMainContent course={course} isPreview />
         </div>
-        <div className="relative col-span-2 space-y-8">
-          <div className="sticky top-40 space-y-8">
-            <Accordion defaultValue="overview" type="single" collapsible className="space-y-4">
+        <div className="relative lg:col-span-2 space-y-8">
+          <div className="sticky top-40 grid gap-8">
+            <Accordion defaultValue="overview" type="single" collapsible className="space-y-4 order-2 lg:order-1">
               <AccordionItem value="overview">
                 <AccordionTrigger>Overview</AccordionTrigger>
                 <AccordionContent>
@@ -80,7 +80,7 @@ export default function CoursePreviewPage({ params }: { params: { slug: string }
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-            <Card className="space-y-4 !bg-transparent">
+            <Card className="space-y-4 !bg-transparent order-1 lg:order-2">
               <p className="text-sm font-semibold">Course Outline</p>
               <div onClick={watchIntroVideo} className="flex items-center justify-center gap-2 bg-[#00246B] py-2 px-4 rounded cursor-pointer">
                 <p className="text-xs text-center">Intro video</p>

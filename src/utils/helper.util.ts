@@ -75,21 +75,31 @@ const getTimeDelta = (date: string) => {
   }
 }
 
+const getTimeTo = (date: string): string => {
+  const now = new Date();
+  const futureTime = new Date(date);
+  const delta = futureTime.getTime() - now.getTime();
+  const seconds = Math.floor(delta / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) {
+    return `${days} days`;
+  }
+  return `${hours} hours`;
+}
+
 const capitalize = (text: string): string => {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 const downloadFile = async (url: string, filename: string) => {
-  console.log(url)
   try {
-    const response = await fetch(url);
-    const blob = await response.blob();
     const anchor = document.createElement('a');
-    const link = URL.createObjectURL(blob);
-    anchor.href = link;
+    anchor.href = url;
     anchor.download = filename;
     anchor.click();
-    URL.revokeObjectURL(link);
     anchor.remove();
   } catch (error) {
     notificationUtil.error('Failed to download file');
@@ -101,6 +111,6 @@ export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs))
 }
 
-const helperUtil = { formatPhoneNumber, getTimeDelta, formatDate, formatTime, convertTimeToMinutesAndSeconds, convertToNumber, capitalize, downloadFile }
+const helperUtil = { formatPhoneNumber, getTimeDelta, getTimeTo, formatDate, formatTime, convertTimeToMinutesAndSeconds, convertToNumber, capitalize, downloadFile }
 
 export default helperUtil

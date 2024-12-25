@@ -22,5 +22,6 @@ export default function useStudentHooks() {
     return bankDetails;
   }
 
+
   return { fetchReferral, fetchBankDetails }
 }

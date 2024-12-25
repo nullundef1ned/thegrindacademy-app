@@ -1,18 +1,18 @@
 import IconifyIcon from '@/components/IconifyIcon'
 import React, { useRef } from 'react'
-import ProfileSection from './ProfileSection'
+import ProfileSection from '../../../../components/ProfileSection'
 import { Button } from '@/components/ui/button'
 import Avatar from '@/components/Avatar';
-import { useAppStore } from '@/app/_module/app.store';
 import { useModal } from '@/providers/modal.provider';
 import AccountInformationModal from './_modals/AccountInformationModal';
 import useAppMutations from '@/app/_module/app.mutations';
 import useStudentMutations from '../../_module/student.mutations';
 import notificationUtil from '@/utils/notification.util';
 import LoadingIcons from 'react-loading-icons';
+import { useFetchUser } from '@/app/_module/_apis/useFetchUser';
 
 export default function AccountInformationSection() {
-  const user = useAppStore(state => state.user);
+  const { data: user } = useFetchUser();
 
   const avatarInputRef = useRef<HTMLInputElement>(null);
 

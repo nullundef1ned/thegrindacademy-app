@@ -6,14 +6,13 @@ import Card from '@/components/Card'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { Progress } from '@/components/ui/progress'
-import ReferralCodeCard from './_components/ReferralCodeCard';
-import { IStudentEnrolledCourse } from '../_module/student.interface';
 import Table from '@/components/table';
 import { TableHeaderTypeEnum } from '@/components/table/table.enum';
 import { TableHeader, TableTab } from '@/components/table/table.interface';
 import BankDetailsCard from './_components/BankDetailsCard';
 import StudentQueries from '../_module/student.queries';
 import { useRouter } from 'next/navigation';
+import { IEnrolledCourse } from '../_module/_interfaces/course.interface';
 
 export default function OverviewPage() {
   const [activeTab, setActiveTab] = useState<string>('pending');
@@ -21,7 +20,7 @@ export default function OverviewPage() {
   const { useFetchDashboardDataQuery, useFetchEnrolledCoursesQuery } = StudentQueries();
 
   const router = useRouter();
-  const { data } = useFetchDashboardDataQuery();
+  const { data, isPending } = useFetchDashboardDataQuery();
 
   const { data: _activeCourses, isPending: activeCoursesPending } = useFetchEnrolledCoursesQuery({ status: 'pending', page: 1, limit: 5 });
   const { data: _completedCourses, isPending: completedCoursesPending } = useFetchEnrolledCoursesQuery({ status: 'completed', page: 1, limit: 5 });
@@ -53,24 +52,26 @@ export default function OverviewPage() {
     }
   ]
 
-  const activeCourse: IStudentEnrolledCourse | null = dashboardData?.course?.active || null;
+  const activeCourse: IEnrolledCourse | null = dashboardData?.course?.active || null;
 
-  const tableHeaders: TableHeader<IStudentEnrolledCourse>[] = [
+  const tableHeaders: TableHeader<IEnrolledCourse>[] = [
     // @ts-expect-error this is a nested object
     { key: 'course.name', value: 'Course Name' },
     { key: 'completionPercentage', value: 'Progress', type: TableHeaderTypeEnum.PROGRESS },
   ]
 
-  const tabs: TableTab<IStudentEnrolledCourse>[] = [
-    { key: 'pending', name: 'Active', headers: tableHeaders,
+  const tabs: TableTab<IEnrolledCourse>[] = [
+    {
+      key: 'pending', name: 'Active', headers: tableHeaders,
       data: { result: activeCourses, currentPage: 1, totalPages: 1, totalCount: 0, previousPage: null, nextPage: null }
     },
-    { key: 'completed', name: 'Completed', headers: tableHeaders,
+    {
+      key: 'completed', name: 'Completed', headers: tableHeaders,
       data: { result: completedCourses, currentPage: 1, totalPages: 1, totalCount: 0, previousPage: null, nextPage: null }
     }
   ]
 
-  const goToCourse = (course: IStudentEnrolledCourse) => {
+  const goToCourse = (course: IEnrolledCourse) => {
     router.push(`/courses/${course.course.slug}`);
   }
 
@@ -95,14 +96,21 @@ export default function OverviewPage() {
           </Card>
         }
         {overviewStatistics.map((item) => (
-          <StatisticsCard className='col-span-1 lg:col-span-2 h-full' key={item.title} title={item.title} value={item.value} icon={item.icon} />
+          <StatisticsCard
+            className='col-span-1 lg:col-span-2 h-full'
+            loading={isPending}
+            key={item.title}
+            title={item.title}
+            value={item.value}
+            icon={item.icon}
+          />
         ))}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
         <div className='col-span-1 lg:col-span-3 space-y-4'>
           <p className='text-accent font-medium'>Continue Learning</p>
-          <Card className=''>
-            <Table<IStudentEnrolledCourse>
+          <Card>
+            <Table<IEnrolledCourse>
               hideFooter
               hideLimit
               tabs={tabs}
@@ -118,7 +126,6 @@ export default function OverviewPage() {
         </div>
         <div className='col-span-1 lg:col-span-2 space-y-4'>
           <p className='text-accent font-medium'>Quick Links</p>
-          <ReferralCodeCard />
           <BankDetailsCard />
         </div>
       </div>

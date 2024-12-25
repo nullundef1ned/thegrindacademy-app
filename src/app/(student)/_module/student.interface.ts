@@ -1,5 +1,5 @@
-import { IUserInfo } from "@/app/_module/app.interface";
-import { LessonStatusType } from "@/app/_module/app.type";
+import { IUser } from "@/app/_module/app.interface";
+import { IEnrolledCourse } from "./_interfaces/course.interface";
 
 export interface IReferral {
   id: string;
@@ -20,40 +20,9 @@ export interface IBankDetails {
   updatedAt: string;
 }
 
-export interface IStudentEnrolledCourse {
-  completionPercentage: number;
-  id: string;
-  userId: string;
-  courseId: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-  course: ICourse;
-}
-
-export interface IStudentEnrolledCourseDetail extends IStudentEnrolledCourse {
-  lessons: IEnrolledCourseLesson[];
-}
-
-export interface ICompletionCertificate {
-  id: string;
-  userId: string;
-  courseId: string;
-  certificateUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-}
-
-export interface IStudentEnrolledCourseDetail extends IStudentEnrolledCourse {
-  lessons: IEnrolledCourseLesson[];
-  course: ICourseDetail;
-}
-
 export interface IDashboardData {
   course: {
-    active: IStudentEnrolledCourse,
+    active: IEnrolledCourse,
     count: {
       completed: number;
       active: number;
@@ -68,10 +37,6 @@ export interface IBankDetailForm {
   accountNumber: string;
 }
 
-export interface IStudentAccountInformationForm {
-  info: Partial<IUserInfo>
-}
-
 export interface IBankDetailCreationResponse {
   bankDetail: IBankDetails;
   referralCode: IReferral;
@@ -79,11 +44,22 @@ export interface IBankDetailCreationResponse {
 
 export interface ISubscription {
   id: string;
-  name: string;
-  price: number;
-  duration: number;
-  renewalDate: string;
+  userId: string;
+  subscriptionPlanId: string;
   status: 'active' | 'inactive';
+  autoRenewal: boolean;
+  startDate: string;
+  endDate: string;
+  paymentAuthorization: string | null;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  subscriptionPlan: Omit<ISubscriptionPlan, 'features'>;
+}
+
+export interface ISubscriptionResponse {
+  active: ISubscription | null;
+  upcoming: ISubscription | null;
 }
 
 export interface IOverviewStatistics {
@@ -93,85 +69,63 @@ export interface IOverviewStatistics {
 }
 
 export interface IReferralStatistics {
-  totalReferrals: number;
-  totalPayouts: number;
-  totalEarnings: number;
+  totalReferredUsers: number;
+  totalPayoutsProcessed: number;
+  totalPayoutsAmount: number;
 }
 
-export interface ICourseMaterial {
+export interface IUserReferral {
   id: string;
-  courseId: string;
-  title: string;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface ICourseLesson {
-  id: string;
-  content: string | null;
-  courseId: string;
-  position: number;
-  title: string;
-  slug: string;
-  studyTimeInMinutes: number;
-  description: string | null;
-  videoUrl: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface IEnrolledCourseLesson {
-  id: string;
-  userCourseId: string;
-  position: number;
-  lessonId: string;
-  status: LessonStatusType;
+  userId: string;
+  refereeId: string;
+  referee: IUser;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
-  lesson: ICourseLesson;
 }
 
-export interface ICourseMedia {
-  id: string;
-  courseId: string;
-  thumbnailUrl: string;
-  imageUrls: string[];
-  introVideoUrl: string;
-}
-
-export interface ICourse {
-  id: string;
-  name: string;
-  shortDescription: string;
-  description: string;
-  media: ICourseMedia;
-  slug: string;
-  telegramChannelId: string;
-  status: string;
-  isFeatured: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface ICourseDetail extends ICourse {
-  lessons: ICourseLesson[];
-  materials: ICourseMaterial[];
-}
 
 export interface IPayout {
   id: string;
-  name: string;
-  amount: number;
-  status: 'pending' | 'paid';
+  userId: string;
+  userReferralId: string;
+  amount: string;
+  status: string;
+  reference: string;
+  paidAt: string | null;
   createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  userReferral: IUserReferral;
 }
 
 export interface IBanner {
+  slug: string;
   message: string;
   link?: string;
   buttonText?: string;
   permanent: boolean;
   type: 'info' | 'warning' | 'success' | 'error';
+}
+
+export interface ISubscriptionPlanFeature {
+  id: string;
+  content: string;
+  label: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ISubscriptionPlan {
+  id: string;
+  name: string;
+  slug: string;
+  frequency: string;
+  duration: number;
+  price: string;
+  isDeal: boolean;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  features: ISubscriptionPlanFeature[];
 }

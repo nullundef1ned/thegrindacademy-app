@@ -1,4 +1,4 @@
-import { EnrolledCourseStatusType } from "./app.type";
+import { CourseStatusType, EnrolledCourseStatusType } from "./app.type";
 
 export type UserRole = 'student' | 'admin' | 'super-admin';
 export type UserStatus = 'active' | 'inactive' | 'suspended';
@@ -32,12 +32,21 @@ export interface IAuthResponse {
   accessToken: string;
 }
 
+export interface IAccountInformationForm {
+  info: Partial<IUserInfo>
+}
+
 export type TData<T> = T & { id: string };
 
 export interface IPaginationParams {
   page?: number;
   limit?: number;
   search?: string;
+}
+
+export interface IAdminCoursePaginationParams extends IPaginationParams {
+  status?: CourseStatusType;
+  isFeatured?: boolean;
 }
 
 export interface ICoursePaginationParams extends IPaginationParams {

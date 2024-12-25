@@ -16,8 +16,10 @@ const buttonVariants = cva(
           "bg-[#EBB3C6] text-[#50051E] hover:bg-[#EBB3C6]/90",
         destructive:
           "bg-[#950229] text-[#F9E7ED] hover:bg-[#950229]/90",
+        success:
+          "bg-[#00954D] text-[#F9E7ED] hover:bg-[#00954D]/90",
         outline:
-          "border border-accent text-accent bg-background hover:border-muted hover:text-muted",
+          "border border-accent text-accent bg-transparent hover:border-muted hover:text-muted",
         secondary:
           "bg-[#00246B80] border border-[#002F8C9C] text-primary-50 hover:bg-[#00246B9C]",
         ghost: "hover:bg-accent hover:text-accent-foreground",
@@ -25,7 +27,7 @@ const buttonVariants = cva(
       },
       size: {
         default: "h-10 px-6 py-1.5",
-        sm: "h-9 px-3",
+        sm: "h-8 px-4",
         lg: "h-11 px-8",
         icon: "h-10 w-10",
       },

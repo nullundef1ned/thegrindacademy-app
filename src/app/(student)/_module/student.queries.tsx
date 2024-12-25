@@ -1,12 +1,14 @@
-import { useAppStore } from '@/app/_module/app.store';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { IBankDetails, IDashboardData, IReferral, IStudentEnrolledCourse, ICourse, IStudentEnrolledCourseDetail, ICourseDetail } from './student.interface';
+import { IBankDetails, IDashboardData, IPayout, IReferral, IReferralStatistics, ISubscriptionResponse } from './student.interface';
 import useStudentHooks from './student.hooks';
 import useAxios from '@/hooks/useAxios';
-import { IPagination, ICoursePaginationParams } from '@/app/_module/app.interface';
+import { IPagination, ICoursePaginationParams, IUser, IPaginationParams } from '@/app/_module/app.interface';
+import { ICourse, ICourseDetail, IEnrolledCourse, IEnrolledCourseDetail } from './_interfaces/course.interface';
+import { useFetchUser } from '@/app/_module/_apis/useFetchUser';
+import { IFAQ } from '@/interfaces/faq';
 
 export default function StudentQueries() {
-  const user = useAppStore((state) => state.user);
+  const { data: user } = useFetchUser()
 
   const axiosHandler = useAxios();
 
@@ -25,7 +27,7 @@ export default function StudentQueries() {
 
   const useFetchEnrolledCoursesQuery = (params: ICoursePaginationParams) => useQuery({
     queryKey: [user?.id, 'enrolled-courses', params.status, params],
-    queryFn: async (): Promise<IPagination<IStudentEnrolledCourse>> => {
+    queryFn: async (): Promise<IPagination<IEnrolledCourse>> => {
       const response = await axiosHandler.get(`/student/course/mine`, { params })
       const enrolledCourses = response.data;
       return enrolledCourses;
@@ -37,7 +39,7 @@ export default function StudentQueries() {
 
   const useFetchEnrolledCourseDetailQuery = (courseSlug: string) => useQuery({
     queryKey: [user?.id, 'enrolled-course', courseSlug],
-    queryFn: async (): Promise<IStudentEnrolledCourseDetail> => {
+    queryFn: async (): Promise<IEnrolledCourseDetail> => {
       const response = await axiosHandler.get(`/student/course/mine/${courseSlug}`)
       return response.data;
     },
@@ -51,6 +53,17 @@ export default function StudentQueries() {
       const response = await axiosHandler.get(`/student/course/browse`, { params })
       const enrolledCourses = response.data;
       return enrolledCourses;
+    },
+    placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+  })
+
+  const useFetchPayoutsQuery = (params?: IPaginationParams) => useQuery({
+    queryKey: [user?.id, 'payouts', params],
+    queryFn: async (): Promise<IPagination<IPayout>> => {
+      const response = await axiosHandler.get(`/student/referral/payout`, { params })
+      return response.data;
     },
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
@@ -74,6 +87,16 @@ export default function StudentQueries() {
     refetchInterval: false,
   })
 
+  const useFetchCourseTelegramInviteQuery = (courseSlug: string) => useQuery({
+    queryKey: [user?.id, 'course-telegram-invite', courseSlug],
+    queryFn: async (): Promise<string> => {
+      const response = await axiosHandler.get(`/student/course/mine/${courseSlug}/telegram`)
+      return response.data;
+    },
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+  })
+
   const useFetchBankDetailsQuery = () => useQuery({
     queryKey: [user?.id, 'bank-details'],
     queryFn: async (): Promise<IBankDetails> => fetchBankDetails(),
@@ -81,10 +104,48 @@ export default function StudentQueries() {
     refetchInterval: false,
   })
 
+  const useFetchAuthenticationQuery = () => useQuery({
+    queryKey: [user?.id, 'authentication'],
+    queryFn: async (): Promise<IUser> => {
+      const response = await axiosHandler.get('/student/auth')
+      return response.data;
+    },
+    refetchOnMount: true,
+    refetchInterval: 1000 * 60 * 10,
+  })
+
+  const useFetchSubscriptionQuery = () => useQuery({
+    queryKey: [user?.id, 'subscription'],
+    queryFn: async (): Promise<ISubscriptionResponse> => {
+      const response = await axiosHandler.get('/student/subscription')
+      return response.data;
+    },
+    refetchInterval: 1000 * 60 * 10,
+  })
+
+  const useFetchFAQsQuery = () => useQuery({
+    queryKey: [user?.id, 'faqs'],
+    queryFn: async (): Promise<IFAQ[]> => {
+      const response = await axiosHandler.get(`/student/support/faq`)
+      return response.data;
+    },
+  })
+
+  const useFetchReferralStatisticsQuery = () => useQuery({
+    queryKey: [user?.id, 'referral-statistics'],
+    queryFn: async (): Promise<IReferralStatistics> => {
+      const response = await axiosHandler.get(`/student/referral/dashboard`)
+      return response.data;
+    },
+  })
 
   return {
     useFetchReferralQuery, useFetchBankDetailsQuery, useFetchDashboardDataQuery,
+    useFetchPayoutsQuery, useFetchReferralStatisticsQuery, useFetchFAQsQuery,
     useFetchEnrolledCoursesQuery, useFetchEnrolledCourseDetailQuery,
     useFetchCoursesQuery, useFetchCourseDetailQuery,
+    useFetchCourseTelegramInviteQuery,
+    useFetchAuthenticationQuery,
+    useFetchSubscriptionQuery,
   }
 }
