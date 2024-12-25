@@ -22,8 +22,9 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
 
   const router = useRouter();
 
-  const { useFetchAuthenticationQuery } = StudentQueries();
-  
+  const { useFetchAuthenticationQuery, useFetchReferralQuery } = StudentQueries();
+
+  const { data: referral } = useFetchReferralQuery();
   const { isPending, isError } = useFetchAuthenticationQuery();
   const { subscription, isPending: isSubscriptionPending, disableAccess } = useSubscriptionHook();
 
@@ -67,8 +68,20 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
       }
     }
 
+    if (!referral) {
+      const addBankDetailsBanner: IBanner = {
+        slug: 'add-bank-details',
+        message: 'Add your bank details to receive payouts. Your referral payouts are waiting!',
+        link: '/profile#bank-information',
+        buttonText: 'Add Bank Details',
+        permanent: false,
+        type: 'info',
+      }
+      banners.push(addBankDetailsBanner)
+    }
+
     setBanners(banners)
-  }, [subscription]);
+  }, [subscription, referral]);
 
   if (isPending || isError || isSubscriptionPending) {
     return (
@@ -85,7 +98,7 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
     <div className={clsx(!disableAccess ? 'min-h-screen' : 'h-screen overflow-hidden', 'relative w-screen space-y-6')}>
       <Header routes={navigationRoutes} />
       {banners.length > 0 && (
-        <div className='px-4 w-full responsive-section sticky top-36 z-40 bg-background flex flex-col gap-4'>
+        <div className='w-full responsive-section sticky top-36 z-40 bg-background flex flex-col gap-4'>
           {banners.map((banner, index) => (
             <Banner banner={banner} key={index} />
           ))}

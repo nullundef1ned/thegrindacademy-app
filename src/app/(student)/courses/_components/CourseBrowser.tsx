@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Card from "@/components/Card";
 import Image from "next/image";
-import SearchInput from "./SearchInput";
+import SearchInput from "../../../../components/SearchInput";
 import StudentQueries from "../../_module/student.queries";
 import useURL from "@/hooks/useURL";
 import Paginator from "./Paginator";
@@ -45,7 +45,9 @@ export default function CourseBrowser() {
   return (
     <div className='w-full space-y-6'>
       <div className="flex items-center justify-between w-full border-b border-[#B0CAFF1A] pb-6">
-        <SearchInput />
+        <div className="w-1/3">
+          <SearchInput />
+        </div>
       </div>
 
       {search && courses.length === 0 && (
@@ -72,7 +74,7 @@ export default function CourseBrowser() {
                     <p className="text-sm text-accent">{course.shortDescription}</p>
                   </div>
                 </div>
-                <Button href={`/courses/preview/${course.slug}`} size='sm' variant='outline' className="bg-transparent w-full">
+                <Button href={`/courses/preview/${course.slug}`} variant='outline' className="bg-transparent w-full">
                   Start Course
                 </Button>
               </Card>
