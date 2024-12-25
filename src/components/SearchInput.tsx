@@ -21,16 +21,19 @@ export default function SearchInput() {
   }
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-end gap-3 w-full">
       <Input
         icon="ri:search-line"
         type="search"
+        className="w-full"
         value={searchValue}
         placeholder="Search course"
         onChange={onChange}
         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
       />
-      <Button size='sm' variant='outline' className="h-[44px]" onClick={handleSearch}>Search</Button>
+      <Button size='sm' variant='secondary' className="" onClick={handleSearch}>
+        Search
+      </Button>
     </div>
   )
 }

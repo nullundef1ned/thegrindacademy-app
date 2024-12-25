@@ -6,7 +6,7 @@ import { Fragment, useState } from "react";
 import Card from "@/components/Card";
 import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
-import SearchInput from "./SearchInput";
+import SearchInput from "../../../../components/SearchInput";
 import useURL from "@/hooks/useURL";
 import StudentQueries from "../../_module/student.queries";
 import { EnrolledCourseStatusType } from "@/app/_module/app.type";
@@ -59,7 +59,9 @@ export default function MyCourses() {
   return (
     <div className='w-full space-y-6'>
       <div className="flex items-center flex-wrap gap-4 justify-between w-full border-b border-[#B0CAFF1A] pb-6">
-        <SearchInput />
+        <div className="w-1/3">
+          <SearchInput />
+        </div>
         <div className="flex items-center gap-4 overflow-hidden">
           <p className="text-sm whitespace-nowrap">Filter by:</p>
           <div className="flex items-center gap-2 overflow-x-auto">

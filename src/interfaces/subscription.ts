@@ -10,3 +10,11 @@ export interface ISubscriptionPlanForm {
 export interface ISubscriptionPlanUpdateForm extends ISubscriptionPlanForm {
   id: string;
 }
+
+export interface ISubscriptionPlanFeatureForm {
+  content: string;
+}
+
+export interface ISubscriptionPlanFeatureUpdateForm extends ISubscriptionPlanFeatureForm {
+  id: string;
+}

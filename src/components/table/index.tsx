@@ -12,7 +12,7 @@ import { Checkbox } from "../ui/checkbox";
 import { TableAction, TableTab } from "./table.interface";
 import { TableHeader } from "./table.interface";
 import Image from "next/image";
-import SearchInput from "@/app/(student)/courses/_components/SearchInput";
+import SearchInput from "../SearchInput";
 
 export interface TableProps<T> {
   data?: IPagination<TData<T>>;
@@ -139,7 +139,7 @@ function TableComponent<T>({ data, addComponent, headers, hideLimit, hideFooter,
       <div className={`w-full flex flex-col bg-neutral-1000 ${tabs && tabs.length > 0 ? 'rounded-tl-none' : ''} overflow-hidden`}>
         {(searchable || addComponent) && (
           <div className="pb-4 grid place-content-center grid-cols-2 gap-4">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 w-full">
               {searchable && <SearchInput />}
               {refetch && <IconifyIcon onClick={() => refetch()} icon="ri:refresh-line" className={clsx(fetching && 'animate-spin', "text-grey-100 cursor-pointer")} />}
             </div>

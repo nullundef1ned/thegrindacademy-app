@@ -87,6 +87,16 @@ export default function StudentQueries() {
     refetchInterval: false,
   })
 
+  const useFetchCourseTelegramInviteQuery = (courseSlug: string) => useQuery({
+    queryKey: [user?.id, 'course-telegram-invite', courseSlug],
+    queryFn: async (): Promise<string> => {
+      const response = await axiosHandler.get(`/student/course/mine/${courseSlug}/telegram`)
+      return response.data;
+    },
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+  })
+
   const useFetchBankDetailsQuery = () => useQuery({
     queryKey: [user?.id, 'bank-details'],
     queryFn: async (): Promise<IBankDetails> => fetchBankDetails(),
@@ -134,6 +144,7 @@ export default function StudentQueries() {
     useFetchPayoutsQuery, useFetchReferralStatisticsQuery, useFetchFAQsQuery,
     useFetchEnrolledCoursesQuery, useFetchEnrolledCourseDetailQuery,
     useFetchCoursesQuery, useFetchCourseDetailQuery,
+    useFetchCourseTelegramInviteQuery,
     useFetchAuthenticationQuery,
     useFetchSubscriptionQuery,
   }

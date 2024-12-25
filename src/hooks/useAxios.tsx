@@ -61,7 +61,7 @@ export default function useAxios() {
 
       if (status === 401) {
         updateParams([{ key: URLKeyEnum.LOGOUT, value: 'true' }, { key: URLKeyEnum.REDIRECT, value: pathname }], '/login');
-        notificationUtil.error(message || 'Session expired. Please login again.');
+        // notificationUtil.error(message || 'Session expired. Please login again.');
       } else if (status !== 404 && status !== 401 && status !== 400) {
         notificationUtil.error(message || 'Something went wrong, please try again later')
       }
