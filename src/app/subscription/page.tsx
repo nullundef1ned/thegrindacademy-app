@@ -14,6 +14,7 @@ import LoadingIcons from 'react-loading-icons';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { appRoutes } from '../_module/app.routes';
+import StudentQueries from '../(student)/_module/student.queries';
 
 export default function SubscriptionPage() {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
@@ -21,6 +22,9 @@ export default function SubscriptionPage() {
 
   const axiosHandler = useAxios();
   const { formatCurrency } = useCurrency();
+  const { useFetchAuthenticationQuery } = StudentQueries();
+
+  const { isPending: isUserPending, isError: isUserError } = useFetchAuthenticationQuery();
 
 
   const { data, isPending, error } = useQuery<ISubscriptionPlan[]>({
@@ -90,7 +94,7 @@ export default function SubscriptionPage() {
                 </div>
               ))}
 
-              {(isPending && plans.length === 0) &&
+              {((isPending || isUserPending) && plans.length === 0) &&
                 <div className='w-full h-full flex items-center justify-center'>
                   <LoadingIcons.TailSpin />
                 </div>

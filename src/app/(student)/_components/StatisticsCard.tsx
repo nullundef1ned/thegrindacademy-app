@@ -27,7 +27,7 @@ export default function StatisticsCard({ title, value, icon, type = 'number', lo
   const valueFormatted = {
     number: helperUtil.convertToNumber(value),
     percentage: `${value}%`,
-    currency: formatCurrency(value),
+    currency: formatCurrency(value, undefined, true),
     string: value
   }[type];
 
@@ -65,7 +65,7 @@ export default function StatisticsCard({ title, value, icon, type = 'number', lo
       <div className="flex items-end justify-between">
         {loading ?
           <Skeleton height={28} width={80} baseColor="#12182B" highlightColor="#0C1227" /> :
-          <p className='text-primary-50 text-2xl font-bold truncate'>{valueFormatted.toLocaleString()}</p>
+          <p className='text-primary-50 text-2xl font-bold'>{valueFormatted.toLocaleString()}</p>
         }
         {percentage !== undefined && (
           <Fragment>

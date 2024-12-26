@@ -77,7 +77,7 @@ export default function GraphCard({ title, amount, percentage, chart, loading, i
 
   return (
     <DashboardCard className={className} footer={footer}>
-      <div className='flex flex-col-reverse 2xl:flex-row 2xl:items-center flex-wrap gap-4 justify-between'>
+      <div className='flex flex-col 2xl:flex-row 2xl:items-start flex-wrap gap-4 justify-between'>
         <div className='space-y-4 w-max'>
           <p className='text-primary-50 font-medium'>{title}</p>
           {(total == undefined && percentage == undefined) ? null :
@@ -85,8 +85,8 @@ export default function GraphCard({ title, amount, percentage, chart, loading, i
               {total == undefined ? null :
                 <Fragment>
                   {loading ?
-                    <Skeleton baseColor='#201F1F' className='mb-2' highlightColor='#3B3939' count={1} height={24} width={136} /> :
-                    <p className='heading-2 semibold'>{total}</p>
+                    <Skeleton baseColor="#12182B" highlightColor="#0C1227" className='mb-2' count={1} height={40} width={180} /> :
+                    <p className='text-3xl font-bold'>{total}</p>
                   }
                 </Fragment>
               }
