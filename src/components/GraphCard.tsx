@@ -13,6 +13,7 @@ import { Button } from './ui/button'
 import IconifyIcon from './IconifyIcon'
 import DashboardCard from './DashboardCard'
 import Image from 'next/image'
+import { IPieChartData } from '@/app/_module/app.interface'
 
 
 export enum TimeFrameEnum {
@@ -63,7 +64,7 @@ export default function GraphCard({ title, amount, percentage, chart, loading, i
 
   const backgroundFills = ['#004DE8', '#3377FF', '#B0CAFF', '#00246B', '#1A62FF', '#6699FF', '#D4E3FF', '#001A4D', '#0033B3', '#80A9FF']
 
-  const pieChartData = chart.data.map((data: any, index: number) => ({ ...data, fill: data.fill || backgroundFills[index % backgroundFills.length] }))
+  const pieChartData: IPieChartData[] = chart.data.map((data: IPieChartData | unknown, index: number) => ({ ...(data as IPieChartData), fill: (data as IPieChartData).fill || backgroundFills[index % backgroundFills.length] }))
 
   const percentageData = {
     icon: percentage ? percentage > 0 ? 'ic:outline-trending-up' : (percentage == 0 ? 'jam:minus' : 'ic:outline-trending-down') : '',
@@ -144,7 +145,7 @@ export default function GraphCard({ title, amount, percentage, chart, loading, i
                       <Fragment>
                         {chart.type == ChartTypeEnum.PIE &&
                           <div className='grid grid-cols-3 gap-3 grid-rows-3 w-full overflow-x-auto'>
-                            {pieChartData.map((data: any, index: number) => (
+                            {pieChartData.map((data: IPieChartData, index: number) => (
                               <div key={index} className='flex flex-col items-center gap-2 justify-between'>
                                 <div className="flex items-center gap-1.5">
                                   <div className='size-2 rounded-full flex-shrink-0' style={{ backgroundColor: data.fill }} />

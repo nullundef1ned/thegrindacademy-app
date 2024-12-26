@@ -1,14 +1,10 @@
 import useStudentMutations from '@/app/(student)/_module/student.mutations';
 import { URLKeyEnum } from '@/app/_module/app.enum';
-import { IUser } from '@/app/_module/app.interface';
-import useAdminMutations from '@/app/i/_module/admin.mutations';
-import { adminRoutes } from '@/app/i/_module/admin.routes';
 import Modal from '@/components/Modal'
 import { Button } from '@/components/ui/button'
 import useURL from '@/hooks/useURL';
 import { useModal } from '@/providers/modal.provider';
 import notificationUtil from '@/utils/notification.util';
-import { useRouter } from 'next/navigation';
 
 export default function DeleteAccountModal() {
   const { deleteStudentMutation } = useStudentMutations();

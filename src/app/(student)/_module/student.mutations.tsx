@@ -6,13 +6,10 @@ import { IAccountInformationForm } from '@/app/_module/app.interface';
 import { EnrolledCourseStatusType } from '@/app/_module/app.type';
 import { ICompletionCertificate } from './_interfaces/course.interface';
 import { queryClient } from '@/providers/tanstack-query.provder';
-import { URLKeyEnum } from '@/app/_module/app.enum';
-import useURL from '@/hooks/useURL';
 
 export default function useStudentMutations() {
   const axiosHandler = useAxios();
 
-  const { updateParams } = useURL();
   const { resolveAccountNumber } = useAppHooks();
 
   const setupBankDetailsMutation = useMutation({
