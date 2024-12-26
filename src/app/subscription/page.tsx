@@ -24,7 +24,7 @@ export default function SubscriptionPage() {
   const { formatCurrency } = useCurrency();
   const { useFetchAuthenticationQuery } = StudentQueries();
 
-  const { isPending: isUserPending, isError: isUserError } = useFetchAuthenticationQuery();
+  const { isPending: isUserPending } = useFetchAuthenticationQuery();
 
 
   const { data, isPending, error } = useQuery<ISubscriptionPlan[]>({
