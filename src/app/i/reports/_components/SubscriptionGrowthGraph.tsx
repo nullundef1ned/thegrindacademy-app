@@ -1,24 +1,20 @@
 import GraphCard from '@/components/GraphCard'
 import { ChartTypeEnum, TimeFrameEnum } from '@/components/GraphCard'
 import React, { useState } from 'react'
-import { useFetchCourseEnrollmentsAndCompletion } from '../../_module/_apis/useFetchReports';
+import { useFetchSubscriptionGrowth } from '../../_module/_apis/useFetchReports';
 import { ChartConfig } from '@/components/ui/chart';
 
-export default function CourseEnrollmentsAndCompletionGraph() {
+export default function SubscriptionGrowthGraph() {
   const [timeFrame, setTimeFrame] = useState(TimeFrameEnum.TWELVE_MONTHS);
 
-  const { data, isPending, isFetching, isError, refetch } = useFetchCourseEnrollmentsAndCompletion(timeFrame);
+  const { data, isPending, isFetching, isError, refetch } = useFetchSubscriptionGrowth(timeFrame);
 
   const chartData = data || [];
 
   const chartConfig = {
-    enrollments: {
-      label: "Enrollments",
+    y: {
+      label: "Subscriptions",
       color: "#004DE8",
-    },
-    completions: {
-      label: "Completion Rate",
-      color: "#548DFF"
     }
   } satisfies ChartConfig
 
@@ -30,7 +26,7 @@ export default function CourseEnrollmentsAndCompletionGraph() {
 
   return (
     <GraphCard
-      title='Course Enrollments vs Completion Rates'
+      title='Subscription Growth'
       chart={chart}
       isError={isError}
       activePeriod={timeFrame}

@@ -1,4 +1,4 @@
-import useAxios from "@/hooks/useAxios"
+import useAxios, { CustomError } from "@/hooks/useAxios"
 import { useMutation } from "@tanstack/react-query"
 import { ForgotPasswordForm, LoginForm, PasswordForm, SetupAccountRequest } from "../../_module/auth.interface"
 import { useRouter } from "next/navigation";
@@ -38,6 +38,9 @@ export default function useStudentAuthMutations() {
       notificationUtil.success("Welcome back!")
 
       router.push(redirect ?? '/')
+    },
+    onError: (error: CustomError) => {
+      notificationUtil.error(error.message)
     }
   })
 
@@ -54,6 +57,9 @@ export default function useStudentAuthMutations() {
       setupStudentAccount(data)
       notificationUtil.success("Success! Your account has been setup.")
       router.push(redirect ?? '/')
+    },
+    onError: (error: CustomError) => {
+      notificationUtil.error(error.message)
     }
   })
 
@@ -63,6 +69,9 @@ export default function useStudentAuthMutations() {
     },
     onSuccess: () => {
       notificationUtil.success("Success! Your password has been changed.")
+    },
+    onError: (error: CustomError) => {
+      notificationUtil.error(error.message)
     }
   })
 
@@ -77,12 +86,18 @@ export default function useStudentAuthMutations() {
     onSuccess: () => {
       notificationUtil.success("Success! Your password has been reset.")
       router.push(redirect ?? '/login');
+    },
+    onError: (error: CustomError) => {
+      notificationUtil.error(error.message)
     }
   })
 
   const forgotPasswordMutation = useMutation({
     mutationFn: (values: ForgotPasswordForm) => {
       return axiosHandler.post('/student/auth/password/forgot', values)
+    },
+    onError: (error: CustomError) => {
+      notificationUtil.error(error.message)
     }
   })
 

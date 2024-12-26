@@ -18,7 +18,7 @@ export default function BarChart({ chartConfig, chartData }: BarChartProps) {
       <Chart data={chartData}>
         <CartesianGrid opacity={0.2} vertical={false} />
         <XAxis dataKey={dataKey} />
-        <YAxis axisLine={false} tickLine={false} tickMargin={30} />
+        <YAxis axisLine={false} tickLine={false} tickMargin={10} />
         <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
         <ChartLegend content={<ChartLegendContent />} />
         {keys.map((key, index) => (

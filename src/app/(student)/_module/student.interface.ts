@@ -42,6 +42,11 @@ export interface IBankDetailCreationResponse {
   referralCode: IReferral;
 }
 
+export interface IContactSupportForm {
+  subject: string;
+  message: string;
+}
+
 export interface ISubscription {
   id: string;
   userId: string;

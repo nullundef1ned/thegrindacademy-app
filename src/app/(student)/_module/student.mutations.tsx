@@ -1,5 +1,5 @@
 import useAxios from '@/hooks/useAxios';
-import { IBankDetailCreationResponse, IBankDetailForm } from './student.interface';
+import { IBankDetailCreationResponse, IBankDetailForm, IContactSupportForm } from './student.interface';
 import { useMutation } from '@tanstack/react-query';
 import useAppHooks from '@/app/_module/app.hooks';
 import { IAccountInformationForm } from '@/app/_module/app.interface';
@@ -50,6 +50,13 @@ export default function useStudentMutations() {
     },
   })
 
+  const contactSupportMutation = useMutation({
+    mutationFn: async (values: IContactSupportForm) => {
+      const response = await axiosHandler.post('/student/support/contact', values)
+      return response.data
+    },
+  })
+
   const updateLessonStatusMutation = useMutation({
     mutationFn: async (values: { courseSlug: string, lessonId: string, status: EnrolledCourseStatusType }) => {
       const response = await axiosHandler.patch(`/student/course/mine/${values.courseSlug}/lesson/${values.lessonId}`, { status: values.status })
@@ -71,8 +78,15 @@ export default function useStudentMutations() {
     },
   })
 
+  const deleteStudentMutation = useMutation({
+    mutationFn: async () => {
+      const response = await axiosHandler.delete('/student')
+      return response.data
+    },
+  })
+
   return {
     setupBankDetailsMutation, updateBankDetailsMutation, resolveAccountNumberMutation, updateStudentAccountInformationMutation,
-    updateLessonStatusMutation, enrollCourseMutation, downloadCertificateMutation, cancelSubscriptionMutation
+    updateLessonStatusMutation, enrollCourseMutation, downloadCertificateMutation, cancelSubscriptionMutation, deleteStudentMutation, contactSupportMutation
   }
 }
