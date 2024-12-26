@@ -18,7 +18,7 @@ export default function ReportsPage() {
       link: adminRoutes.reports.courses
     },
     {
-      icon: 'ri:star-fill', name: 'Active Subscriptions',
+      icon: 'ri:star-fill', name: 'Subscriptions',
       description: 'Explore subscription trends, renewals, and cancellations',
       linkText: 'View Report',
       link: adminRoutes.reports.subscriptions

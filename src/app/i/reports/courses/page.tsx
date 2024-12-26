@@ -5,6 +5,7 @@ import { adminRoutes } from '../../_module/admin.routes'
 import { BreadcrumbItem } from '@/components/Breadcrumbs'
 import StatisticsCard, { StatisticsCardProps } from '@/app/(student)/_components/StatisticsCard'
 import CourseEnrollmentsAndCompletionGraph from '../_components/CourseEnrollmentsAndCompletionGraph';
+import { useFetchCourseReport } from '../../_module/_apis/useFetchReports';
 
 export default function CoursesReportsPage() {
   const breadcrumbs: BreadcrumbItem[] = [
@@ -12,22 +13,22 @@ export default function CoursesReportsPage() {
     { name: 'Courses' },
   ]
 
+  const { data, isPending } = useFetchCourseReport();
+
   const statistics: StatisticsCardProps[] = [
     {
       title: 'Total Courses',
-      value: 0,
+      value: data?.totalCourses || 0,
       icon: 'ri:book-2-fill',
-      percentage: 0,
     },
     {
       title: 'Enrollments This Month',
-      value: 0,
+      value: data?.enrollmentsThisMonth || 0,
       icon: 'ri:check-double-fill',
-      percentage: 0,
     },
     {
       title: 'Most Popular Course',
-      value: 'English',
+      value: data?.mostPopularCourse || '',
       icon: 'ri:heart-3-fill',
       type: 'string',
     }
@@ -44,14 +45,10 @@ export default function CoursesReportsPage() {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {statistics.map((statistic, index) => (
-          <StatisticsCard key={index} {...statistic} />
+          <StatisticsCard key={index} {...statistic} loading={isPending} />
         ))}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-9 gap-4">
-        <div className='md:col-span-5 h-full'>
-          <CourseEnrollmentsAndCompletionGraph />
-        </div>
-      </div>
+      <CourseEnrollmentsAndCompletionGraph />
     </div>
   )
 }

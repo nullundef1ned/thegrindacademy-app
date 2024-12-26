@@ -7,10 +7,33 @@ import { Textarea } from '@/components/ui/textarea';
 import React from 'react'
 import StudentQueries from '../_module/student.queries';
 import LoadingIcons from 'react-loading-icons';
+import { useFormik } from 'formik';
+import { IContactSupportForm } from '../_module/student.interface';
+import useStudentMutations from '../_module/student.mutations';
+import notificationUtil from '@/utils/notification.util';
 
 export default function SupportPage() {
   const { useFetchFAQsQuery } = StudentQueries();
   const { data: faqs, isPending } = useFetchFAQsQuery();
+
+  const { contactSupportMutation } = useStudentMutations();
+
+  const { handleSubmit, handleChange, resetForm, values } = useFormik<IContactSupportForm>({
+    initialValues: {
+      subject: '',
+      message: '',
+    },
+    onSubmit: (values) => {
+      contactSupportMutation.mutate(values, {
+        onSuccess: () => {
+          resetForm();
+          notificationUtil.success('Support request submitted successfully')
+        }
+      })
+    }
+  })
+
+  const disabledForm = !values.subject || !values.message || contactSupportMutation.isPending;
 
   return (
     <div className='w-full responsive-section grid grid-cols-1 lg:grid-cols-7 gap-6'>
@@ -41,10 +64,10 @@ export default function SupportPage() {
       <div className='col-span-1 order-1 lg:order-2 lg:col-span-3 space-y-4'>
         <p className='text-lg font-medium uppercase'>Need Further Assistance?</p>
         <p className='text-sm text-accent'>Reach out to our support team for any questions or concerns you may have.</p>
-        <form className='flex flex-col gap-4'>
-          <Input placeholder='Subject' />
-          <Textarea placeholder='Message' />
-          <Button className='w-full'>Submit Request</Button>
+        <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+          <Input placeholder='Subject' name='subject' onChange={handleChange} value={values.subject} />
+          <Textarea placeholder='Message' name='message' onChange={handleChange} value={values.message} />
+          <Button type='submit' className='w-full' loading={contactSupportMutation.isPending} disabled={disabledForm}>Submit Request</Button>
         </form>
       </div>
     </div>

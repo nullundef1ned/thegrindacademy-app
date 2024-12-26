@@ -17,7 +17,7 @@ export default function PieChart({ chartConfig, chartData, showLegend }: PieChar
       <Chart data={chartData}>
         <ChartTooltip content={<ChartTooltipContent label={'099'} />} />
         {showLegend && <ChartLegend content={<ChartLegendContent nameKey={nameKey} />} />}
-        <Pie data={chartData} dataKey={key} nameKey={nameKey} stroke="0" />
+        <Pie data={chartData} dataKey={key} nameKey={nameKey} stroke="0" innerRadius={60} />
       </Chart>
     </ChartContainer>
   )
