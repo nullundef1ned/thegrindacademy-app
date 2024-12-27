@@ -11,6 +11,7 @@ import useURL from '@/hooks/useURL';
 import { URLKeyEnum } from '@/app/_module/app.enum';
 import { useAppStore } from '@/app/_module/app.store';
 import useAdminAuthMutations from '../_module/admin.auth.mutations';
+import { anchor } from '@/app/i/_module/admin.routes';
 
 export default function LoginPage() {
   const logout = useAppStore((state) => state.logout);
@@ -45,7 +46,7 @@ export default function LoginPage() {
           <Input icon='ri:lock-fill' type='password' name='password' className='w-full' placeholder='Password' value={values.password} onChange={handleChange} />
           <Button loading={loginMutation.isPending} className='w-full'>Log In</Button>
         </form>
-        <Link className='text-sm text-accent font-semibold text-right' href='/forgot-password'>Forgot Password?</Link>
+        <Link className='text-sm text-accent font-semibold text-right' href={`/${anchor}/forgot-password`}>Forgot Password?</Link>
       </AuthCard>
       <Link href='/login' className='text-sm text-accent'>Return to civilian life</Link>
     </Fragment>

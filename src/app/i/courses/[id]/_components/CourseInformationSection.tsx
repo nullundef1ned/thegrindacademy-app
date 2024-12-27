@@ -10,6 +10,7 @@ import { IAdminCourseUpdateForm } from '@/interfaces/course';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import useAdminCourseMutations from '../../_apis/admin-course.mutations';
+import notificationUtil from '@/utils/notification.util';
 
 interface ICourseInformationSectionProps {
   course: ICourseDetail;
@@ -36,9 +37,22 @@ export default function CourseInformationSection({ course }: ICourseInformationS
       isFeatured: course?.isFeatured,
     },
     onSubmit: (values) => {
-      updateCourseMutation.mutate(values, {
+      const telegramURLParts = values.telegramChannelId.split('/');
+      const version = telegramURLParts[3].toLowerCase();
+      const id = telegramURLParts[4];
+
+      const telegramChannelId = version?.toLowerCase() === 'a'
+        ? id.split('#')[1]
+        : version?.toLowerCase() === 'k'
+          ? `-100${id.split('#-')[1]}`
+          : values.telegramChannelId;
+
+      updateCourseMutation.mutate({ ...values, telegramChannelId }, {
         onSuccess: () => {
           setIsEditing(false);
+        },
+        onError: (error) => {
+          notificationUtil.error(error.message);
         }
       });
     },
@@ -96,7 +110,13 @@ export default function CourseInformationSection({ course }: ICourseInformationS
             <Input placeholder="Course Name" name="name" required onChange={handleChange} value={values.name} />
             <Input placeholder="Course Short Description" name="shortDescription" required onChange={handleChange} value={values.shortDescription} />
             <Textarea placeholder="Course Description" name="description" required onChange={handleChange} value={values.description} />
-            <Input icon="ri:telegram-2-fill" placeholder="Telegram Channel" type='url' name="telegramChannelId" required onChange={handleChange} value={values.telegramChannelId} />
+            <Input
+              icon="ri:telegram-2-fill"
+              placeholder="Telegram Group URL"
+              type='url'
+              name="telegramChannelId"
+              required onChange={handleChange}
+              value={values.telegramChannelId} />
             <div className="flex items-start gap-6">
               <div className="flex flex-col gap-3">
                 <p className="text-sm font-semibold text-primary-50">Status</p>
