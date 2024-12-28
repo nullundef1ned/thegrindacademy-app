@@ -1,4 +1,4 @@
-import StudentQueries from '@/app/(student)/_module/student.queries';
+import { useFetchSubscriptionByReferenceQuery } from '@/app/(student)/_module/_apis/useSubscriptions';
 import { studentRoutes } from '@/app/(student)/_module/student.routes';
 import { appRoutes } from '@/app/_module/app.routes';
 import { Button } from '@/components/ui/button';
@@ -14,7 +14,6 @@ interface PaymentReferenceLookupProps {
 }
 
 export default function PaymentReferenceLookup({ reference }: PaymentReferenceLookupProps) {
-  const { useFetchSubscriptionByReferenceQuery } = StudentQueries();
   const { data: subscription, isPending } = useFetchSubscriptionByReferenceQuery(reference);
 
   const { formatCurrency } = useCurrency();
