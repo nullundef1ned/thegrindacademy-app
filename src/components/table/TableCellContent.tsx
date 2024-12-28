@@ -10,6 +10,8 @@ import { Progress } from '../ui/progress';
 import { TData } from '@/app/_module/app.interface';
 import FeaturedToggle from './FeaturedToggle';
 import { ICourseDetail } from '@/app/(student)/_module/_interfaces/course.interface';
+import PaymentStatus from './PaymentStatus';
+import { IBillingHistory } from '@/app/(student)/_module/student.interface';
 
 type TableCellContentProps<T> = {
   row: TData<T>;
@@ -32,6 +34,8 @@ export default function TableCellContent<T>({ row, header }: TableCellContentPro
       return <span>{value.toLocaleLowerCase()}</span>
     case TableHeaderTypeEnum.STATUS:
       return <Status status={value as StatusType} />
+    case TableHeaderTypeEnum.PAYMENT_STATUS:
+      return <PaymentStatus status={value as StatusType} paymentURL={(row as unknown as IBillingHistory).paymentLink} />
     case TableHeaderTypeEnum.PUBLISHED:
       const published = value === 'true' ? 'published' : 'draft';
       return <Status status={published as StatusType} />

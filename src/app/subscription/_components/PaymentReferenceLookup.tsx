@@ -36,10 +36,10 @@ export default function PaymentReferenceLookup({ reference }: PaymentReferenceLo
     </div>
   );
 
-  const plan = subscription.userSubscription.subscriptionPlanId;
+  const plan = subscription.userSubscription.subscriptionPlan.name;
   const autoRenewal = subscription.userSubscription.autoRenewal;
   const endDate = subscription.userSubscription.endDate;
-  const amount = subscription.userSubscription.billingHistory[0].amountReceived;
+  const amount = subscription.userSubscription.subscriptionPlan.price;
 
   return (
     <div className='lg:col-span-2 flex flex-col items-center justify-center gap-6'>

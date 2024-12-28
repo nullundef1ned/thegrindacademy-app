@@ -12,13 +12,17 @@ import Image from 'next/image';
 import { useTitle } from '@/providers/title.provider';
 import StudentAuthQueries from '../_module/student.auth.queries';
 import useStudentAuthMutations from '../_module/student.auth.mutations';
+import useURL from '@/hooks/useURL';
 
-export default function SetupAccountPage({ searchParams }: { searchParams: { token: string } }) {
+export default function SetupAccountPage(props: any) {
+
+  const { searchParams } = useURL();
+
   const { setTitle } = useTitle();
   const { useVerifyAccountSetupTokenQuery } = StudentAuthQueries();
   const { setupAccountMutation } = useStudentAuthMutations();
 
-  const token = searchParams.token;
+  const token = searchParams.get('token') || '';
 
   const { data: tokenData, isPending, isError } = useVerifyAccountSetupTokenQuery(token)
 

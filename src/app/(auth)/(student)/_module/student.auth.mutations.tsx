@@ -35,8 +35,6 @@ export default function useStudentAuthMutations() {
     onSuccess: (data: IAuthResponse) => {
       setupStudentAccount(data);
       storageUtil.saveItem(StorageKey.user, data.user);
-      notificationUtil.success("Welcome back!")
-
       router.push(redirect ?? '/')
     },
     onError: (error: CustomError) => {

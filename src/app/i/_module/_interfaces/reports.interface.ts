@@ -3,6 +3,12 @@ export interface IGraphData {
   y: number;
 }
 
+export interface IActiveInactiveUserTrendGraphData {
+  name: string;
+  active: number;
+  inactive: number;
+}
+
 export interface IEnrollmentsAndCompletionGraphData {
   label: string;
   enrollments: number;
@@ -50,7 +56,6 @@ export interface IFinanceReport {
   totalRevenue: IReport;
   processedPayouts: number;
   pendingPayouts: number;
-  // averageRevenuePerUser: IReport;
 }
 
 export interface IPieChartDataResponse {
