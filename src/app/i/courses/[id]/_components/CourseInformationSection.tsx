@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input';
 import { useFormik } from 'formik';
 import { IAdminCourseUpdateForm } from '@/interfaces/course';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import useAdminCourseMutations from '../../_apis/admin-course.mutations';
 import notificationUtil from '@/utils/notification.util';
 
@@ -58,8 +57,6 @@ export default function CourseInformationSection({ course }: ICourseInformationS
     },
   });
 
-  const enrollment = 100;
-
   return (
     <div className='space-y-4'>
       <div className="flex items-center gap-4 justify-between">
@@ -93,7 +90,7 @@ export default function CourseInformationSection({ course }: ICourseInformationS
             <div className="flex items-start gap-6 py-4">
               <div className="flex flex-col gap-3">
                 <p className="text-sm font-semibold text-primary-50">Enrollment</p>
-                <p className="text-base">{enrollment}</p>
+                <p className="text-base">{course?.enrollmentCount}</p>
               </div>
               <div className="flex flex-col gap-3">
                 <p className="text-sm font-semibold text-primary-50">Status</p>
@@ -118,18 +115,6 @@ export default function CourseInformationSection({ course }: ICourseInformationS
               required onChange={handleChange}
               value={values.telegramChannelId} />
             <div className="flex items-start gap-6">
-              <div className="flex flex-col gap-3">
-                <p className="text-sm font-semibold text-primary-50">Status</p>
-                <Select value={values.status} onValueChange={(value) => setFieldValue('status', value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="draft">Draft</SelectItem>
-                    <SelectItem value="published">Published</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
               <div className="flex flex-col gap-3">
                 <p className="text-sm font-semibold text-primary-50">Featured</p>
                 <Switch checked={values.isFeatured} onCheckedChange={(value) => setFieldValue('isFeatured', value)} />

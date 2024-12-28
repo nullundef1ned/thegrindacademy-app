@@ -21,6 +21,13 @@ export interface IDashboardReport {
   activeSubscriptions: Omit<IReport, 'percentageChange'>;
 }
 
+export interface IUserDashboardReport {
+  total: IReport;
+  newSignups: IReport;
+  active: IReport;
+  inactive: IReport;
+}
+
 export interface IUserReport {
   total: IReport;
   subscribed: IReport;
@@ -34,20 +41,20 @@ export interface ICourseReport {
 }
 
 export interface ISubscriptionReport {
-  activeSubscriptions: number;
-  expiredSubscriptions: number;
-  newSubscriptions: number;
-  renewalRate: number;
+  active: Exclude<IReport, 'percentageChange'>;
+  expired: Exclude<IReport, 'percentageChange'>;
+  new: IReport;
 }
 
 export interface IFinanceReport {
-  totalRevenue: number;
+  totalRevenue: IReport;
   processedPayouts: number;
   pendingPayouts: number;
-  averageRevenuePerUser: number;
+  // averageRevenuePerUser: IReport;
 }
 
-export interface ISubscriptionPlanPopularity {
+export interface IPieChartDataResponse {
   name: string;
+  count: number;
   percentage: number;
 }

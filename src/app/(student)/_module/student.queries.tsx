@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { IBankDetails, IDashboardData, IPayout, IReferral, IReferralStatistics, ISubscriptionResponse } from './student.interface';
+import { IBankDetails, ICourseCommunity, IDashboardData, IPayout, IReferral, IReferralStatistics, ISubscriptionPlan, ISubscriptionRenewalResponse, ISubscriptionResponse } from './student.interface';
 import useStudentHooks from './student.hooks';
 import useAxios from '@/hooks/useAxios';
 import { IPagination, ICoursePaginationParams, IUser, IPaginationParams } from '@/app/_module/app.interface';
@@ -123,6 +123,22 @@ export default function StudentQueries() {
     refetchInterval: 1000 * 60 * 10,
   })
 
+  const useFetchSubscriptionPlansQuery = () => useQuery({
+    queryKey: ['subscription-plans'],
+    queryFn: async (): Promise<ISubscriptionPlan[]> => {
+      const response = await axiosHandler.get('website-content/subscription/plan')
+      return response.data;
+    },
+  })
+
+  const useFetchSubscriptionByReferenceQuery = (reference: string) => useQuery({
+    queryKey: ['subscription-by-reference', reference],
+    queryFn: async (): Promise<ISubscriptionRenewalResponse> => {
+      const response = await axiosHandler.get(`/student/subscription/reference/${reference}`)
+      return response.data;
+    },
+  })
+
   const useFetchFAQsQuery = () => useQuery({
     queryKey: [user?.id, 'faqs'],
     queryFn: async (): Promise<IFAQ[]> => {
@@ -139,12 +155,24 @@ export default function StudentQueries() {
     },
   })
 
+  const useFetchCourseCommunitiesQuery = (params: IPaginationParams) => useQuery({
+    queryKey: [user?.id, 'course-communities'],
+    queryFn: async (): Promise<IPagination<ICourseCommunity>> => {
+      const response = await axiosHandler.get(`/student/dashboard/course-community`, { params })
+      return response.data;
+    },
+    placeholderData: keepPreviousData,
+  })
+
   return {
     useFetchReferralQuery, useFetchBankDetailsQuery, useFetchDashboardDataQuery,
     useFetchPayoutsQuery, useFetchReferralStatisticsQuery, useFetchFAQsQuery,
     useFetchEnrolledCoursesQuery, useFetchEnrolledCourseDetailQuery,
     useFetchCoursesQuery, useFetchCourseDetailQuery,
+    useFetchSubscriptionByReferenceQuery,
     useFetchCourseTelegramInviteQuery,
+    useFetchSubscriptionPlansQuery,
+    useFetchCourseCommunitiesQuery,
     useFetchAuthenticationQuery,
     useFetchSubscriptionQuery,
   }

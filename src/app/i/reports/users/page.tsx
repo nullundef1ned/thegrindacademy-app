@@ -6,6 +6,7 @@ import { BreadcrumbItem } from '@/components/Breadcrumbs'
 import StatisticsCard, { StatisticsCardProps } from '@/app/(student)/_components/StatisticsCard'
 import UserGrowthOverTimeGraph from '../../overview/_components/UserGrowthOverTimeGraph'
 import ActiveInactiveUserGraph from '../_components/ActiveInactiveUserGraph';
+import { useFetchUserReport } from '../../_module/_apis/useFetchReports';
 
 export default function UserReportsPage() {
   const breadcrumbs: BreadcrumbItem[] = [
@@ -13,29 +14,32 @@ export default function UserReportsPage() {
     { name: 'Users' },
   ]
 
+  const { data: userReport } = useFetchUserReport();
+
   const statistics: StatisticsCardProps[] = [
     {
       title: 'Total Users',
-      value: 0,
+      value: userReport?.total.count || 0,
       icon: 'ri:user-fill',
-      percentage: 0,
+      percentage: userReport?.total.percentageChange || 0,
     },
     {
-      title: 'New Signups This Month',
-      value: 0,
+      title: 'New Signups',
+      value: userReport?.newSignups.count || 0,
       icon: 'ri:newspaper-fill',
-      percentage: 0,
+      percentage: userReport?.newSignups.percentageChange || 0,
     },
     {
       title: 'Active Users',
-      value: 0,
+      value: userReport?.active.count || 0,
       icon: 'ri:ancient-pavilion-fill',
-      percentage: 0,
+      percentage: userReport?.active.percentageChange || 0,
     },
     {
       title: 'Inactive Users',
-      value: 0,
+      value: userReport?.inactive.count || 0,
       icon: 'ri:stop-circle-fill',
+      percentage: userReport?.inactive.percentageChange || 0,
     },
   ]
 

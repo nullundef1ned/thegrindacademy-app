@@ -105,7 +105,7 @@ export default function MyCourses() {
                     </div>
                   </div>
                 </div>
-                <Button href={`/courses/${course.course.slug}`} size='sm' variant={course.completionPercentage === 100 ? 'default' : 'outline'} className="bg-transparent w-full">
+                <Button href={`/courses/${course.course.slug}`} variant={course.completionPercentage === 100 ? 'default' : 'outline'} className="bg-transparent w-full">
                   {course.completionPercentage === 0 && 'Start Course'}
                   {course.completionPercentage > 0 && course.completionPercentage < 100 && 'Continue Course'}
                   {course.completionPercentage === 100 && 'Completed'}

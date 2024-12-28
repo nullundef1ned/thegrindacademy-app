@@ -19,28 +19,20 @@ export default function SubscriptionReportsPage() {
   const statistics: StatisticsCardProps[] = [
     {
       title: 'Active Subscriptions',
-      value: subscriptionReport?.activeSubscriptions || 0,
+      value: subscriptionReport?.active.count || 0,
       icon: 'ri:checkbox-multiple-fill',
-      percentage: 0,
     },
     {
       title: 'Expired Subscriptions',
-      value: subscriptionReport?.expiredSubscriptions || 0,
+      value: subscriptionReport?.expired.count || 0,
       icon: 'ri:close-circle-fill',
-      percentage: 0,
     },
     {
       title: 'New Subscriptions',
-      value: subscriptionReport?.newSubscriptions || 0,
+      value: subscriptionReport?.new.count || 0,
       icon: 'ri:money-dollar-circle-fill',
-      type: 'percentage',
+      percentage: subscriptionReport?.new.percentageChange || 0,
     },
-    {
-      title: 'Renewal Rate',
-      value: subscriptionReport?.renewalRate || 0,
-      icon: 'ri:refresh-fill',
-      type: 'percentage',
-    }
   ]
 
   return (
@@ -52,7 +44,7 @@ export default function SubscriptionReportsPage() {
           <p className="text-sm text-accent">Detailed insights on subscription</p>
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {statistics.map((statistic, index) => (
           <StatisticsCard key={index} {...statistic} />
         ))}

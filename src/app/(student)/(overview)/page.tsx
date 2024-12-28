@@ -13,6 +13,7 @@ import BankDetailsCard from './_components/BankDetailsCard';
 import StudentQueries from '../_module/student.queries';
 import { useRouter } from 'next/navigation';
 import { IEnrolledCourse } from '../_module/_interfaces/course.interface';
+import CourseCommunities from './_components/CourseCommunities';
 
 export default function OverviewPage() {
   const [activeTab, setActiveTab] = useState<string>('pending');
@@ -127,6 +128,7 @@ export default function OverviewPage() {
         <div className='col-span-1 lg:col-span-2 space-y-4'>
           <p className='text-accent font-medium'>Quick Links</p>
           <BankDetailsCard />
+          <CourseCommunities />
         </div>
       </div>
     </div>

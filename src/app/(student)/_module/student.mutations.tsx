@@ -1,5 +1,5 @@
 import useAxios from '@/hooks/useAxios';
-import { IBankDetailCreationResponse, IBankDetailForm, IContactSupportForm } from './student.interface';
+import { IBankDetailCreationResponse, IBankDetailForm, IContactSupportForm, ISubscriptionForm, ISubscriptionRenewalResponse, ISubscriptionResponse } from './student.interface';
 import { useMutation } from '@tanstack/react-query';
 import useAppHooks from '@/app/_module/app.hooks';
 import { IAccountInformationForm } from '@/app/_module/app.interface';
@@ -57,6 +57,13 @@ export default function useStudentMutations() {
     },
   })
 
+  const createOrUpdateSubscriptionMutation = useMutation({
+    mutationFn: async (values: ISubscriptionForm): Promise<ISubscriptionRenewalResponse> => {
+      const response = await axiosHandler.post('/student/subscription', values)
+      return response.data
+    },
+  })
+
   const updateLessonStatusMutation = useMutation({
     mutationFn: async (values: { courseSlug: string, lessonId: string, status: EnrolledCourseStatusType }) => {
       const response = await axiosHandler.patch(`/student/course/mine/${values.courseSlug}/lesson/${values.lessonId}`, { status: values.status })
@@ -76,6 +83,9 @@ export default function useStudentMutations() {
       const response = await axiosHandler.patch('/student/subscription/cancel')
       return response.data
     },
+    onSettled: () => {
+      queryClient.refetchQueries({ queryKey: ['subscription'] })
+    }
   })
 
   const deleteStudentMutation = useMutation({
@@ -87,6 +97,8 @@ export default function useStudentMutations() {
 
   return {
     setupBankDetailsMutation, updateBankDetailsMutation, resolveAccountNumberMutation, updateStudentAccountInformationMutation,
-    updateLessonStatusMutation, enrollCourseMutation, downloadCertificateMutation, cancelSubscriptionMutation, deleteStudentMutation, contactSupportMutation
+    enrollCourseMutation, downloadCertificateMutation, cancelSubscriptionMutation, deleteStudentMutation, contactSupportMutation,
+    createOrUpdateSubscriptionMutation,
+    updateLessonStatusMutation,
   }
 }

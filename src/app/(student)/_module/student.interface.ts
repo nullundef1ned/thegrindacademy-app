@@ -1,5 +1,5 @@
 import { IUser } from "@/app/_module/app.interface";
-import { IEnrolledCourse } from "./_interfaces/course.interface";
+import { ICourse, IEnrolledCourse } from "./_interfaces/course.interface";
 
 export interface IReferral {
   id: string;
@@ -47,6 +47,11 @@ export interface IContactSupportForm {
   message: string;
 }
 
+export interface ISubscriptionForm {
+  subscriptionPlanId: string;
+  autoRenewal: boolean;
+}
+
 export interface ISubscription {
   id: string;
   userId: string;
@@ -65,6 +70,43 @@ export interface ISubscription {
 export interface ISubscriptionResponse {
   active: ISubscription | null;
   upcoming: ISubscription | null;
+}
+
+export interface ISubscriptionRenewalResponse {
+  userSubscription: {
+    status: string,
+    id: string;
+    userId: string;
+    subscriptionPlanId: string;
+    autoRenewal: boolean;
+    startDate: string;
+    endDate: string;
+    billingHistory: {
+      amountPaid: string;
+      amountReceived: string;
+      paymentStatus: string;
+      id: string;
+      userId: string;
+      price: string;
+      startDate: string;
+      endDate: string;
+      userSubscriptionId: string;
+      updatedAt: string;
+      createdAt: string;
+      paymentReference: string | null;
+      paymentAccessCode: string | null;
+      deletedAt: string | null;
+    }[];
+    updatedAt: string;
+    createdAt: string;
+    paymentAuthorization: string | null;
+    deletedAt: string | null
+  },
+  paymentData: {
+    authorization_url: string;
+    access_code: string;
+    reference: string;
+  }
 }
 
 export interface IOverviewStatistics {
@@ -133,4 +175,18 @@ export interface ISubscriptionPlan {
   updatedAt: string;
   deletedAt: string | null;
   features: ISubscriptionPlanFeature[];
+}
+
+export interface ICourseCommunity {
+  telegramChannelInviteLink: string;
+  telegramChannelMemberCount: number;
+  id: string;
+  userId: string;
+  courseId: string;
+  status: 'pending' | 'completed';
+  completedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  course: Exclude<ICourse, 'media'>;
 }
