@@ -7,9 +7,12 @@ import Image from 'next/image';
 import { appRoutes } from '../_module/app.routes';
 import SubscriptionForm from './_components/SubscriptionForm';
 import PaymentReferenceLookup from './_components/PaymentReferenceLookup';
+import useURL from '@/hooks/useURL';
 
-export default function SubscriptionPage({ searchParams }: { searchParams: { ref: string } }) {
-  const reference = searchParams.ref;
+export default function SubscriptionPage() {
+  const { searchParams } = useURL()
+
+  const reference = searchParams.get('ref');
 
   return (
     <Suspense fallback={<div className='w-full h-full flex items-center justify-center'><LoadingIcons.TailSpin /></div>}>

@@ -5,6 +5,7 @@ export const studentRoutes = {
   courses: '/courses',
   referrals: '/referrals',
   support: '/support',
+  billingHistory: '/profile/billing-history',
 }
 
 export const navigationRoutes = [

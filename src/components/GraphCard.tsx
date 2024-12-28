@@ -14,6 +14,7 @@ import IconifyIcon from './IconifyIcon'
 import DashboardCard from './DashboardCard'
 import Image from 'next/image'
 import { IPieChartData } from '@/app/_module/app.interface'
+import helperUtil from '@/utils/helper.util'
 
 
 export enum TimeFrameEnum {
@@ -149,7 +150,7 @@ export default function GraphCard({ title, amount, percentage, chart, loading, i
                               <div key={index} className='flex flex-col items-center gap-2 justify-between'>
                                 <div className="flex items-center gap-1.5">
                                   <div className='size-2 rounded-full flex-shrink-0' style={{ backgroundColor: data.fill }} />
-                                  <p className='text-sm text-primary-100 font-medium'>{data.percentage}%</p>
+                                  <p className='text-sm text-primary-100 font-medium'>{helperUtil.convertToNumber(data.percentage).toFixed(2)}%</p>
                                 </div>
                                 <p className='text-sm text-accent'>{data.name}</p>
                               </div>

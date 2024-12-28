@@ -24,8 +24,8 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
 
   const { useFetchAuthenticationQuery, useFetchReferralQuery } = StudentQueries();
 
-  const { data: referral, isPending: isReferralPending } = useFetchReferralQuery();
   const { data: user, isPending, isError } = useFetchAuthenticationQuery();
+  const { data: referral, isPending: isReferralPending } = useFetchReferralQuery();
   const { subscription, isPending: isSubscriptionPending, disableAccess } = useSubscriptionHook();
 
   useEffect(() => {
@@ -41,8 +41,22 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
 
     if (subscription && !isSubscriptionPending) {
       const activeSubscription = subscription.active;
+      const unpaidSubscription = subscription.unpaid;
 
-      if (!activeSubscription) {
+      if (unpaidSubscription && !activeSubscription) {
+        const unpaidBanner: IBanner = {
+          slug: 'subscription-unpaid',
+          message: 'You have an unpaid subscription. Please make payment to resume access.',
+          link: unpaidSubscription.paymentLink || undefined,
+          buttonText: 'Make Payment',
+          permanent: true,
+          blank: true,
+          type: 'error',
+        }
+        banners.push(unpaidBanner)
+      }
+
+      if (!activeSubscription && !unpaidSubscription) {
         const expiredBanner: IBanner = {
           slug: 'subscription-expired',
           message: 'Your subscription has expired and your access has currently been revoked. Renew now to continue accessing our courses.',

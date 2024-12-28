@@ -37,7 +37,7 @@ export default function CourseCommunities() {
             <IconifyIcon icon="ri:arrow-left-s-line" className="text-lg" />
           </div>
           <div
-            className={clsx(page == data?.totalPages ? "opacity-50 cursor-not-allowed" : "cursor-pointer", "size-8 grid place-items-center bg-[#00246B33] border rounded border-[#B0CAFF1A]")}
+            className={clsx(data && data?.totalPages <= 1 ? "opacity-50 cursor-not-allowed" : "cursor-pointer", "size-8 grid place-items-center bg-[#00246B33] border rounded border-[#B0CAFF1A]")}
             onClick={nextPage}>
             <IconifyIcon icon="ri:arrow-right-s-line" className="text-lg" />
           </div>
@@ -50,11 +50,11 @@ export default function CourseCommunities() {
       }
       {
         courseCommunities.length == 0 && (
-          <div className="flex flex-col items-center justify-center gap-2 h-60">
+          <Card className="flex flex-col items-center justify-center gap-2 h-60">
             <IconifyIcon icon="ri:error-warning-line" className="text-4xl text-accent" />
             <p className="text-sm text-gray-500">No communities found</p>
             <Link href="/courses" className="text-sm text-accent"><span className="font-medium hover:underline text-primary">Enroll</span> in a course to gain access to communities</Link>
-          </div>
+          </Card>
         )
       }
     </div>

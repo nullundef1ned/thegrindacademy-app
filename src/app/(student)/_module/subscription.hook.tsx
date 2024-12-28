@@ -14,7 +14,7 @@ export default function useSubscriptionHook() {
 
   const isProtectedRoute = navigationRoutes.some(route => route.protected && rootPath === route.href);
 
-  const disableAccess = !isSubscriptionActive && isProtectedRoute;
+  const disableAccess = !isSubscriptionActive && isProtectedRoute && subscription?.unpaid;
 
   return { subscription, isPending, isSubscriptionActive, disableAccess }
 }

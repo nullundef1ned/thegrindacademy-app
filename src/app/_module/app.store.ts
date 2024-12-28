@@ -2,6 +2,7 @@ import { create, resetAllStores } from "@/stores";
 import { devtools, persist } from "zustand/middleware";
 import storageUtil, { StorageKey } from "@/utils/storage.util";
 import { IAuthResponse } from "./app.interface";
+import { queryClient } from "@/providers/tanstack-query.provder";
 
 export interface AppState {
   token: string | null;
@@ -33,6 +34,7 @@ export const useAppStore = create<AppStore>()(
     },
     logout: () => {
       resetAllStores();
+      queryClient.clear();
       set({ token: null })
       storageUtil.deleteItem(StorageKey.user)
       storageUtil.deleteItem(StorageKey.token)

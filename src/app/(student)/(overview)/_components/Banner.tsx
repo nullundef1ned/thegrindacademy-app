@@ -35,7 +35,7 @@ export default function Banner({ banner }: IBannerProps) {
       </div>
       <div className="flex items-center gap-2">
         {banner.link && banner.buttonText && (
-          <Button href={banner.link} size='sm' className='rounded-[2px] !bg-white/20'>{banner.buttonText}</Button>
+          <Button href={banner.link} size='sm' className='rounded-[2px] !bg-white/20' target={banner.blank ? '_blank' : undefined}>{banner.buttonText}</Button>
         )}
         {!banner.permanent &&
           <div className='cursor-pointer flex items-center justify-center' onClick={removeBanner}>

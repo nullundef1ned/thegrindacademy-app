@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { IBankDetails, ICourseCommunity, IDashboardData, IPayout, IReferral, IReferralStatistics, ISubscriptionPlan, ISubscriptionRenewalResponse, ISubscriptionResponse } from './student.interface';
+import { IBankDetails, IBillingHistory, ICourseCommunity, IDashboardData, IPayout, IReferral, IReferralStatistics, ISubscriptionPlan, ISubscriptionRenewalResponse, ISubscriptionResponse } from './student.interface';
 import useStudentHooks from './student.hooks';
 import useAxios from '@/hooks/useAxios';
 import { IPagination, ICoursePaginationParams, IUser, IPaginationParams } from '@/app/_module/app.interface';
@@ -63,6 +63,17 @@ export default function StudentQueries() {
     queryKey: [user?.id, 'payouts', params],
     queryFn: async (): Promise<IPagination<IPayout>> => {
       const response = await axiosHandler.get(`/student/referral/payout`, { params })
+      return response.data;
+    },
+    placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+  })
+
+  const useFetchBillingHistoryQuery = (params?: IPaginationParams) => useQuery({
+    queryKey: [user?.id, 'billing-history', params],
+    queryFn: async (): Promise<IPagination<IBillingHistory>> => {
+      const response = await axiosHandler.get(`/student/subscription/billing/history`, { params })
       return response.data;
     },
     placeholderData: keepPreviousData,
@@ -134,7 +145,7 @@ export default function StudentQueries() {
   const useFetchSubscriptionByReferenceQuery = (reference: string) => useQuery({
     queryKey: ['subscription-by-reference', reference],
     queryFn: async (): Promise<ISubscriptionRenewalResponse> => {
-      const response = await axiosHandler.get(`/student/subscription/reference/${reference}`)
+      const response = await axiosHandler.get(`/website-content/subscription/status/${reference}`)
       return response.data;
     },
   })
@@ -165,9 +176,9 @@ export default function StudentQueries() {
   })
 
   return {
+    useFetchBillingHistoryQuery, useFetchEnrolledCoursesQuery, useFetchEnrolledCourseDetailQuery,
     useFetchReferralQuery, useFetchBankDetailsQuery, useFetchDashboardDataQuery,
     useFetchPayoutsQuery, useFetchReferralStatisticsQuery, useFetchFAQsQuery,
-    useFetchEnrolledCoursesQuery, useFetchEnrolledCourseDetailQuery,
     useFetchCoursesQuery, useFetchCourseDetailQuery,
     useFetchSubscriptionByReferenceQuery,
     useFetchCourseTelegramInviteQuery,

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "@/hooks/useAxios";
 import { TimeFrameEnum } from "@/app/_module/app.enum";
-import { ICourseReport, IDashboardReport, IFinanceReport, IGraphData, IPieChartDataResponse, ISubscriptionReport, IUserDashboardReport } from "../_interfaces/reports.interface";
+import { IActiveInactiveUserTrendGraphData, ICourseReport, IDashboardReport, IFinanceReport, IGraphData, IPieChartDataResponse, ISubscriptionReport, IUserDashboardReport } from "../_interfaces/reports.interface";
 import { IPayout } from "@/app/(student)/_module/student.interface";
 import { IPagination } from "@/app/_module/app.interface";
 
@@ -12,6 +12,22 @@ export function useFetchUserGrowthOverTime(timeFrame: TimeFrameEnum) {
     queryKey: ['user-growth-over-time', timeFrame],
     queryFn: async (): Promise<IGraphData[]> => {
       const response = await axiosHandler.get('/admin/dashboard/user-growth', { params: { timeFrame } })
+      return response.data;
+    },
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+  })
+
+  return query;
+}
+
+export function useFetchActiveInactiveUserTrend(timeFrame: TimeFrameEnum) {
+  const axiosHandler = useAxios();
+
+  const query = useQuery({
+    queryKey: ['active-inactive-user-trend', timeFrame],
+    queryFn: async (): Promise<IActiveInactiveUserTrendGraphData[]> => {
+      const response = await axiosHandler.get('/admin/report/user/active-vs-inactive/trend', { params: { timeFrame } })
       return response.data;
     },
     refetchOnWindowFocus: true,

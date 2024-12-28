@@ -70,38 +70,27 @@ export interface ISubscription {
 export interface ISubscriptionResponse {
   active: ISubscription | null;
   upcoming: ISubscription | null;
+  unpaid: IBillingHistory | null;
+}
+
+export interface IUserSubscription {
+  id: string;
+  status: string,
+  userId: string;
+  subscriptionPlanId: string;
+  autoRenewal: boolean;
+  startDate: string;
+  endDate: string;
+  updatedAt: string;
+  createdAt: string;
+  subscriptionPlan: ISubscriptionPlan;
+  paymentAuthorization: string | null;
+  deletedAt: string | null;
+  billingHistory: Exclude<IBillingHistory, 'userSubscription'>[];
 }
 
 export interface ISubscriptionRenewalResponse {
-  userSubscription: {
-    status: string,
-    id: string;
-    userId: string;
-    subscriptionPlanId: string;
-    autoRenewal: boolean;
-    startDate: string;
-    endDate: string;
-    billingHistory: {
-      amountPaid: string;
-      amountReceived: string;
-      paymentStatus: string;
-      id: string;
-      userId: string;
-      price: string;
-      startDate: string;
-      endDate: string;
-      userSubscriptionId: string;
-      updatedAt: string;
-      createdAt: string;
-      paymentReference: string | null;
-      paymentAccessCode: string | null;
-      deletedAt: string | null;
-    }[];
-    updatedAt: string;
-    createdAt: string;
-    paymentAuthorization: string | null;
-    deletedAt: string | null
-  },
+  userSubscription: IUserSubscription,
   paymentData: {
     authorization_url: string;
     access_code: string;
@@ -131,7 +120,6 @@ export interface IUserReferral {
   deletedAt: string | null;
 }
 
-
 export interface IPayout {
   id: string;
   userId: string;
@@ -146,10 +134,29 @@ export interface IPayout {
   userReferral: IUserReferral;
 }
 
+export interface IBillingHistory {
+  paymentLink: string | null;
+  id: string;
+  userId: string;
+  userSubscriptionId: string;
+  price: string;
+  amountPaid: string;
+  amountReceived: string;
+  startDate: string;
+  endDate: string;
+  paymentStatus: string;
+  paymentReference: string;
+  paymentAccessCode: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  userSubscription: Exclude<IUserSubscription, 'billingHistory'>;
+}
 export interface IBanner {
   slug: string;
   message: string;
   link?: string;
+  blank?: boolean;
   buttonText?: string;
   permanent: boolean;
   type: 'info' | 'warning' | 'success' | 'error';
