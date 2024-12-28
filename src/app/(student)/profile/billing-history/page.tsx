@@ -8,7 +8,6 @@ import StudentQueries from '../../_module/student.queries';
 import { IBillingHistory } from '../../_module/student.interface';
 import IconifyIcon from '@/components/IconifyIcon';
 import Link from 'next/link';
-import { studentRoutes } from '../../_module/student.routes';
 import { appRoutes } from '@/app/_module/app.routes';
 
 export default function BillingHistoryPage() {

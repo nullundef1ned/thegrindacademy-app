@@ -14,7 +14,7 @@ import StudentAuthQueries from '../_module/student.auth.queries';
 import useStudentAuthMutations from '../_module/student.auth.mutations';
 import useURL from '@/hooks/useURL';
 
-export default function SetupAccountPage(props: any) {
+export default function SetupAccountPage() {
 
   const { searchParams } = useURL();
 

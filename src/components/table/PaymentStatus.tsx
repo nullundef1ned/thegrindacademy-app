@@ -1,7 +1,6 @@
 import React from 'react'
 import { StatusType } from '@/app/_module/app.type';
 import Status from './Status';
-import clsx from 'clsx';
 
 type PaymentStatusProps = {
   status: StatusType;

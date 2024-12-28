@@ -22,7 +22,7 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
 
   const router = useRouter();
 
-  const { useFetchAuthenticationQuery, useFetchReferralQuery, useFetchBillingHistoryQuery } = StudentQueries();
+  const { useFetchAuthenticationQuery, useFetchReferralQuery } = StudentQueries();
 
   const { data: user, isPending, isError } = useFetchAuthenticationQuery();
   const { data: referral, isPending: isReferralPending } = useFetchReferralQuery();
