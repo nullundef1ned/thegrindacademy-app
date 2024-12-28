@@ -1,5 +1,5 @@
 import useAxios from '@/hooks/useAxios';
-import { IBankDetailCreationResponse, IBankDetailForm, IContactSupportForm, ISubscriptionForm, ISubscriptionRenewalResponse, ISubscriptionResponse } from './student.interface';
+import { IBankDetailCreationResponse, IBankDetailForm, IContactSupportForm, ISubscriptionForm, ISubscriptionRenewalResponse } from './student.interface';
 import { useMutation } from '@tanstack/react-query';
 import useAppHooks from '@/app/_module/app.hooks';
 import { IAccountInformationForm } from '@/app/_module/app.interface';

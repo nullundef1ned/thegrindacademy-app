@@ -8,10 +8,9 @@ import Link from "next/link"
 
 export default function CourseCommunities() {
   const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(4)
 
   const { useFetchCourseCommunitiesQuery } = StudentQueries()
-  const { data } = useFetchCourseCommunitiesQuery({ page, limit })
+  const { data } = useFetchCourseCommunitiesQuery({ page, limit: 4 })
 
   const nextPage = () => {
     if (data?.totalPages && page < data.totalPages) {

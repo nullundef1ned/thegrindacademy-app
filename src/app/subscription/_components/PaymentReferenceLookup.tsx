@@ -30,7 +30,7 @@ export default function PaymentReferenceLookup({ reference }: PaymentReferenceLo
       <div className='flex flex-col items-center justify-center gap-4 border p-6 max-w-md'>
         <Image src='/images/subscription-failed.svg' alt='Error' width={100} height={100} />
         <p className='text-lg font-gishaBold text-center'>Payment reference not found</p>
-        <p className='text-center font-light'>We couldn't find a subscription with the provided reference. Please check the reference and try again.</p>
+        <p className='text-center font-light'>We couldn&apos;t find a subscription with the provided reference. Please check the reference and try again.</p>
       </div>
       <Button size='sm' href={appRoutes.home}>Return to Dashboard</Button>
     </div>
