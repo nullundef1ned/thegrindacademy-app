@@ -57,12 +57,12 @@ export default function SubscriptionSection() {
             </Button>
           ),
           'inactive': (
-            <Button variant='outline' size='sm'>
+            <Button href='/subscription' variant='outline' size='sm'>
               Renew Subscription
             </Button>
           ),
           'undefined': (
-            <Button size='sm'>
+            <Button href='/subscription' size='sm'>
               Subscribe now
             </Button>
           )

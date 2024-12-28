@@ -12,7 +12,7 @@ export default function SubscriptionPlanPopularityGraph() {
   const chartData = data || [];
 
   const chartConfig = {
-    percentage: {
+    count: {
       label: "Subscriptions",
     }
   } satisfies ChartConfig
@@ -21,6 +21,10 @@ export default function SubscriptionPlanPopularityGraph() {
     type: ChartTypeEnum.PIE,
     config: chartConfig,
     data: chartData
+  }
+
+  if (data?.find(item => !item.count)) {
+    chart.data = [{ name: 'No data', percentage: 0, count: 0 }];
   }
 
   return (

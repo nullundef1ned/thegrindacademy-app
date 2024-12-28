@@ -23,7 +23,6 @@ export default function CourseLessonsForm() {
   const setLesson = (lesson: IAdminCourseLessonForm) => {
     const { content, videoUrl, ...rest } = lesson;
     const _lesson = videoUrl ? { ...rest, videoUrl } : content ? { ...rest, content } : rest;
-    console.log(_lesson)
     const newLessons = lessons.map((l, index) => index === lesson.position - 1 ? _lesson : l);
     setCourseLessons(newLessons);
   }

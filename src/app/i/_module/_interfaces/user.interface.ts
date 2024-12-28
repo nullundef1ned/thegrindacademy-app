@@ -3,3 +3,8 @@ export interface IUserStatusUpdate {
   status: string;
   reason?: string;
 }
+
+export interface IUserTelegramUpdate {
+  id: string;
+  telegramUserName: string;
+}

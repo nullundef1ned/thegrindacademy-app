@@ -24,7 +24,7 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
 
   const { useFetchAuthenticationQuery, useFetchReferralQuery } = StudentQueries();
 
-  const { data: referral } = useFetchReferralQuery();
+  const { data: referral, isPending: isReferralPending } = useFetchReferralQuery();
   const { data: user, isPending, isError } = useFetchAuthenticationQuery();
   const { subscription, isPending: isSubscriptionPending, disableAccess } = useSubscriptionHook();
 
@@ -39,7 +39,7 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
     const banners: IBanner[] = [];
     const inThreeDays = new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000);
 
-    if (subscription) {
+    if (subscription && !isSubscriptionPending) {
       const activeSubscription = subscription.active;
 
       if (!activeSubscription) {
@@ -68,7 +68,7 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
       }
     }
 
-    if (!referral) {
+    if (!referral && !isReferralPending) {
       const addBankDetailsBanner: IBanner = {
         slug: 'add-bank-details',
         message: 'Add your bank details to receive payouts. Your referral payouts are waiting!',

@@ -72,6 +72,7 @@ export interface IEnrolledCourse {
 }
 
 export interface ICourseDetail extends ICourse {
+  enrollmentCount: number;
   lessons: ICourseLesson[];
   materials: ICourseMaterial[];
 }

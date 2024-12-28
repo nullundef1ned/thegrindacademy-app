@@ -9,9 +9,8 @@ import Card from '@/components/Card';
 import Table from '@/components/table';
 import { TableHeader } from '@/components/table/table.interface';
 import { IPayout } from '@/app/(student)/_module/student.interface';
-import { IPagination } from '@/app/_module/app.interface';
 import { TableHeaderTypeEnum } from '@/components/table/table.enum';
-import { useFetchFinanceReport } from '../../_module/_apis/useFetchReports';
+import { useFetchFinanceReport, useFetchPayoutHistory } from '../../_module/_apis/useFetchReports';
 
 export default function FinanceReportsPage() {
   const breadcrumbs: BreadcrumbItem[] = [
@@ -20,60 +19,43 @@ export default function FinanceReportsPage() {
   ]
 
   const { data: financeReport } = useFetchFinanceReport();
+  const { data: payoutHistory } = useFetchPayoutHistory();
 
   const statistics: StatisticsCardProps[] = [
     {
       title: 'Total Revenue',
-      value: financeReport?.totalRevenue || 0,
+      value: financeReport?.totalRevenue.count || 0,
       icon: 'ri:wallet-2-fill',
-      percentage: 0,
+      percentage: financeReport?.totalRevenue.percentageChange || 0,
       type: 'currency',
     },
     {
       title: 'Processed Payouts',
       value: financeReport?.processedPayouts || 0,
       icon: 'ri:swap-box-fill',
-      percentage: 0,
       type: 'currency',
     },
     {
       title: 'Pending Payouts',
       value: financeReport?.pendingPayouts || 0,
       icon: 'ri:pause-circle-fill',
-      percentage: 0,
-    },
-    {
-      title: 'Average Revenue Per User',
-      value: financeReport?.averageRevenuePerUser || 0,
-      icon: 'ri:account-circle-fill',
       type: 'currency',
     },
+    // {
+    //   title: 'Average Revenue Per User',
+    //   value: financeReport?.averageRevenuePerUser || 0,
+    //   icon: 'ri:account-circle-fill',
+    //   type: 'currency',
+    // },
   ]
 
   const tableHeaders: TableHeader<IPayout>[] = [
     { key: 'createdAt', value: 'Date', type: TableHeaderTypeEnum.DATE },
-    { key: 'userId', value: 'User' },
+    // @ts-expect-error nested object
+    { key: 'user.info.firstName+user.info.lastName', value: 'User' },
     { key: 'amount', value: 'Amount', type: TableHeaderTypeEnum.CURRENCY },
     { key: 'status', value: 'Status', type: TableHeaderTypeEnum.STATUS },
   ]
-
-  const sampleData: IPagination<IPayout> = {
-    result: [
-      {
-        id: '1', userId: '1', amount: '100', status: 'pending', createdAt: '2024-01-01', userReferralId: '1', reference: '1', paidAt: '2024-01-01', updatedAt: '2024-01-01', deletedAt: null,
-        userReferral: {
-          id: '1', userId: '1', refereeId: '1',
-          createdAt: '2024-01-01', updatedAt: '2024-01-01', deletedAt: null,
-          referee: { id: '1', email: 'john.doe@example.com', info: { id: '1', userId: '1', createdAt: '2024-01-01', updatedAt: '2024-01-01', firstName: 'John', lastName: 'Doe', phoneNumber: '1234567890', telegramUserName: 'john.doe', avi: 'https://via.placeholder.com/150' }, createdAt: '2024-01-01', updatedAt: '2024-01-01', deletedAt: null, role: 'student', status: 'active', lastLogin: '2024-01-01' }
-        }
-      },
-    ],
-    previousPage: null,
-    nextPage: null,
-    totalPages: 1,
-    currentPage: 1,
-    totalCount: 1,
-  }
 
   return (
     <div className='w-full responsive-section space-y-6'>
@@ -84,7 +66,7 @@ export default function FinanceReportsPage() {
           <p className="text-sm text-accent">Track revenue, payouts, and user activity</p>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {statistics.map((statistic, index) => (
           <StatisticsCard key={index} {...statistic} />
         ))}
@@ -95,7 +77,7 @@ export default function FinanceReportsPage() {
         <Table
           searchable={false}
           headers={tableHeaders}
-          data={sampleData}
+          data={payoutHistory}
         />
       </Card>
     </div>

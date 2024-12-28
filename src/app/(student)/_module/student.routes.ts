@@ -11,6 +11,6 @@ export const navigationRoutes = [
   { name: 'Overview', href: studentRoutes.overview, protected: true },
   { name: 'Courses', href: studentRoutes.courses, protected: true },
   { name: 'Referrals', href: studentRoutes.referrals, protected: false },
-  { name: 'Profile', href: appRoutes.profile, protected: false },
   { name: 'Support', href: studentRoutes.support, protected: false },
+  { name: 'Profile', href: appRoutes.profile, protected: false },
 ]
