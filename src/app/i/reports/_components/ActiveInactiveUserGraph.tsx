@@ -20,10 +20,6 @@ export default function ActiveInactiveUserGraph() {
     data: chartData
   }
 
-  if (!Array.isArray(chartData) || chartData?.some(item => !item.count)) {
-    chart.data = [{ name: 'No data', percentage: 0, count: 0 }];
-  }
-
   return (
     <GraphCard
       title='Active vs Inactive Users'

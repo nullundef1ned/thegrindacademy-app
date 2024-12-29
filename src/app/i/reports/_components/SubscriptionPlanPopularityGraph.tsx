@@ -23,10 +23,6 @@ export default function SubscriptionPlanPopularityGraph() {
     data: chartData
   }
 
-  if (data?.find(item => !item.count)) {
-    chart.data = [{ name: 'No data', percentage: 0, count: 0 }];
-  }
-
   return (
     <GraphCard
       title='Subscription Plan Popularity'
