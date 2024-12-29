@@ -27,7 +27,6 @@ export default function UserReportsPage() {
       title: 'New Signups',
       value: userReport?.newSignups.count || 0,
       icon: 'ri:newspaper-fill',
-      percentage: userReport?.newSignups.percentageChange || 0,
     },
     {
       title: 'Active Users',

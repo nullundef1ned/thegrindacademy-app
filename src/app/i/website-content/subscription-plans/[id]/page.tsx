@@ -23,10 +23,12 @@ import pluralize from 'pluralize';
 import { useFetchPlanFeatures } from '../_apis/useSubscriptions';
 import AddFeatureForm from './_components/AddFeatureForm';
 import IconifyIcon from '@/components/IconifyIcon';
+import { useRouter } from 'next/navigation';
 
 export default function SubscriptionPlanDetailPage({ params }: { params: { id: string } }) {
   const { id } = params;
 
+  const router = useRouter();
   const { showModal } = useModal();
   const { setTitle } = useTitle();
   const { data: features } = useFetchPlanFeatures();
@@ -48,6 +50,7 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
         createSubscriptionPlanMutation.mutate(values, {
           onSuccess: () => {
             notificationUtil.success('Subscription plan created successfully');
+            router.push(adminRoutes.websiteContent.subscriptionPlans);
           }
         });
       } else {
@@ -57,6 +60,7 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
           }
         });
       }
+      
     },
   });
 
@@ -79,10 +83,10 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
     { name: id === 'new' ? 'Add New Subscription Plan' : data?.name || 'Subscription Plan not found' },
   ]
 
-  const loading = updateSubscriptionPlanMutation.isPending;
+  const loading = id === 'new' ? createSubscriptionPlanMutation.isPending : updateSubscriptionPlanMutation.isPending;
   const isFormValid = values.name && values.price && values.frequency && values.duration
 
-  setTitle(`${data?.name || 'Subscription Plan not found'} | Subscription Plans`);
+  setTitle(`${id === 'new' ? 'Add New' : data?.name || 'Subscription Plan not found'} | Subscription Plans`);
 
   const toggleFeature = (featureId: string) => {
     if (values.features.some(feature => feature.featureId === featureId)) {
@@ -196,7 +200,7 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
           loading={loading}
           type='submit' size='sm'
           className='w-full col-span-2'>
-          Update
+          {id === 'new' ? 'Create' : 'Update'}
         </Button>
       </form>
     </div>
