@@ -23,6 +23,7 @@ export default function useStudentAuthMutations() {
 
   const setupStudentAccount = (payload: IAuthResponse) => {
     initialize(payload);
+    storageUtil.saveItem(StorageKey.user, payload.user);
     fetchReferral();
     fetchBankDetails();
   }
@@ -34,7 +35,6 @@ export default function useStudentAuthMutations() {
     },
     onSuccess: (data: IAuthResponse) => {
       setupStudentAccount(data);
-      storageUtil.saveItem(StorageKey.user, data.user);
       router.push(redirect ?? '/')
     },
     onError: (error: CustomError) => {

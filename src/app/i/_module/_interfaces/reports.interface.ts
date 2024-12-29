@@ -29,7 +29,7 @@ export interface IDashboardReport {
 
 export interface IUserDashboardReport {
   total: IReport;
-  newSignups: IReport;
+  newSignups: Omit<IReport, 'percentageChange'>;
   active: IReport;
   inactive: IReport;
 }

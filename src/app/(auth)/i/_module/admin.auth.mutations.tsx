@@ -53,7 +53,7 @@ export default function useAdminAuthMutations() {
         password: values.password,
         confirmPassword: values.confirmPassword
       }
-      return axiosHandler.patch(`/ admin / auth / password / reset ? token = ${values.token}`, payload)
+      return axiosHandler.patch(`/admin/auth/password/reset?token=${values.token}`, payload)
     },
     onSuccess: () => {
       notificationUtil.success("Success! Your password has been reset.")

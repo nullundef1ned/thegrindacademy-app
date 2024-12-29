@@ -1,7 +1,7 @@
 import { Fragment, ReactNode } from "react"
 
 export const metadata = {
-  title: 'FAQs | The Grind Academy'
+  title: 'Subscription Plans | The Grind Academy'
 }
 
 export default function DynamicContentLayout({ children }: { children: ReactNode }) {
