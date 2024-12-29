@@ -29,6 +29,7 @@ const config: AxiosRequestConfig = {
 export default function useAxios() {
   const pathname = usePathname();
   const { updateParams } = useURL();
+  const loginPath = pathname.startsWith('/i') ? '/i/login' : '/login';
 
   const axiosInstance = axios.create(config);
 
@@ -60,9 +61,9 @@ export default function useAxios() {
       // && (environmentUtil.ENVIRONMENT == 'dev' && status == 400)
 
       if (status === 401) {
-        updateParams([{ key: URLKeyEnum.LOGOUT, value: 'true' }, { key: URLKeyEnum.REDIRECT, value: pathname }], '/login');
+        updateParams([{ key: URLKeyEnum.LOGOUT, value: 'true' }, { key: URLKeyEnum.REDIRECT, value: pathname }], loginPath);
         // notificationUtil.error(message || 'Session expired. Please login again.');
-      } else if (status !== 404 && status !== 401 && status !== 400) {
+      } else if (status !== 404 && status !== 401 && status !== 400 && status !== 403) {
         notificationUtil.error(message || 'Something went wrong, please try again later')
       }
 

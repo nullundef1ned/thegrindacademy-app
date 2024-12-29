@@ -53,7 +53,7 @@ export default function PaymentReferenceLookup({ reference }: PaymentReferenceLo
             :
             <Fragment>
               <Image src='/images/subscription-failed.svg' alt='Error' width={100} height={100} />
-              <p className='text-xl font-gishaBold text-center'>Subscription Renewed Failed! </p>
+              <p className='text-xl font-gishaBold text-center'>Subscription Renewal Failed! </p>
               <p className='text-center font-light'>We encountered an issue while processing your payment. Please try again or contact <Link href={studentRoutes.support}>support</Link></p>
             </Fragment>
           }
