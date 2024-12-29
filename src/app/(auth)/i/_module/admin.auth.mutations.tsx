@@ -1,4 +1,4 @@
-import useAxios from "@/hooks/useAxios"
+import useAxios, { CustomError } from "@/hooks/useAxios"
 import { useMutation } from "@tanstack/react-query"
 import { ForgotPasswordForm, LoginForm, PasswordForm, SetupAccountRequest } from "../../_module/auth.interface"
 import { useRouter } from "next/navigation";
@@ -29,6 +29,9 @@ export default function useAdminAuthMutations() {
 
       notificationUtil.success("Welcome back Dexter")
       router.push(redirect ?? adminRoutes.dashboard)
+    },
+    onError: (error: CustomError) => {
+      notificationUtil.error(error.message)
     }
   })
 
@@ -38,6 +41,9 @@ export default function useAdminAuthMutations() {
     },
     onSuccess: () => {
       notificationUtil.success("Success! Your password has been changed.")
+    },
+    onError: (error: CustomError) => {
+      notificationUtil.error(error.message)
     }
   })
 
@@ -52,12 +58,18 @@ export default function useAdminAuthMutations() {
     onSuccess: () => {
       notificationUtil.success("Success! Your password has been reset.")
       router.push(redirect ?? '/login');
+    },
+    onError: (error: CustomError) => {
+      notificationUtil.error(error.message)
     }
   })
 
   const forgotPasswordMutation = useMutation({
     mutationFn: (values: ForgotPasswordForm) => {
       return axiosHandler.post('/admin/auth/password/forgot', values)
+    },
+    onError: (error: CustomError) => {
+      notificationUtil.error(error.message)
     }
   })
 

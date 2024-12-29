@@ -9,9 +9,8 @@ export default function ActiveInactiveUserGraph() {
   const chartData = data || [];
 
   const chartConfig = {
-    y: {
+    count: {
       label: "Users",
-      color: "#004DE8",
     }
   } satisfies ChartConfig
 
@@ -19,6 +18,10 @@ export default function ActiveInactiveUserGraph() {
     type: ChartTypeEnum.PIE,
     config: chartConfig,
     data: chartData
+  }
+
+  if (!Array.isArray(chartData) || chartData?.some(item => !item.count)) {
+    chart.data = [{ name: 'No data', percentage: 0, count: 0 }];
   }
 
   return (

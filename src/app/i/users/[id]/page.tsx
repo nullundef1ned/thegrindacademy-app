@@ -22,6 +22,7 @@ import useAdminMutations from "../../_module/admin.mutations";
 import notificationUtil from "@/utils/notification.util";
 import Breadcrumbs, { BreadcrumbItem } from "@/components/Breadcrumbs";
 import { TableHeaderTypeEnum } from "@/components/table/table.enum";
+import UpdateUserTelegramModal from "./_modals/UpdateUserTelegramModal";
 
 export default function UserPage({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -39,8 +40,6 @@ export default function UserPage({ params }: { params: { id: string } }) {
       <LoadingIcons.TailSpin />
     </div>
   )
-
-  console.log(data)
 
   if (!data) return (
     <div className="w-full h-[50vh] responsive-section !max-w-screen-md grid place-items-center place-content-center gap-4">
@@ -64,7 +63,7 @@ export default function UserPage({ params }: { params: { id: string } }) {
   ]
 
   const goToCourse = (course: IEnrolledCourse) => {
-    router.push(`/courses/${course.course.slug}`);
+    router.push(`/i/courses/${course.course.id}`);
   }
 
   setTitle(`${user.info.firstName} ${user.info.lastName} | User | The Grind Academy`);
@@ -77,6 +76,7 @@ export default function UserPage({ params }: { params: { id: string } }) {
 
   const openDeleteUserModal = () => showModal(<DeleteUserModal user={user} />);
   const openSuspendUserModal = () => showModal(<SuspendUserModal user={user} />);
+  const openUpdateUserTelegramModal = () => showModal(<UpdateUserTelegramModal user={user} />);
 
   return (
     <div className='w-full responsive-section !max-w-screen-md space-y-8'>
@@ -84,6 +84,7 @@ export default function UserPage({ params }: { params: { id: string } }) {
       <div className="flex flex-wrap gap-4 items-center justify-between">
         <p className="text-xl font-medium">User Information</p>
         <div className="flex items-center gap-3">
+          <Button onClick={openUpdateUserTelegramModal} size="sm">Update Telegram Username</Button>
           {user.status !== 'suspended' ? <Button onClick={openSuspendUserModal} size="sm">Suspend User</Button> :
             <Button onClick={reactivateUser} loading={updateUserStatusMutation.isPending} size="sm">Reactivate User</Button>
           }

@@ -27,7 +27,7 @@ export default function SearchInput() {
         type="search"
         className="w-full"
         value={searchValue}
-        placeholder="Search course"
+        placeholder="Search"
         onChange={onChange}
         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
       />

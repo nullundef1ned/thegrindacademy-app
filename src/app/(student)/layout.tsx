@@ -24,8 +24,8 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
 
   const { useFetchAuthenticationQuery, useFetchReferralQuery } = StudentQueries();
 
-  const { data: referral } = useFetchReferralQuery();
-  const { isPending, isError } = useFetchAuthenticationQuery();
+  const { data: user, isPending, isError } = useFetchAuthenticationQuery();
+  const { data: referral, isPending: isReferralPending } = useFetchReferralQuery();
   const { subscription, isPending: isSubscriptionPending, disableAccess } = useSubscriptionHook();
 
   useEffect(() => {
@@ -39,10 +39,24 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
     const banners: IBanner[] = [];
     const inThreeDays = new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000);
 
-    if (subscription) {
+    if (subscription && !isSubscriptionPending) {
       const activeSubscription = subscription.active;
+      const unpaidSubscription = subscription.unpaid;
 
-      if (!activeSubscription) {
+      if (unpaidSubscription && !activeSubscription) {
+        const unpaidBanner: IBanner = {
+          slug: 'subscription-unpaid',
+          message: 'You have an unpaid subscription. Please make payment to resume access.',
+          link: unpaidSubscription.paymentLink || undefined,
+          buttonText: 'Make Payment',
+          permanent: true,
+          blank: true,
+          type: 'error',
+        }
+        banners.push(unpaidBanner)
+      }
+
+      if (!activeSubscription && !unpaidSubscription) {
         const expiredBanner: IBanner = {
           slug: 'subscription-expired',
           message: 'Your subscription has expired and your access has currently been revoked. Renew now to continue accessing our courses.',
@@ -54,7 +68,7 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
         banners.push(expiredBanner)
       }
 
-      if (activeSubscription?.endDate && new Date(activeSubscription.endDate) < inThreeDays) {
+      if (activeSubscription?.endDate && !activeSubscription.autoRenewal && new Date(activeSubscription.endDate) < inThreeDays) {
         const timeLeft = Math.floor((new Date(activeSubscription.endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
         const expiringBanner: IBanner = {
           slug: 'subscription-expiring',
@@ -68,7 +82,7 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
       }
     }
 
-    if (!referral) {
+    if (!referral && !isReferralPending) {
       const addBankDetailsBanner: IBanner = {
         slug: 'add-bank-details',
         message: 'Add your bank details to receive payouts. Your referral payouts are waiting!',
@@ -89,6 +103,19 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
         <div className='flex flex-col items-center gap-4'>
           <Image src='/logos/logo.svg' alt='The Grind Academy Logo' width={240} height={60} className={clsx('transition-opacity duration-700')} />
           <BrandBars containerClassName={clsx('w-52 animate-pulse')} barClassName="!h-12" />
+        </div>
+      </div>
+    )
+  }
+
+  if (user.status == 'suspended') {
+    return (
+      <div className='relative w-screen min-h-screen grid place-items-center'>
+        <div className='flex flex-col items-center gap-4'>
+          <Image src='/logos/logo.svg' alt='The Grind Academy Logo' width={240} height={60} className={clsx('transition-opacity duration-700')} />
+          <p className='text-sm text-accent text-center'>
+            Your account has been suspended. Please contact <a href='mailto:support@thegrindacademy.com' className='text-accent underline'>support</a> for more information.
+          </p>
         </div>
       </div>
     )

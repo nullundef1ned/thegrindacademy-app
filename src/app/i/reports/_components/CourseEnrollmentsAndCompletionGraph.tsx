@@ -1,20 +1,24 @@
 import GraphCard from '@/components/GraphCard'
 import { ChartTypeEnum, TimeFrameEnum } from '@/components/GraphCard'
 import React, { useState } from 'react'
-import { useFetchUserGrowthOverTime } from '../../_module/_apis/useFetchReports';
+import { useFetchCourseEnrollmentsAndCompletion } from '../../_module/_apis/useFetchReports';
 import { ChartConfig } from '@/components/ui/chart';
 
 export default function CourseEnrollmentsAndCompletionGraph() {
   const [timeFrame, setTimeFrame] = useState(TimeFrameEnum.TWELVE_MONTHS);
 
-  const { data, isPending, isFetching, isError, refetch } = useFetchUserGrowthOverTime(timeFrame);
+  const { data, isPending, isFetching, isError, refetch } = useFetchCourseEnrollmentsAndCompletion(timeFrame);
 
   const chartData = data || [];
 
   const chartConfig = {
-    y: {
-      label: "Users",
+    enrollments: {
+      label: "Enrollments",
       color: "#004DE8",
+    },
+    completions: {
+      label: "Completion Rate",
+      color: "#548DFF"
     }
   } satisfies ChartConfig
 

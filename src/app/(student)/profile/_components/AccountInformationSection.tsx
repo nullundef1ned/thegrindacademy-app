@@ -10,6 +10,8 @@ import useStudentMutations from '../../_module/student.mutations';
 import notificationUtil from '@/utils/notification.util';
 import LoadingIcons from 'react-loading-icons';
 import { useFetchUser } from '@/app/_module/_apis/useFetchUser';
+import { studentRoutes } from '../../_module/student.routes';
+import Link from 'next/link';
 
 export default function AccountInformationSection() {
   const { data: user } = useFetchUser();
@@ -70,9 +72,12 @@ export default function AccountInformationSection() {
           <p className='text-accent text-sm'>{user?.email}</p>
         </div>
         {telegramUserName &&
-          <div className='flex items-center gap-2'>
-            <IconifyIcon icon='mdi:telegram' />
-            <p className='text-accent text-sm'>{telegramUserName}</p>
+          <div className="flex flex-col gap-0.5">
+            <div className='flex items-center gap-2'>
+              <IconifyIcon icon='mdi:telegram' />
+              <p className='text-accent text-sm'>{telegramUserName}</p>
+            </div>
+            <p className='text-xs text-accent'>If you would like to update your telegram username, please reach out to <Link href={studentRoutes.support} className='text-primary-100'>support</Link></p>
           </div>
         }
       </div>

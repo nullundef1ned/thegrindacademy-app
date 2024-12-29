@@ -2,7 +2,7 @@ import useAxios from '@/hooks/useAxios';
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/providers/tanstack-query.provder';
 import { IAccountInformationForm } from '@/app/_module/app.interface';
-import { IUserStatusUpdate } from './_interfaces/user.interface';
+import { IUserStatusUpdate, IUserTelegramUpdate } from './_interfaces/user.interface';
 
 export default function useAdminMutations() {
   const axiosHandler = useAxios();
@@ -14,6 +14,18 @@ export default function useAdminMutations() {
     },
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['user'] })
+    }
+  })
+
+  const updateUserTelegramMutation = useMutation({
+    mutationFn: async (values: IUserTelegramUpdate) => {
+      const { id, ...payload } = values;
+      const response = await axiosHandler.patch(`/admin/user/${id}/telegram`, payload)
+      return response.data
+    },
+    onSettled: (data, variables, context) => {
+      queryClient.refetchQueries({ queryKey: ['user', context.id] })
+      queryClient.refetchQueries({ queryKey: ['users'] })
     }
   })
 
@@ -42,6 +54,7 @@ export default function useAdminMutations() {
 
   return {
     updateAdminAccountInformationMutation,
+    updateUserTelegramMutation,
     updateUserStatusMutation,
     deleteUserMutation
   }

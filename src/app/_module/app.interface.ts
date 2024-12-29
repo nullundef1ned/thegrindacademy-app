@@ -85,3 +85,9 @@ export interface IPaystackResolveAccountNumberResponse {
   account_name: string;
   bank_id: number;
 }
+
+export interface IPieChartData {
+  name: string;
+  percentage: number;
+  fill: string;
+}

@@ -21,6 +21,7 @@ export default function Header({ routes }: HeaderProps) {
   const pathname = usePathname();
   const { updateParams } = useURL();
   const rootPath = pathname.startsWith('/i') ? `/i/${pathname.split('/')[2]}` : `/${pathname.split('/')[1]}`
+  const loginPath = pathname.startsWith('/i') ? '/i/login' : '/login';
 
   const greeting = useMemo(() => {
     const date = new Date();
@@ -31,7 +32,7 @@ export default function Header({ routes }: HeaderProps) {
   }, []);
 
   const handleLogout = () => {
-    updateParams({ key: URLKeyEnum.LOGOUT, value: 'true' }, '/login');
+    updateParams({ key: URLKeyEnum.LOGOUT, value: 'true' }, loginPath);
   }
 
   return (

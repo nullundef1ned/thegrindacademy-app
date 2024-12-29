@@ -5,6 +5,8 @@ import helperUtil from '@/utils/helper.util';
 import { Button } from '@/components/ui/button';
 import useStudentMutations from '../../_module/student.mutations';
 import StudentQueries from '../../_module/student.queries';
+import Link from 'next/link';
+import { studentRoutes } from '../../_module/student.routes';
 
 export default function SubscriptionSection() {
   const { cancelSubscriptionMutation } = useStudentMutations();
@@ -57,12 +59,12 @@ export default function SubscriptionSection() {
             </Button>
           ),
           'inactive': (
-            <Button variant='outline' size='sm'>
+            <Button href='/subscription' variant='outline' size='sm'>
               Renew Subscription
             </Button>
           ),
           'undefined': (
-            <Button size='sm'>
+            <Button href='/subscription' size='sm'>
               Subscribe now
             </Button>
           )
@@ -77,6 +79,7 @@ export default function SubscriptionSection() {
           </Button>
         }
       </div>
+      <Link href={studentRoutes.billingHistory} className='text-sm text-primary-100 block'>View Billing History</Link>
     </ProfileSection>
   )
 }

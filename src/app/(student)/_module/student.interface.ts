@@ -1,5 +1,5 @@
 import { IUser } from "@/app/_module/app.interface";
-import { IEnrolledCourse } from "./_interfaces/course.interface";
+import { ICourse, IEnrolledCourse } from "./_interfaces/course.interface";
 
 export interface IReferral {
   id: string;
@@ -42,6 +42,16 @@ export interface IBankDetailCreationResponse {
   referralCode: IReferral;
 }
 
+export interface IContactSupportForm {
+  subject: string;
+  message: string;
+}
+
+export interface ISubscriptionForm {
+  subscriptionPlanId: string;
+  autoRenewal: boolean;
+}
+
 export interface ISubscription {
   id: string;
   userId: string;
@@ -60,6 +70,32 @@ export interface ISubscription {
 export interface ISubscriptionResponse {
   active: ISubscription | null;
   upcoming: ISubscription | null;
+  unpaid: IBillingHistory | null;
+}
+
+export interface IUserSubscription {
+  id: string;
+  status: string,
+  userId: string;
+  subscriptionPlanId: string;
+  autoRenewal: boolean;
+  startDate: string;
+  endDate: string;
+  updatedAt: string;
+  createdAt: string;
+  subscriptionPlan: ISubscriptionPlan;
+  paymentAuthorization: string | null;
+  deletedAt: string | null;
+  billingHistory: Exclude<IBillingHistory, 'userSubscription'>[];
+}
+
+export interface ISubscriptionRenewalResponse {
+  userSubscription: IUserSubscription,
+  paymentData: {
+    authorization_url: string;
+    access_code: string;
+    reference: string;
+  }
 }
 
 export interface IOverviewStatistics {
@@ -84,7 +120,6 @@ export interface IUserReferral {
   deletedAt: string | null;
 }
 
-
 export interface IPayout {
   id: string;
   userId: string;
@@ -99,10 +134,29 @@ export interface IPayout {
   userReferral: IUserReferral;
 }
 
+export interface IBillingHistory {
+  paymentLink: string | null;
+  id: string;
+  userId: string;
+  userSubscriptionId: string;
+  price: string;
+  amountPaid: string;
+  amountReceived: string;
+  startDate: string;
+  endDate: string;
+  paymentStatus: string;
+  paymentReference: string;
+  paymentAccessCode: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  userSubscription: Exclude<IUserSubscription, 'billingHistory'>;
+}
 export interface IBanner {
   slug: string;
   message: string;
   link?: string;
+  blank?: boolean;
   buttonText?: string;
   permanent: boolean;
   type: 'info' | 'warning' | 'success' | 'error';
@@ -128,4 +182,18 @@ export interface ISubscriptionPlan {
   updatedAt: string;
   deletedAt: string | null;
   features: ISubscriptionPlanFeature[];
+}
+
+export interface ICourseCommunity {
+  telegramChannelInviteLink: string;
+  telegramChannelMemberCount: number;
+  id: string;
+  userId: string;
+  courseId: string;
+  status: 'pending' | 'completed';
+  completedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  course: Exclude<ICourse, 'media'>;
 }

@@ -7,6 +7,7 @@ export enum TableHeaderTypeEnum {
   STRING = 'string',
   NUMBER = 'number',
   STATUS = 'status',
+  PAYMENT_STATUS = 'payment-status',
   AVATAR = 'avatar',
   SLUGGED = 'slugged',
   PROGRESS = 'progress',

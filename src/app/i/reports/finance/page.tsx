@@ -5,6 +5,12 @@ import { adminRoutes } from '../../_module/admin.routes'
 import { BreadcrumbItem } from '@/components/Breadcrumbs'
 import StatisticsCard, { StatisticsCardProps } from '@/app/(student)/_components/StatisticsCard'
 import RevenueTrendGraph from '../../overview/_components/RevenueTrendGraph';
+import Card from '@/components/Card';
+import Table from '@/components/table';
+import { TableHeader } from '@/components/table/table.interface';
+import { IPayout } from '@/app/(student)/_module/student.interface';
+import { TableHeaderTypeEnum } from '@/components/table/table.enum';
+import { useFetchFinanceReport, useFetchPayoutHistory } from '../../_module/_apis/useFetchReports';
 
 export default function FinanceReportsPage() {
   const breadcrumbs: BreadcrumbItem[] = [
@@ -12,33 +18,43 @@ export default function FinanceReportsPage() {
     { name: 'Revenue & Finance' },
   ]
 
+  const { data: financeReport } = useFetchFinanceReport();
+  const { data: payoutHistory } = useFetchPayoutHistory();
+
   const statistics: StatisticsCardProps[] = [
     {
       title: 'Total Revenue',
-      value: 0,
+      value: financeReport?.totalRevenue.count || 0,
       icon: 'ri:wallet-2-fill',
-      percentage: 0,
+      percentage: financeReport?.totalRevenue.percentageChange || 0,
       type: 'currency',
     },
     {
       title: 'Processed Payouts',
-      value: 0,
+      value: financeReport?.processedPayouts || 0,
       icon: 'ri:swap-box-fill',
-      percentage: 0,
       type: 'currency',
     },
     {
-      title: 'Active Users',
-      value: 0,
+      title: 'Pending Payouts',
+      value: financeReport?.pendingPayouts || 0,
       icon: 'ri:pause-circle-fill',
-      percentage: 0,
-    },
-    {
-      title: 'Average Revenue Per User',
-      value: 0,
-      icon: 'ri:account-circle-fill',
       type: 'currency',
     },
+    // {
+    //   title: 'Average Revenue Per User',
+    //   value: financeReport?.averageRevenuePerUser || 0,
+    //   icon: 'ri:account-circle-fill',
+    //   type: 'currency',
+    // },
+  ]
+
+  const tableHeaders: TableHeader<IPayout>[] = [
+    { key: 'createdAt', value: 'Date', type: TableHeaderTypeEnum.DATE },
+    // @ts-expect-error nested object
+    { key: 'user.info.firstName+user.info.lastName', value: 'User' },
+    { key: 'amount', value: 'Amount', type: TableHeaderTypeEnum.CURRENCY },
+    { key: 'status', value: 'Status', type: TableHeaderTypeEnum.STATUS },
   ]
 
   return (
@@ -50,18 +66,20 @@ export default function FinanceReportsPage() {
           <p className="text-sm text-accent">Track revenue, payouts, and user activity</p>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {statistics.map((statistic, index) => (
           <StatisticsCard key={index} {...statistic} />
         ))}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-9 gap-4">
-        <div className='md:col-span-5 h-full'>
-          <RevenueTrendGraph />
-        </div>
-        <div className='md:col-span-4 h-full'>
-        </div>
-      </div>
+      <RevenueTrendGraph />
+      <Card className='space-y-4'>
+        <p className="font-medium">Payout History</p>
+        <Table
+          searchable={false}
+          headers={tableHeaders}
+          data={payoutHistory}
+        />
+      </Card>
     </div>
   )
 }
