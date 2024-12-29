@@ -10,13 +10,15 @@ import Skeleton from 'react-loading-skeleton';
 export default function ReferralCodeCard() {
   const referralCode = useStudentStore((state) => state.referral?.code);
 
+  const referralCodeLink = `https://thegrindacademy.co/?referral=${referralCode}`
+
   const { useFetchReferralQuery } = StudentQueries();
   const { isPending } = useFetchReferralQuery();
 
   const handleCopyReferralCode = () => {
     if (referralCode) {
-      navigator.clipboard.writeText(referralCode);
-      notificationUtil.success('Referral code copied to clipboard');
+      navigator.clipboard.writeText(referralCodeLink);
+      notificationUtil.success('Referral link copied to clipboard');
     }
   }
 
@@ -31,15 +33,15 @@ export default function ReferralCodeCard() {
 
   return (
     <Card className='space-y-2'>
-      <p className='text-muted text-sm'>Your referral code</p>
-      <div className='flex items-center justify-between gap-2 py-3 px-3 rounded-md bg-primary/10 border border-primary/20'>
-        <div className="flex items-center gap-2">
+      <p className='text-muted text-sm'>Your referral link</p>
+      <div className='flex items-center overflow-hidden justify-between gap-2 py-3 px-3 rounded-md bg-primary/10 border border-primary/20'>
+        <div className="flex items-center gap-2 overflow-hidden w-full">
           <IconifyIcon icon="ri:links-line" />
-          <p className='text-muted uppercase font-medium'>{referralCode}</p>
+          <p className='text-muted font-medium truncate text-sm'>{referralCodeLink}</p>
         </div>
         <div className="flex items-center gap-2 cursor-pointer hover:bg-primary/20 rounded-md p-2" onClick={handleCopyReferralCode}>
           <IconifyIcon icon="ri:file-copy-fill" className='text-primary-100' />
-          <p className='text-primary-100 text-xs font-medium'>Copy code</p>
+          <p className='text-primary-100 text-xs font-medium whitespace-nowrap'>Copy link</p>
         </div>
       </div>
     </Card>
