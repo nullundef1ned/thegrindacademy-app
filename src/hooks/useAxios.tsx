@@ -14,6 +14,9 @@ export type MessageResponse = {
 
 export type CustomError = {
   status: number,
+  data?: {
+    error: string[]
+  },
   statusText: string,
   message: string,
   error: unknown
@@ -58,11 +61,13 @@ export default function useAxios() {
       const status = Number(error.response?.status);
       const message = errorData?.message;
 
-      // && (environmentUtil.ENVIRONMENT == 'dev' && status == 400)
-
       if (status === 401) {
         updateParams([{ key: URLKeyEnum.LOGOUT, value: 'true' }, { key: URLKeyEnum.REDIRECT, value: pathname }], loginPath);
-        // notificationUtil.error(message || 'Session expired. Please login again.');
+      } else if (status === 400) {
+        const messsages = errorData.data?.error as string[];
+        messsages.forEach(message => {
+          notificationUtil.error(message);
+        })
       } else if (status !== 404 && status !== 401 && status !== 400 && status !== 403) {
         notificationUtil.error(message || 'Something went wrong, please try again later')
       }
