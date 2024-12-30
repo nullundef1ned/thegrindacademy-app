@@ -46,6 +46,8 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
       features: data?.features.map((feature) => ({ featureId: feature.id })) || [],
     },
     onSubmit: (values) => {
+      if (values.features.length === 0) return notificationUtil.error('Please select at least one feature');
+
       if (id === 'new') {
         createSubscriptionPlanMutation.mutate(values, {
           onSuccess: () => {
@@ -60,7 +62,7 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
           }
         });
       }
-      
+
     },
   });
 
