@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useCourseForm } from './_hooks/course-form.hook';
 import notificationUtil from '@/utils/notification.util';
+import helperUtil from '@/utils/helper.util';
 
 export default function CourseBasicDetailsForm() {
 
@@ -21,7 +22,11 @@ export default function CourseBasicDetailsForm() {
       telegramChannelId: details.telegramChannelId,
     },
     onSubmit: (values) => {
-      createCourseMutation.mutate(values, {
+
+      const telegramChannelId = helperUtil.extractTelegramChannelId(values.telegramChannelId);
+      if (!telegramChannelId) return notificationUtil.error('Invalid Telegram Channel Link');
+
+      createCourseMutation.mutate({ ...values, telegramChannelId }, {
         onSuccess: (data) => {
           setCourseDetails({ details: values, id: data.id });
           goToNextStep();
