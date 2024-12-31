@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useCourseForm } from './_hooks/course-form.hook';
+import notificationUtil from '@/utils/notification.util';
 
 export default function CourseBasicDetailsForm() {
 
@@ -24,6 +25,9 @@ export default function CourseBasicDetailsForm() {
         onSuccess: (data) => {
           setCourseDetails({ details: values, id: data.id });
           goToNextStep();
+        },
+        onError: (error) => {
+          notificationUtil.error(error.message);
         }
       });
     },
