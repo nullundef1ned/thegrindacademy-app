@@ -73,12 +73,6 @@ export default function NewCoursePage() {
     setCurrentStep(currentStep - 1);
   }
 
-  const handleStepClick = (step: number) => {
-    setCurrentStep(step);
-    if (step < currentStep) {
-    }
-  }
-
   setTitle(`New Course | The Grind Academy`);
 
   const context = {
@@ -102,7 +96,6 @@ export default function NewCoursePage() {
               className={clsx("flex items-center gap-2",
                 currentStep < step.step ? "opacity-50" : "cursor-pointer")}>
               <div
-                onClick={() => handleStepClick(step.step)}
                 className={clsx(
                   currentStep == step.step ? "!border-primary/70" :
                     currentStep > step.step && "hover:border-primary/70",

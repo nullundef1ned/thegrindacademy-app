@@ -85,20 +85,26 @@ export default function MetaInformationPage() {
         </div>
       </div>
       <form onSubmit={handleSubmit} className='space-y-4'>
-        <Input
-          name='title'
-          required
-          value={values.title}
-          onChange={handleChange}
-          placeholder='Website Title'
-        />
-        <Textarea
-          name='description'
-          required
-          value={values.description}
-          onChange={handleChange}
-          placeholder='Website Description'
-        />
+        <div className="flex flex-col gap-1">
+          <Input
+            name='title'
+            required
+            value={values.title}
+            onChange={handleChange}
+            placeholder='Website Title'
+          />
+          {!values.title && <p className='text-xs text-destructive'>Required</p>}
+        </div>
+        <div className="flex flex-col gap-1">
+          <Textarea
+            name='description'
+            required
+            value={values.description}
+            onChange={handleChange}
+            placeholder='Website Description'
+          />
+          {!values.description && <p className='text-xs text-destructive'>Required</p>}
+        </div>
         <div className='flex flex-col gap-2'>
           <Input
             name='keywords'
@@ -107,7 +113,9 @@ export default function MetaInformationPage() {
             onChange={handleChange}
             placeholder='Keywords'
           />
-          <p className='text-xs text-accent'>Separate keywords with commas</p>
+          <p className='text-xs text-accent'>
+            <span className='text-destructive'>{values.keywords && 'Required | '}</span>
+            Separate keywords with commas</p>
         </div>
         <Input
           name='supportEmail'
@@ -138,7 +146,7 @@ export default function MetaInformationPage() {
           </div>
         </div>
         <div className='flex flex-col gap-2'>
-          <p className='text-sm text-accent'>SEO Image</p>
+          <p className='text-sm text-accent'>SEO Image {!values.imageUrl && <span className='text-destructive'> - Required</span>}</p>
           <FileUploader provider='do-spaces' type='others' fileType='image' onChange={(url) => setFieldValue('imageUrl', url)} />
           {values.imageUrl &&
             <div className='w-full h-40 relative group'>
