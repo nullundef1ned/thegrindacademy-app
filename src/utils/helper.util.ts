@@ -107,10 +107,27 @@ const downloadFile = async (url: string, filename: string) => {
   }
 }
 
+const extractTelegramChannelId = (url: string) => {
+  const telegramURLParts = url.split('/');
+  const origin = telegramURLParts[2];
+  const version = telegramURLParts[3].toLowerCase();
+  const id = telegramURLParts[4];
+
+  if (origin !== 'web.telegram.org') return null;
+
+  const telegramChannelId = version?.toLowerCase() === 'a'
+    ? id.split('#')[1]
+    : version?.toLowerCase() === 'k'
+      ? `-100${id.split('#-')[1]}`
+      : url;
+
+  return telegramChannelId;
+}
+
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs))
 }
 
-const helperUtil = { formatPhoneNumber, getTimeDelta, getTimeTo, formatDate, formatTime, convertTimeToMinutesAndSeconds, convertToNumber, capitalize, downloadFile }
+const helperUtil = { formatPhoneNumber, getTimeDelta, getTimeTo, formatDate, formatTime, convertTimeToMinutesAndSeconds, convertToNumber, capitalize, downloadFile, extractTelegramChannelId }
 
 export default helperUtil

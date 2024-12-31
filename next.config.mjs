@@ -6,6 +6,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "thegrindacademy.fra1.cdn.digitaloceanspaces.com",
       },
+      {
+        protocol: "https",
+        hostname: "thegrindacademy.fra1.digitaloceanspaces.com",
+      }
     ],
   },
   async redirects() {
