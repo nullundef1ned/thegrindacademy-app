@@ -9,7 +9,7 @@ export function useFetchAdminCourseLessons(courseId: string) {
   const query = useQuery({
     queryKey: ['course', courseId, 'lessons'],
     queryFn: async (): Promise<IPagination<ICourseLesson>> => {
-      const response = await axiosHandler.get(`/admin/course/${courseId}/lesson`)
+      const response = await axiosHandler.get(`/admin/course/${courseId}/lesson`, { params: { limit: 100 } })
       return response.data;
     },
   })

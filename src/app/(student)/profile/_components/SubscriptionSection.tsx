@@ -42,7 +42,8 @@ export default function SubscriptionSection() {
               </p>
             </div>
             {isPlanRenewing ? (
-              <p className='text-accent'>Next renewal date: <span className='font-semibold text-white'>{helperUtil.formatDate(upcomingSubscription?.startDate ?? '')}</span></p>
+              <p className='text-accent'>Next renewal date: <span className='font-semibold text-white'>{helperUtil.formatDate(upcomingSubscription?.startDate ?? '')} <span className='text-xs text-accent'>
+                (in {helperUtil.getTimeTo(upcomingSubscription?.startDate ?? '')})</span></span></p>
             ) : (
               <div className='flex items-center gap-2'>
                 <p className='text-accent'>Expires in <span className='font-semibold text-white'>{helperUtil.getTimeTo(activeSubscription?.endDate ?? '')}</span></p>
