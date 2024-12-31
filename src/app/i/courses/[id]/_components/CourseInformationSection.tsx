@@ -10,6 +10,7 @@ import { IAdminCourseUpdateForm } from '@/interfaces/course';
 import { Textarea } from '@/components/ui/textarea';
 import useAdminCourseMutations from '../../_apis/admin-course.mutations';
 import notificationUtil from '@/utils/notification.util';
+import helperUtil from '@/utils/helper.util';
 
 interface ICourseInformationSectionProps {
   course: ICourseDetail;
@@ -36,15 +37,9 @@ export default function CourseInformationSection({ course }: ICourseInformationS
       isFeatured: course?.isFeatured,
     },
     onSubmit: (values) => {
-      const telegramURLParts = values.telegramChannelId.split('/');
-      const version = telegramURLParts[3].toLowerCase();
-      const id = telegramURLParts[4];
+      const telegramChannelId = helperUtil.extractTelegramChannelId(values.telegramChannelId);
 
-      const telegramChannelId = version?.toLowerCase() === 'a'
-        ? id.split('#')[1]
-        : version?.toLowerCase() === 'k'
-          ? `-100${id.split('#-')[1]}`
-          : values.telegramChannelId;
+      if (!telegramChannelId) return notificationUtil.error('Invalid Telegram Channel Link');
 
       updateCourseMutation.mutate({ ...values, telegramChannelId }, {
         onSuccess: () => {
