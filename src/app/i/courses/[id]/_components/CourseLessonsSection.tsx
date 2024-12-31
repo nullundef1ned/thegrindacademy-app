@@ -10,6 +10,7 @@ import Video from '@/components/Video';
 import CourseLessonForm from './_forms/CourseLessonForm';
 import { IAdminCourseLessonForm, IAdminCourseLessonUpdateForm } from '@/interfaces/course';
 import Card from '@/components/Card';
+import { queryClient } from '@/providers/tanstack-query.provder';
 
 interface ICourseLessonsSectionProps {
   course: ICourseDetail;
@@ -47,6 +48,7 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
     });
     setIsEditing(false)
     setActiveLesson('1');
+    queryClient.refetchQueries({ queryKey: ['course', course.id, 'lessons'] })
   }
 
   const addLesson = () => {

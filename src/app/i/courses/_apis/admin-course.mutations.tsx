@@ -101,14 +101,10 @@ export default function useAdminCourseMutations() {
   const updateCourseLessonMutation = useMutation({
     mutationFn: async (payload: IAdminCourseLessonUpdateForm): Promise<ICourseLesson> => {
       const { courseId, lessonId, ...rest } = payload;
+      if (!rest.videoUrl) delete rest.videoUrl;
+      if (!rest.content) delete rest.content;
       const response = await axiosHandler.patch(`/admin/course/${courseId}/lesson/${lessonId}`, rest)
       return response.data;
-    },
-    onSuccess: () => {
-      notificationUtil.success('Lesson saved successfully')
-    },
-    onSettled: (data, variables, context) => {
-      queryClient.refetchQueries({ queryKey: ['course', context.courseId, 'lessons'] })
     }
   })
 
