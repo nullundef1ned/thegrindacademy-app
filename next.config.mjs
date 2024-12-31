@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "thegrindacademy.ams3.cdn.digitaloceanspaces.com",
+        hostname: "thegrindacademy.fra1.cdn.digitaloceanspaces.com",
       },
     ],
   },
