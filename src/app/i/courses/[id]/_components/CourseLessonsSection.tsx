@@ -82,7 +82,7 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
         {isEditing ? (
           <div className="flex items-center gap-4">
             <Button size="sm" variant="outline" onClick={cancelEditing}>
-              Cancel
+              Done
             </Button>
             <Button size="sm" variant="secondary" onClick={toggleSorting}>
               {isSorting ? 'Finish Reordering' : 'Reorder'}

@@ -17,6 +17,7 @@ import clsx from "clsx";
 import IconifyIcon from "@/components/IconifyIcon";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { queryClient } from "@/providers/tanstack-query.provder";
 
 interface ICourseLessonFormProps {
   lesson: ICourseLesson | IAdminCourseLessonForm | IAdminBulkCourseLessonForm;
@@ -65,6 +66,7 @@ export default function CourseLessonForm({ lesson, position, isNewLesson, isSort
         updateCourseLessonMutation.mutate(values, {
           onSuccess: () => {
             notificationUtil.success('Lesson updated successfully');
+            queryClient.refetchQueries({ queryKey: ['course', (lesson as IAdminCourseLessonForm).courseId, 'lessons'] });
           }
         });
       } else {
