@@ -8,9 +8,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import pluralize from 'pluralize';
 import Video from '@/components/Video';
 import CourseLessonForm from './_forms/CourseLessonForm';
-import { IAdminCourseLessonForm, IAdminCourseLessonUpdateForm } from '@/interfaces/course';
+import { IAdminCourseLessonForm } from '@/interfaces/course';
 import Card from '@/components/Card';
-import { queryClient } from '@/providers/tanstack-query.provder';
+import notificationUtil from '@/utils/notification.util';
 
 interface ICourseLessonsSectionProps {
   course: ICourseDetail;
@@ -26,30 +26,9 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
   };
 
   const { data, isPending } = useFetchAdminCourseLessons(course?.id);
-  const { createCourseLessonMutation, updateCourseLessonMutation, deleteCourseLessonMutation } = useAdminCourseMutations();
+  const { createCourseLessonMutation, deleteCourseLessonMutation } = useAdminCourseMutations();
 
   const lessons = data?.result || [];
-
-  const finishEditing = () => {
-    lessons.forEach((lesson, index) => {
-      if ((lesson as ICourseLesson).id) {
-        const lessonForm: IAdminCourseLessonUpdateForm = {
-          courseId: course.id,
-          lessonId: (lesson as ICourseLesson).id,
-          position: index + 1,
-          title: lesson.title,
-          studyTimeInMinutes: lesson.studyTimeInMinutes,
-          description: lesson.description || '',
-          videoUrl: lesson.videoUrl || '',
-          content: lesson.content || '',
-        };
-        updateCourseLessonMutation.mutate(lessonForm);
-      }
-    });
-    setIsEditing(false)
-    setActiveLesson('1');
-    queryClient.refetchQueries({ queryKey: ['course', course.id, 'lessons'] })
-  }
 
   const addLesson = () => {
     const position = lessons.length + 1;
@@ -58,10 +37,20 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
     setActiveLesson(position.toString());
   }
 
+  const duplicateLesson = (position: number) => {
+    const lesson = lessons.find((lesson) => lesson.position === position);
+    if (!lesson) return;
+    const duplicateLesson: IAdminCourseLessonForm = { courseId: course.id, title: lesson.title + ' (Copy)', content: lesson.content || '', position: lessons.length + 1, studyTimeInMinutes: lesson.studyTimeInMinutes || 10, description: lesson.description || '', videoUrl: lesson.videoUrl || '' };
+    if (!duplicateLesson.content) delete duplicateLesson.content;
+    if (!duplicateLesson.videoUrl) delete duplicateLesson.videoUrl;
+    createCourseLessonMutation.mutate(duplicateLesson);
+  }
+
   const removeLesson = async (position: number) => {
     const lesson = lessons.find((lesson) => lesson.position === position);
     await deleteCourseLessonMutation.mutateAsync({ courseId: course.id, lessonId: (lesson as ICourseLesson).id });
     setActiveLesson(lessons[lessons.length - 1].position.toString());
+    notificationUtil.success('Lesson deleted successfully');
   }
 
   return (
@@ -73,9 +62,9 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
             <Button size="sm" variant="outline" onClick={cancelEditing}>
               Cancel
             </Button>
-            <Button size="sm" variant="success" onClick={finishEditing}>
+            {/* <Button size="sm" variant="success" onClick={finishEditing}>
               Finish Editing
-            </Button>
+            </Button> */}
             <Button loading={createCourseLessonMutation.isPending} size="sm" onClick={addLesson}>
               Add Lesson
             </Button>
@@ -97,8 +86,18 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
             <Accordion type='single' value={activeLesson} onValueChange={setActiveLesson} collapsible className='space-y-4'>
               {lessons.map((lesson: ICourseLesson | IAdminCourseLessonForm) => (
                 <AccordionItem key={lesson.position} value={lesson.position.toString()}>
-                  <AccordionTrigger>
-                    <p>{lesson.title}</p>
+                  <AccordionTrigger className='overflow-hidden gap-4'>
+                    <div className="flex items-center gap-2 overflow-hidden flex-grow-0">
+                      <p className='text-left truncate'>{lesson.title}</p>
+                      <div className='bg-background rounded border py-0.5 px-2'>
+                        <p className='text-xs font-medium text-primary-50 whitespace-nowrap'>
+                          {lesson.content && lesson.videoUrl ? 'Text & Video Content' :
+                            lesson.content ? 'Text Content' :
+                              lesson.videoUrl ? 'Video Content' :
+                                'No Content'}
+                        </p>
+                      </div>
+                    </div>
                   </AccordionTrigger>
                   <AccordionContent className='space-y-4'>
                     <div className='grid grid-cols-4 gap-4'>
@@ -141,7 +140,14 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
           ) : (
             <Accordion type='single' value={activeLesson} onValueChange={setActiveLesson} collapsible className='space-y-4'>
               {lessons.map((lesson: ICourseLesson | IAdminCourseLessonForm, index) => (
-                <CourseLessonForm key={index} lesson={lesson} position={index + 1} removeLesson={removeLesson} lessonCount={lessons.length} />
+                <CourseLessonForm
+                  key={index}
+                  lesson={lesson}
+                  position={index + 1}
+                  removeLesson={removeLesson}
+                  duplicateLesson={duplicateLesson}
+                  lessonCount={lessons.length}
+                />
               ))}
             </Accordion>
           )}

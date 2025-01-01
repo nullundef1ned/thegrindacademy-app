@@ -14,17 +14,19 @@ import { Button } from "@/components/ui/button";
 import useAppMutations from "@/app/_module/app.mutations";
 import notificationUtil from "@/utils/notification.util";
 import clsx from "clsx";
+import IconifyIcon from "@/components/IconifyIcon";
 
 interface ICourseLessonFormProps {
   lesson: ICourseLesson | IAdminCourseLessonForm | IAdminBulkCourseLessonForm;
   lessonCount: number;
   position: number;
   isNewLesson?: boolean;
-  setLesson?: (lesson: IAdminCourseLessonForm) => void;
+  duplicateLesson?: (position: number) => void;
+  setLesson?: (lesson: IAdminCourseLessonUpdateForm) => void;
   removeLesson: (position: number) => void;
 }
 
-export default function CourseLessonForm({ lesson, position, isNewLesson, setLesson, removeLesson, lessonCount }: ICourseLessonFormProps) {
+export default function CourseLessonForm({ lesson, position, isNewLesson, duplicateLesson, setLesson, removeLesson, lessonCount }: ICourseLessonFormProps) {
   const { deleteVideoFileMutation } = useAppMutations();
   const { createCourseLessonMutation, updateCourseLessonMutation, deleteCourseLessonMutation } = useAdminCourseMutations();
 
@@ -49,21 +51,31 @@ export default function CourseLessonForm({ lesson, position, isNewLesson, setLes
       if (!values.content) delete values.content;
 
       if ((lesson as ICourseLesson).id) {
-        updateCourseLessonMutation.mutate(values);
+        updateCourseLessonMutation.mutate(values, {
+          onSuccess: () => {
+            notificationUtil.success('Lesson updated successfully');
+          }
+        });
       } else {
-        createCourseLessonMutation.mutate(values);
+        createCourseLessonMutation.mutate(values, {
+          onSuccess: () => {
+            notificationUtil.success('Lesson created successfully');
+          }
+        });
       }
     },
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     handleChangeFormik(e);
-    setLesson?.({ ...values, [e.target.name]: e.target.value });
+    const lesson = { ...values, [e.target.name]: e.target.value }
+    setLesson?.(lesson);
   }
 
   const setFieldValue = (name: string, value: string) => {
     setFieldValueFormik(name, value);
-    setLesson?.({ ...values, [name]: value });
+    const lesson = { ...values, [name]: value }
+    setLesson?.(lesson);
   }
 
   const deleteVideo = () => {
@@ -83,6 +95,10 @@ export default function CourseLessonForm({ lesson, position, isNewLesson, setLes
 
   const removeLessonHandler = () => {
     removeLesson(position);
+  }
+
+  const duplicateLessonHandler = () => {
+    duplicateLesson?.(position);
   }
 
   const showRemoveButton = lessonCount > 1;
@@ -121,7 +137,7 @@ export default function CourseLessonForm({ lesson, position, isNewLesson, setLes
             <p className='text-xs font-medium text-primary-50'>Content</p>
             <RichTextEditor value={values.content || ''} onChange={(html) => setFieldValue('content', html)} />
           </div>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-5 gap-4">
             {(lesson as ICourseLesson).id ? (
               <Button
                 size="sm"
@@ -130,6 +146,7 @@ export default function CourseLessonForm({ lesson, position, isNewLesson, setLes
                 className="col-span-1"
                 loading={deleteCourseLessonMutation.isPending}
                 onClick={() => deleteCourseLessonMutation.mutate({ courseId: (lesson as IAdminCourseLessonForm).courseId, lessonId: (lesson as ICourseLesson).id })}>
+                <IconifyIcon icon="mdi:delete" />
                 Delete
               </Button>
             ) : showRemoveButton && (
@@ -139,11 +156,21 @@ export default function CourseLessonForm({ lesson, position, isNewLesson, setLes
                 variant="destructive"
                 className="col-span-1"
                 onClick={removeLessonHandler}>
+                <IconifyIcon icon="mdi:delete" />
                 Remove
               </Button>
             )}
+            <Button
+              size="sm"
+              type="button"
+              className="col-span-1"
+              onClick={duplicateLessonHandler}>
+              <IconifyIcon icon="mdi:content-duplicate" />
+              Duplicate
+            </Button>
             {!isNewLesson && (
-              <Button size="sm" className={clsx((showRemoveButton || (lesson as ICourseLesson).id) ? "col-span-2" : "col-span-3")} type="submit" loading={isLoading}>
+              <Button size="sm" className={clsx((showRemoveButton || (lesson as ICourseLesson).id) ? "col-span-3" : "col-span-4")} type="submit" loading={isLoading}>
+                <IconifyIcon icon="mdi:check" />
                 Save
               </Button>
             )}
