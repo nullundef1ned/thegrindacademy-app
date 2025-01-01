@@ -4,13 +4,19 @@ import { ICourseDetail, ICourseLesson } from '@/app/(student)/_module/_interface
 import useAdminCourseMutations from '../../_apis/admin-course.mutations';
 import LoadingIcons from 'react-loading-icons';
 import { useFetchAdminCourseLessons } from '../../_apis/useFetchAdminCourseLessons';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import pluralize from 'pluralize';
-import Video from '@/components/Video';
+import { Accordion } from '@/components/ui/accordion';
 import CourseLessonForm from './_forms/CourseLessonForm';
 import { IAdminCourseLessonForm } from '@/interfaces/course';
 import Card from '@/components/Card';
 import notificationUtil from '@/utils/notification.util';
+import CourseLessonCard from './CourseLessonCard';
+import { DndContext } from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { queryClient } from '@/providers/tanstack-query.provder';
 
 interface ICourseLessonsSectionProps {
   course: ICourseDetail;
@@ -18,6 +24,7 @@ interface ICourseLessonsSectionProps {
 
 export default function CourseLessonsSection({ course }: ICourseLessonsSectionProps) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isSorting, setIsSorting] = useState(false);
   const [activeLesson, setActiveLesson] = useState<string>('1');
 
   const startEditing = () => setIsEditing(true);
@@ -25,13 +32,18 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
     setIsEditing(false)
   };
 
-  const { data, isPending } = useFetchAdminCourseLessons(course?.id);
-  const { createCourseLessonMutation, deleteCourseLessonMutation } = useAdminCourseMutations();
+  const toggleSorting = () => {
+    setIsSorting(!isSorting);
+    setActiveLesson('');
+  };
 
-  const lessons = data?.result || [];
+  const { data, isPending } = useFetchAdminCourseLessons(course?.id);
+  const { createCourseLessonMutation, reorderCourseLessonMutation, deleteCourseLessonMutation } = useAdminCourseMutations();
+
+  const lessons = data || [];
 
   const addLesson = () => {
-    const position = lessons.length + 1;
+    const position = lessons[lessons.length - 1].position + 1;
     const newLesson: IAdminCourseLessonForm = { courseId: course.id, title: 'New Lesson ' + position, content: 'Sample content', position, studyTimeInMinutes: 10, description: 'Sample description' };
     createCourseLessonMutation.mutate(newLesson);
     setActiveLesson(position.toString());
@@ -53,6 +65,16 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
     notificationUtil.success('Lesson deleted successfully');
   }
 
+  const handleSort = (event: any) => {
+    const { active, over } = event;
+    if (active.id === over.id) return;
+    const activeIndex = lessons.findIndex((lesson) => lesson.id === active.id);
+    const overIndex = lessons.findIndex((lesson) => lesson.id === over.id);
+    const newLessons = arrayMove(lessons, activeIndex, overIndex);
+    queryClient.setQueryData(['course', course.id, 'lessons'], newLessons);
+    reorderCourseLessonMutation.mutate({ courseId: course.id, lessonIds: newLessons.map((lesson) => lesson.id) });
+  }
+
   return (
     <div className='space-y-4'>
       <div className="flex items-center gap-4 justify-between">
@@ -62,17 +84,22 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
             <Button size="sm" variant="outline" onClick={cancelEditing}>
               Cancel
             </Button>
-            {/* <Button size="sm" variant="success" onClick={finishEditing}>
-              Finish Editing
-            </Button> */}
+            <Button size="sm" variant="secondary" onClick={toggleSorting}>
+              {isSorting ? 'Finish Reordering' : 'Reorder'}
+            </Button>
             <Button loading={createCourseLessonMutation.isPending} size="sm" onClick={addLesson}>
               Add Lesson
             </Button>
           </div>
         ) : (
-          <Button size="sm" variant="outline" onClick={startEditing}>
-            Edit
-          </Button>
+          <div className="flex items-center gap-4">
+            <Button size="sm" variant="outline" onClick={startEditing}>
+              Edit
+            </Button>
+            <Button size="sm" variant="secondary" onClick={toggleSorting}>
+              {isSorting ? 'Finish Reordering' : 'Reorder'}
+            </Button>
+          </div>
         )}
       </div>
       {isPending ? (
@@ -82,75 +109,38 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
         </div>
       ) : (
         <Fragment>
-          {!isEditing ? (
-            <Accordion type='single' value={activeLesson} onValueChange={setActiveLesson} collapsible className='space-y-4'>
-              {lessons.map((lesson: ICourseLesson | IAdminCourseLessonForm) => (
-                <AccordionItem key={lesson.position} value={lesson.position.toString()}>
-                  <AccordionTrigger className='overflow-hidden gap-4'>
-                    <div className="flex items-center gap-2 overflow-hidden flex-grow-0">
-                      <p className='text-left truncate'>{lesson.title}</p>
-                      <div className='bg-background rounded border py-0.5 px-2'>
-                        <p className='text-xs font-medium text-primary-50 whitespace-nowrap'>
-                          {lesson.content && lesson.videoUrl ? 'Text & Video Content' :
-                            lesson.content ? 'Text Content' :
-                              lesson.videoUrl ? 'Video Content' :
-                                'No Content'}
-                        </p>
-                      </div>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className='space-y-4'>
-                    <div className='grid grid-cols-4 gap-4'>
-                      <div className='col-span-3 flex flex-col gap-2'>
-                        <p className='text-xs font-medium text-primary-50'>Lesson Title</p>
-                        <p className='text-sm text-primary-50'>{lesson.title}</p>
-                      </div>
-                      <div className='col-span-1 flex flex-col gap-2'>
-                        <p className='text-xs font-medium text-primary-50'>Study Time</p>
-                        <p className='text-sm text-primary-50'>{lesson.studyTimeInMinutes} {pluralize('minute', lesson.studyTimeInMinutes)}</p>
-                      </div>
-                    </div>
-                    {lesson.description && (
-                      <div className='flex flex-col gap-2'>
-                        <p className='text-xs font-medium text-primary-50'>Description</p>
-                        <p className='text-sm text-primary-50'>{lesson.description}</p>
-                      </div>
+          <DndContext onDragEnd={handleSort}>
+            <SortableContext items={lessons.map((lesson) => lesson.id)} strategy={verticalListSortingStrategy}>
+              <Accordion type='single' value={activeLesson} onValueChange={setActiveLesson} collapsible className='space-y-4'>
+                {!isEditing ? (
+                  <Fragment>
+                    {lessons.map((lesson: ICourseLesson) => (
+                      <CourseLessonCard key={lesson.id} lesson={lesson} isSorting={isSorting} />
+                    ))}
+                    {lessons.length === 0 && (
+                      <Card className='py-4'>
+                        <p className='text-sm text-primary-50'>No lessons found. <span onClick={() => { startEditing(); addLesson() }} className='text-accent cursor-pointer'>Add a new lesson.</span></p>
+                      </Card>
                     )}
-                    {lesson.videoUrl && (
-                      <div className='flex flex-col gap-2'>
-                        <p className='text-xs font-medium text-primary-50'>Video</p>
-                        <Video src={lesson.videoUrl} />
-                      </div>
-                    )}
-                    {lesson.content && (
-                      <div className='flex flex-col gap-2'>
-                        <p className='text-xs font-medium text-primary-50'>Text Content</p>
-                        <div dangerouslySetInnerHTML={{ __html: lesson.content || '' }} className='text-sm text-primary-50' />
-                      </div>
-                    )}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-              {lessons.length === 0 && (
-                <Card className='py-4'>
-                  <p className='text-sm text-primary-50'>No lessons found. <span onClick={() => { startEditing(); addLesson() }} className='text-accent cursor-pointer'>Add a new lesson.</span></p>
-                </Card>
-              )}
-            </Accordion>
-          ) : (
-            <Accordion type='single' value={activeLesson} onValueChange={setActiveLesson} collapsible className='space-y-4'>
-              {lessons.map((lesson: ICourseLesson | IAdminCourseLessonForm, index) => (
-                <CourseLessonForm
-                  key={index}
-                  lesson={lesson}
-                  position={index + 1}
-                  removeLesson={removeLesson}
-                  duplicateLesson={duplicateLesson}
-                  lessonCount={lessons.length}
-                />
-              ))}
-            </Accordion>
-          )}
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    {lessons.map((lesson: ICourseLesson | IAdminCourseLessonForm, index) => (
+                      <CourseLessonForm
+                        key={(lesson as ICourseLesson).id}
+                        lesson={lesson}
+                        position={index + 1}
+                        isSorting={isSorting}
+                        removeLesson={removeLesson}
+                        duplicateLesson={duplicateLesson}
+                        lessonCount={lessons.length}
+                      />
+                    ))}
+                  </Fragment>
+                )}
+              </Accordion>
+            </SortableContext>
+          </DndContext>
         </Fragment>
       )}
     </div>
