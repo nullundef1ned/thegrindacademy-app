@@ -108,6 +108,17 @@ export default function useAdminCourseMutations() {
     }
   })
 
+  const reorderCourseLessonMutation = useMutation({
+    mutationFn: async (payload: { courseId: string, lessonIds: string[] }): Promise<void> => {
+      const { courseId, lessonIds } = payload;
+      const response = await axiosHandler.patch(`/admin/course/${courseId}/lesson/reorder`, { lessonIds })
+      return response.data;
+    },
+    onSettled: (data, variables, context) => {
+      queryClient.refetchQueries({ queryKey: ['course', context.courseId, 'lessons'] })
+    }
+  })
+
   const deleteCourseMutation = useMutation({
     mutationFn: async (id: string): Promise<void> => {
       await axiosHandler.delete(`/admin/course/${id}`)
@@ -150,6 +161,7 @@ export default function useAdminCourseMutations() {
     updateCourseMutation,
     updateCourseMaterialMutation,
     updateCourseLessonMutation,
+    reorderCourseLessonMutation,
     deleteCourseMutation,
     deleteCourseMaterialMutation,
     deleteCourseLessonMutation

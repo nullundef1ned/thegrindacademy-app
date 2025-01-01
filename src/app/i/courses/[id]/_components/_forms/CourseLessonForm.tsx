@@ -15,18 +15,29 @@ import useAppMutations from "@/app/_module/app.mutations";
 import notificationUtil from "@/utils/notification.util";
 import clsx from "clsx";
 import IconifyIcon from "@/components/IconifyIcon";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 interface ICourseLessonFormProps {
   lesson: ICourseLesson | IAdminCourseLessonForm | IAdminBulkCourseLessonForm;
   lessonCount: number;
   position: number;
   isNewLesson?: boolean;
+  isSorting?: boolean;
   duplicateLesson?: (position: number) => void;
   setLesson?: (lesson: IAdminCourseLessonUpdateForm) => void;
   removeLesson: (position: number) => void;
 }
 
-export default function CourseLessonForm({ lesson, position, isNewLesson, duplicateLesson, setLesson, removeLesson, lessonCount }: ICourseLessonFormProps) {
+export default function CourseLessonForm({ lesson, position, isNewLesson, isSorting, duplicateLesson, setLesson, removeLesson, lessonCount }: ICourseLessonFormProps) {
+
+  const { attributes, listeners, setNodeRef, transition, transform } = useSortable({ id: (lesson as ICourseLesson).id });
+
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+  }
+
   const { deleteVideoFileMutation } = useAppMutations();
   const { createCourseLessonMutation, updateCourseLessonMutation, deleteCourseLessonMutation } = useAdminCourseMutations();
 
@@ -104,10 +115,25 @@ export default function CourseLessonForm({ lesson, position, isNewLesson, duplic
   const showRemoveButton = lessonCount > 1;
   const isLoading = updateCourseLessonMutation.isPending || createCourseLessonMutation.isPending;
 
+  if (isSorting) {
+    return (
+      <div ref={setNodeRef} {...attributes} {...listeners} style={style}>
+        <div className="gap-4 bg-[#00246B14] border border-[#548DFF24] rounded px-4 flex flex-1 items-center justify-between py-4 font-semibold transition-all">
+          <div className="flex items-center gap-2 overflow-hidden">
+            <IconifyIcon icon="ri:draggable" />
+            <p className="text-sm">Lesson {position}: <span className="font-medium">{values.title}</span></p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <AccordionItem value={position.toString()}>
       <AccordionTrigger className="gap-4">
-        <p className="text-sm">Lesson {position}: <span className="font-medium">{values.title}</span></p>
+        <div className="flex items-center gap-2 overflow-hidden">
+          <p className="text-sm">Lesson {position}: <span className="font-medium">{values.title}</span></p>
+        </div>
       </AccordionTrigger>
       <AccordionContent>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
