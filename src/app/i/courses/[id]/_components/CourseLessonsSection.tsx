@@ -8,9 +8,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import pluralize from 'pluralize';
 import Video from '@/components/Video';
 import CourseLessonForm from './_forms/CourseLessonForm';
-import { IAdminCourseLessonForm, IAdminCourseLessonUpdateForm } from '@/interfaces/course';
+import { IAdminCourseLessonForm } from '@/interfaces/course';
 import Card from '@/components/Card';
-import { queryClient } from '@/providers/tanstack-query.provder';
 import notificationUtil from '@/utils/notification.util';
 
 interface ICourseLessonsSectionProps {
@@ -52,11 +51,6 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
     await deleteCourseLessonMutation.mutateAsync({ courseId: course.id, lessonId: (lesson as ICourseLesson).id });
     setActiveLesson(lessons[lessons.length - 1].position.toString());
     notificationUtil.success('Lesson deleted successfully');
-  }
-
-  const updateLesson = (lesson: IAdminCourseLessonUpdateForm) => {
-    const updatedLessons = lessons.map((l) => l.id === lesson.lessonId ? { ...l, ...lesson } : l);
-    // setLessons(updatedLessons);
   }
 
   return (
@@ -150,7 +144,6 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
                   key={index}
                   lesson={lesson}
                   position={index + 1}
-                  setLesson={updateLesson}
                   removeLesson={removeLesson}
                   duplicateLesson={duplicateLesson}
                   lessonCount={lessons.length}
