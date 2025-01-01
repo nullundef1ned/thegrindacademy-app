@@ -10,7 +10,7 @@ import { IAdminCourseLessonForm } from '@/interfaces/course';
 import Card from '@/components/Card';
 import notificationUtil from '@/utils/notification.util';
 import CourseLessonCard from './CourseLessonCard';
-import { DndContext } from '@dnd-kit/core';
+import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import {
   arrayMove,
   SortableContext,
@@ -65,11 +65,11 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
     notificationUtil.success('Lesson deleted successfully');
   }
 
-  const handleSort = (event: any) => {
+  const handleSort = (event: DragEndEvent) => {
     const { active, over } = event;
-    if (active.id === over.id) return;
+    if (active.id === over?.id || !over?.id) return;
     const activeIndex = lessons.findIndex((lesson) => lesson.id === active.id);
-    const overIndex = lessons.findIndex((lesson) => lesson.id === over.id);
+    const overIndex = lessons.findIndex((lesson) => lesson.id === over?.id);
     const newLessons = arrayMove(lessons, activeIndex, overIndex);
     queryClient.setQueryData(['course', course.id, 'lessons'], newLessons);
     reorderCourseLessonMutation.mutate({ courseId: course.id, lessonIds: newLessons.map((lesson) => lesson.id) });
