@@ -43,7 +43,7 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
   const lessons = data || [];
 
   const addLesson = () => {
-    const position = lessons[lessons.length - 1].position + 1;
+    const position = (lessons[lessons.length - 1]?.position || 0) + 1;
     const newLesson: IAdminCourseLessonForm = { courseId: course.id, title: 'New Lesson ' + position, content: 'Sample content', position, studyTimeInMinutes: 10, description: 'Sample description' };
     createCourseLessonMutation.mutate(newLesson);
     setActiveLesson(position.toString());
