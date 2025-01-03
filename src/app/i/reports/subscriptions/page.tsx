@@ -3,7 +3,7 @@
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { adminRoutes } from '../../_module/admin.routes'
 import { BreadcrumbItem } from '@/components/Breadcrumbs'
-import StatisticsCard, { StatisticsCardProps } from '@/app/(student)/_components/StatisticsCard'
+import StatisticsCard, { StatisticsCardProps } from '@/components/StatisticsCard';
 import SubscriptionGrowthGraph from '../_components/SubscriptionGrowthGraph';
 import SubscriptionPlanPopularityGraph from '../_components/SubscriptionPlanPopularityGraph';
 import { useFetchSubscriptionReport } from '../../_module/_apis/useFetchReports';

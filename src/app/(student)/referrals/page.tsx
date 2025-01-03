@@ -1,7 +1,7 @@
 'use client';
 
 import ReferralCodeCard from '../(overview)/_components/ReferralCodeCard'
-import StatisticsCard, { StatisticsCardProps } from '../_components/StatisticsCard'
+import StatisticsCard, { StatisticsCardProps } from '@/components/StatisticsCard'
 import { IPayout } from '../_module/student.interface';
 import { TableHeader } from '@/components/table/table.interface';
 import { TableHeaderTypeEnum } from '@/components/table/table.enum';
