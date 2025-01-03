@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment } from 'react'
 import AuthCard from '@/app/(auth)/_components/AuthCard'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button';
