@@ -15,7 +15,9 @@ function AuthLayout({ children }: AuthLayoutProps) {
   const router = useRouter();
 
   const pathname = usePathname();
-  const rootPath = pathname.startsWith('/i') ? `/i/login` : `/login`
+  const isAdmin = pathname.startsWith(`/${anchor}`);
+  const isAffiliate = pathname.startsWith('/affiliate');
+  const rootPath = isAdmin ? `/${anchor}/login` : isAffiliate ? `/affiliate/login` : `/login`
 
   useEffect(() => {
     window.addEventListener('keydown', (e) => {

@@ -8,13 +8,15 @@ import BrandBars from '@/components/BrandBars';
 import { appRoutes } from './_module/app.routes';
 import { adminRoutes, anchor } from './i/_module/admin.routes';
 import { usePathname } from 'next/navigation';
+import { affiliateRoutes } from './affiliate/_module/affiliate.routes';
 
 export default function NotFoundPage() {
 
   const pathname = usePathname();
-  const isAdmin = pathname.includes(anchor);
+  const isAdmin = pathname.includes(`/${anchor}`);
+  const isAffiliate = pathname.includes('/affiliate');
 
-  const homePath = isAdmin ? adminRoutes.dashboard : appRoutes.home;
+  const homePath = isAdmin ? adminRoutes.dashboard : isAffiliate ? affiliateRoutes.dashboard : appRoutes.home;
 
   return (
     <div className='fixed inset-0 bg-background z-50 grid place-items-center place-content-center px-4'>

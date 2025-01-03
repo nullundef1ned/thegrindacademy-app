@@ -24,5 +24,4 @@ export const adminRoutes = {
     subscriptions: `/${anchor}/reports/subscriptions`,
   },
   settings: `/${anchor}/settings`,
-
 }
