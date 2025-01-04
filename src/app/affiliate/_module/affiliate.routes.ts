@@ -5,5 +5,6 @@ export const affiliateRoutes = {
   dashboard: `/${anchor}/overview`,
   resources: `/${anchor}/resources`,
   payouts: `/${anchor}/payouts`,
+  support: `/${anchor}/support`,
   settings: `/${anchor}/settings`,
 }

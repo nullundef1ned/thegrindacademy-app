@@ -11,6 +11,7 @@ import LoadingIcons from 'react-loading-icons';
 import { useFetchUser } from '@/app/_module/_apis/useFetchUser';
 import Link from 'next/link';
 import useAffiliateMutations from '@/hooks/api/affiliate/useAffiliateMutations';
+import { affiliateRoutes } from '../../_module/affiliate.routes';
 
 export default function AccountInformationSection() {
   const { data: user } = useFetchUser();
@@ -76,7 +77,7 @@ export default function AccountInformationSection() {
               <IconifyIcon icon='mdi:telegram' />
               <p className='text-accent text-sm'>{telegramUserName}</p>
             </div>
-            <p className='text-xs text-accent'>If you would like to update your telegram username, please reach out to <Link href={'.support'} className='text-primary-100'>support</Link></p>
+            <p className='text-xs text-accent'>If you would like to update your telegram username, please reach out to <Link href={affiliateRoutes.support} className='text-primary-100'>support</Link></p>
           </div>
         }
       </div>

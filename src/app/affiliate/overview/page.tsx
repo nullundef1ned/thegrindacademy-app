@@ -1,33 +1,41 @@
 'use client';
 
 import StatisticsCard, { StatisticsCardProps } from '@/components/StatisticsCard'
-import RevenueTrendGraph from '@/app/i/overview/_components/RevenueTrendGraph';
-import UserGrowthOverTimeGraph from '@/app/i/overview/_components/UserGrowthOverTimeGraph';
 import IconifyIcon from '@/components/IconifyIcon';
 import Card from '@/components/Card';
 import Link from 'next/link';
-import MailMarketing from './_components/MailMarketing';
+import MailMarketing from './_components/MailMarketingModal';
 import AffiliateBankDetailsCard from '../_components/AffiliateBankDetailsCard';
+import PayoutTrendGraph from './_components/PayoutTrendGraph';
+import RevenueVsVisitCountGraph from './_components/RevenueVsVisitCountGraph';
+import { useFetchAffiliateDashboardReportQuery } from '@/hooks/api/affiliate/useAffiliateReports';
+import { useModal } from '@/providers/modal.provider';
+import MailMarketingModal from './_components/MailMarketingModal';
 
 export default function OverviewPage() {
+  const { data: dashboardReport, isPending } = useFetchAffiliateDashboardReportQuery();
+  const { showModal } = useModal();
+
   const overviewStatistics: StatisticsCardProps[] = [
     {
       title: 'Total Payout',
-      value: 0,
+      value: dashboardReport?.totalPayout || 0,
       icon: 'ri:money-dollar-circle-fill',
       type: 'currency',
     },
     {
       title: 'Total Referrals',
-      value: 0,
+      value: dashboardReport?.totalReferrals || 0,
       icon: 'ri:checkbox-circle-fill',
     },
     {
       title: 'Total Views',
-      value: 0,
+      value: dashboardReport?.totalViews || 0,
       icon: 'ri:eye-fill',
     }
   ]
+
+  const handleOpenMailMarketingModal = () => showModal(<MailMarketingModal />)
 
   return (
     <div className='space-y-6 responsive-section'>
@@ -36,15 +44,15 @@ export default function OverviewPage() {
           <StatisticsCard
             key={index}
             className='h-full'
-            loading={false}
+            loading={isPending}
             {...item}
           />
         ))}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
         <div className='col-span-1 lg:col-span-3 flex flex-col space-y-4'>
-          <UserGrowthOverTimeGraph />
-          <RevenueTrendGraph />
+          <PayoutTrendGraph />
+          <RevenueVsVisitCountGraph />
         </div>
         <div className='col-span-1 lg:col-span-2 space-y-4'>
           <p className='text-accent font-medium'>Quick Links</p>
@@ -56,7 +64,13 @@ export default function OverviewPage() {
             </Link>
           </Card>
           <AffiliateBankDetailsCard />
-          <MailMarketing />
+          <Card className='flex items-center gap-3 !p-3 group cursor-pointer'>
+            <IconifyIcon icon="ri:mail-fill" className="text-2xl" />
+            <div onClick={handleOpenMailMarketingModal} className="flex items-center gap-1 justify-between w-full">
+              <p className='text-sm font-medium'>Send Mail Campaign</p>
+              {/* <IconifyIcon icon="ri:arrow-right-up-line" className="text-lg group-hover:-translate-y-1 group-hover:translate-x-1 transition-all duration-300" /> */}
+            </div>
+          </Card>
         </div>
       </div>
     </div>

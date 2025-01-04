@@ -27,6 +27,7 @@ function AffiliateLayout({ children }: { children: React.ReactNode }) {
     { name: 'Overview', href: affiliateRoutes.dashboard },
     { name: 'Resources', href: affiliateRoutes.resources },
     { name: 'Payouts', href: affiliateRoutes.payouts },
+    { name: 'Support', href: affiliateRoutes.support },
     { name: 'Settings', href: affiliateRoutes.settings },
   ]
 
