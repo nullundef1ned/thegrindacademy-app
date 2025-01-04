@@ -1,7 +1,7 @@
 import { create } from "@/stores";
 import { devtools, persist } from "zustand/middleware";
 
-import { IBanner, IBankDetails, IReferral } from "./student.interface";
+import { IBanner, IBankDetails, IReferral } from "../app/(student)/_module/student.interface";
 
 export interface StudentState {
   banners: IBanner[];

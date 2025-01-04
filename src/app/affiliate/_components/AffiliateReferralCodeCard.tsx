@@ -2,18 +2,15 @@
 
 import Card from '@/components/Card'
 import IconifyIcon from '@/components/IconifyIcon'
+import { useFetchAffiliateReferralQuery } from '@/hooks/api/affiliate/useAffiliateReferral';
 import notificationUtil from '@/utils/notification.util';
-import { useStudentStore } from '../../../../stores/student.store';
-import StudentQueries from '../../_module/student.queries';
 import Skeleton from 'react-loading-skeleton';
 
-export default function ReferralCodeCard() {
-  const referralCode = useStudentStore((state) => state.referral?.code);
+export default function AffiliateReferralCodeCard() {
+  const { data: referralCode, isPending } = useFetchAffiliateReferralQuery();
 
   const referralCodeLink = `https://thegrindacademy.co/?referral=${referralCode}`
 
-  const { useFetchReferralQuery } = StudentQueries();
-  const { isPending } = useFetchReferralQuery();
 
   const handleCopyReferralCode = () => {
     if (referralCode) {

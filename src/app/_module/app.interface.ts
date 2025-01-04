@@ -1,6 +1,6 @@
 import { CourseStatusType, EnrolledCourseStatusType } from "./app.type";
 
-export type UserRole = 'student' | 'admin' | 'super-admin';
+export type UserRole = 'student' | 'admin' | 'super-admin' | 'affiliate';
 export type UserStatus = 'active' | 'inactive' | 'suspended';
 
 export interface IUser {

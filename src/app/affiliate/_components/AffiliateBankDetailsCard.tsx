@@ -1,16 +1,12 @@
 import IconifyIcon from '@/components/IconifyIcon'
 import { Button } from '@/components/ui/button'
 import React from 'react'
-import { useStudentStore } from '../../../../stores/student.store';
-import ReferralCodeCard from './ReferralCodeCard';
-import StudentQueries from '../../_module/student.queries';
 import Skeleton from 'react-loading-skeleton';
+import AffiliateReferralCodeCard from './AffiliateReferralCodeCard';
+import { useFetchAffiliateReferralQuery } from '@/hooks/api/affiliate/useAffiliateReferral';
 
-export default function BankDetailsCard() {
-  const referralCode = useStudentStore((state) => state.referral?.code);
-
-  const { useFetchReferralQuery } = StudentQueries();
-  const { isPending } = useFetchReferralQuery();
+export default function AffiliateBankDetailsCard() {
+  const { data: referralCode, isPending } = useFetchAffiliateReferralQuery();
 
   if (isPending) return (
     <div className='bg-[#00246B] rounded p-4 w-full flex flex-col gap-3'>
@@ -20,7 +16,7 @@ export default function BankDetailsCard() {
     </div>
   )
 
-  if (referralCode) return <ReferralCodeCard />;
+  if (referralCode) return <AffiliateReferralCodeCard />;
 
   return (
     <div className='bg-[#00246B] rounded p-4 w-full flex flex-col gap-3'>

@@ -36,15 +36,8 @@ export default function useAffiliateAuthMutations() {
 
   const registerMutation = useMutation({
     mutationFn: async (values: RegisterForm) => {
-      const response = await axiosHandler.post('/affiliate/auth/register', values)
+      const response = await axiosHandler.post('/affiliate/register', values)
       return response.data
-    },
-    onSuccess: (data: IAuthResponse) => {
-      storageUtil.saveItem(StorageKey.user, data.user)
-      storageUtil.saveItem(StorageKey.token, data.accessToken)
-      queryClient.setQueryData(['user'], data.user)
-
-      router.push(redirect ?? affiliateRoutes.dashboard)
     },
     onError: (error: CustomError) => {
       notificationUtil.error(error.message)
@@ -94,6 +87,6 @@ export default function useAffiliateAuthMutations() {
     registerMutation,
     changePasswordMutation,
     resetPasswordMutation,
-    forgotPasswordMutation
+    forgotPasswordMutation,
   }
 }

@@ -2,30 +2,25 @@ import React, { Fragment, useState } from 'react'
 import ProfileSection from '../../../../components/ProfileSection'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input';
-import ReferralCodeCard from '../../(overview)/_components/ReferralCodeCard';
-import { useStudentStore } from '../../../../stores/student.store';
 import { useFormik } from 'formik';
-import { IBankDetailForm } from '../../_module/student.interface';
-import useStudentMutations from '../../_module/student.mutations';
 import { useQuery } from '@tanstack/react-query';
 import useAppHooks from '@/app/_module/app.hooks';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import notificationUtil from '@/utils/notification.util';
-import StudentQueries from '../../_module/student.queries';
+import useAffiliateMutations from '@/hooks/api/affiliate/useAffiliateMutations';
+import { IBankDetailForm } from '@/app/(student)/_module/student.interface';
+import { useFetchAffiliateReferralQuery } from '@/hooks/api/affiliate/useAffiliateReferral';
+import { useFetchAffiliateBankDetailsQuery } from '@/hooks/api/affiliate/useAffiliateBank';
+import AffiliateReferralCodeCard from '../../_components/AffiliateReferralCodeCard';
 
 export default function SecuritySection() {
-  const bankDetails = useStudentStore(state => state.bankDetails);
-  const referralCode = useStudentStore(state => state.referral?.code);
-  const setBankDetails = useStudentStore(state => state.setBankDetails);
-  const setReferral = useStudentStore(state => state.setReferral);
+  const { getBanks } = useAppHooks();
+  const { setupAffiliateBankDetailsMutation, updateAffiliateBankDetailsMutation, resolveAccountNumberMutation } = useAffiliateMutations()
+
+  const { data: referralCode } = useFetchAffiliateReferralQuery();
+  const { data: bankDetails } = useFetchAffiliateBankDetailsQuery();
 
   const [accountHolderName, setAccountHolderName] = useState<string>(bankDetails?.accountName || '');
-
-  const { getBanks } = useAppHooks();
-  const { useFetchReferralQuery, useFetchBankDetailsQuery } = StudentQueries();
-
-  useFetchReferralQuery();
-  useFetchBankDetailsQuery();
 
   const { data, isLoading: isLoadingBanks } = useQuery({
     queryKey: ['banks'],
@@ -34,12 +29,12 @@ export default function SecuritySection() {
     refetchOnWindowFocus: false,
     refetchInterval: false,
   })
-  const { setupBankDetailsMutation, updateBankDetailsMutation, resolveAccountNumberMutation } = useStudentMutations();
 
   const banks = data || [];
-  const isLoading = setupBankDetailsMutation.isPending || updateBankDetailsMutation.isPending;
+  const isLoading = setupAffiliateBankDetailsMutation.isPending || updateAffiliateBankDetailsMutation.isPending;
 
   const { values, handleSubmit, setFieldValue } = useFormik<IBankDetailForm>({
+    enableReinitialize: true,
     initialValues: {
       bankCode: bankDetails?.bankCode || '',
       bankName: bankDetails?.bankName || '',
@@ -47,12 +42,10 @@ export default function SecuritySection() {
     },
     onSubmit: (values) => {
       if (bankDetails) {
-        updateBankDetailsMutation.mutate(values)
+        updateAffiliateBankDetailsMutation.mutate(values)
       } else {
-        setupBankDetailsMutation.mutate(values, {
-          onSuccess: ((data) => {
-            setReferral(data.referralCode);
-            setBankDetails(data.bankDetail);
+        setupAffiliateBankDetailsMutation.mutate(values, {
+          onSuccess: (() => {
             notificationUtil.success("Bank details setup successfully, your referral code is now available")
           })
         })
@@ -78,7 +71,7 @@ export default function SecuritySection() {
     <ProfileSection id='bank-information' title='Bank Information' description='Update your bank information'>
       <div className='flex flex-col gap-10 w-full'>
         {referralCode && <Fragment>
-          <ReferralCodeCard />
+          <AffiliateReferralCodeCard />
           <hr className='border-b border-[#B0CAFF1A]' />
         </Fragment>}
         <form onSubmit={handleSubmit} className='grid grid-cols-2 gap-4'>

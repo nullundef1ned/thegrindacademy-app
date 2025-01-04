@@ -4,12 +4,12 @@ import Avatar from '@/components/Avatar'
 import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { appRoutes } from '@/app/_module/app.routes';
 import { useMemo } from 'react';
 import { URLKeyEnum } from '@/app/_module/app.enum';
 import useURL from '@/hooks/useURL';
 import { useFetchUser } from '@/app/_module/_apis/useFetchUser';
+import usePathFinder from '@/hooks/usePathFinder';
 
 interface HeaderProps {
   routes: { name: string, href: string }[]
@@ -18,10 +18,8 @@ interface HeaderProps {
 export default function Header({ routes }: HeaderProps) {
   const { data: user } = useFetchUser();
 
-  const pathname = usePathname();
   const { updateParams } = useURL();
-  const rootPath = pathname.startsWith('/i') ? `/i/${pathname.split('/')[2]}` : `/${pathname.split('/')[1]}`
-  const loginPath = pathname.startsWith('/i') ? '/i/login' : '/login';
+  const { loginPath, currentPath } = usePathFinder();
 
   const greeting = useMemo(() => {
     const date = new Date();
@@ -43,10 +41,7 @@ export default function Header({ routes }: HeaderProps) {
             <Avatar src={user?.info.avi} alt={user?.info.firstName || ''} size={40} type='square' />
             <div className='flex flex-col'>
               <p className='font-semibold'>Good {greeting} {user?.info.firstName}</p>
-              <div className="flex space-x-2">
-                {/* <Link href={appRoutes.profile} className='text-sm hover:text-primary-100'>View Profile</Link> */}
-                <p className='text-sm text-accent hover:text-primary-100 cursor-pointer' onClick={handleLogout}>Logout</p>
-              </div>
+              <p className='text-sm text-accent hover:text-primary-100 cursor-pointer' onClick={handleLogout}>Logout</p>
             </div>
           </div>
           <Link href={appRoutes.home}>
@@ -57,8 +52,8 @@ export default function Header({ routes }: HeaderProps) {
           {routes.map((route) => (
             <Link href={route.href} key={route.name}>
               <div className='flex flex-col gap-3 group'>
-                <p className={clsx(rootPath === route.href && 'font-semibold text-white', 'text-accent font-medium px-2 whitespace-nowrap')}>{route.name}</p>
-                <div className={clsx(rootPath === route.href && 'bg-primary', 'w-full h-0.5 group-hover:bg-primary/50')} />
+                <p className={clsx(currentPath === route.href && 'font-semibold text-white', 'text-accent font-medium px-2 whitespace-nowrap')}>{route.name}</p>
+                <div className={clsx(currentPath === route.href && 'bg-primary', 'w-full h-0.5 group-hover:bg-primary/50')} />
               </div>
             </Link>
           ))}

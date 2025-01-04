@@ -8,12 +8,15 @@ import { TableHeaderTypeEnum } from '@/components/table/table.enum';
 import Table from '@/components/table';
 import Card from '@/components/Card';
 import StudentQueries from '../_module/student.queries';
+import useURL from '@/hooks/useURL';
 
 export default function ReferralsPage() {
+  const { searchParams } = useURL();
+  const searchValue = searchParams.get('search') || '';
 
   const { useFetchPayoutsQuery, useFetchReferralStatisticsQuery } = StudentQueries();
 
-  const { data: payouts, isPending: isPayoutsLoading } = useFetchPayoutsQuery();
+  const { data: payouts, isPending: isPayoutsLoading } = useFetchPayoutsQuery({ search: searchValue });
   const { data, isPending: isReferralStatisticsLoading } = useFetchReferralStatisticsQuery();
 
   const referralStatistics: StatisticsCardProps[] = [

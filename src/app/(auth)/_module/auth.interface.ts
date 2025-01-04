@@ -6,7 +6,7 @@ export interface LoginForm {
 export interface RegisterForm {
   firstName: string
   lastName: string
-  telegramUsername: string
+  telegramUserName: string
   email: string
   password: string
   confirmPassword: string

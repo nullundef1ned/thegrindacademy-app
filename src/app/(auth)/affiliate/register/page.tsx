@@ -17,7 +17,7 @@ export default function RegisterPage() {
     initialValues: {
       firstName: '',
       lastName: '',
-      telegramUsername: '',
+      telegramUserName: '',
       email: '',
       password: '',
       confirmPassword: ''
@@ -25,7 +25,7 @@ export default function RegisterPage() {
     validationSchema: yup.object({
       firstName: yup.string().required('First name is required'),
       lastName: yup.string().required('Last name is required'),
-      telegramUsername: yup.string().matches(/^@[a-zA-Z0-9_]+$/, 'Telegram username must start with @').required('Telegram username is required'),
+      telegramUserName: yup.string().matches(/^@.*$/, 'Telegram username must start with @').required('Telegram username is required'),
       email: yup.string().email('Invalid email address').required('Email is required'),
       password: yup.string().min(8, 'Password must be at least 8 characters')
         .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character')
@@ -36,6 +36,16 @@ export default function RegisterPage() {
       registerMutation.mutate(values)
     }
   })
+
+  if (registerMutation.isSuccess) {
+    return (
+      <AuthCard title='Registration Successful'>
+        <p className='text-sm text-center'>
+          Your account has been created successfully. Please check your email for verification instructions.
+        </p>
+      </AuthCard>
+    )
+  }
 
   return (
     <Fragment>
@@ -71,10 +81,10 @@ export default function RegisterPage() {
             onBlur={handleBlur}
           />
           <Input icon='ri:telegram-fill' required type='text' pattern='^@[a-zA-Z0-9_]+$'
-            name='telegramUsername' className='w-full'
+            name='telegramUserName' className='w-full'
             errors={errors} touched={touched}
             placeholder='Telegram Username'
-            value={values.telegramUsername}
+            value={values.telegramUserName}
             onChange={handleChange}
             onBlur={handleBlur}
           />

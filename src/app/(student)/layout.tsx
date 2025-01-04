@@ -3,7 +3,7 @@
 import React, { Suspense, useEffect } from 'react'
 import Header from '../../components/Header';
 import { navigationRoutes } from './_module/student.routes';
-import { useStudentStore } from './_module/student.store';
+import { useStudentStore } from '../../stores/student.store';
 import Banner from './(overview)/_components/Banner';
 import StudentQueries from './_module/student.queries';
 import Image from 'next/image';
@@ -15,6 +15,7 @@ import { IUser } from '../_module/app.interface';
 import { useRouter } from 'next/navigation';
 import { IBanner } from './_module/student.interface';
 import useSubscriptionHook from './_module/subscription.hook';
+import { affiliateRoutes } from '../affiliate/_module/affiliate.routes';
 
 function StudentLayout({ children }: { children: React.ReactNode }) {
   const banners = useStudentStore((state) => state.banners);
@@ -32,6 +33,8 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
     const user = storageUtil.getItem(StorageKey.user) as IUser;
     if (user?.role === 'admin') {
       router.push(adminRoutes.dashboard);
+    } else if (user?.role === 'affiliate') {
+      router.push(affiliateRoutes.dashboard);
     }
   }, [isPending]);
 

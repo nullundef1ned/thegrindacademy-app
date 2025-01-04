@@ -1,9 +1,9 @@
 import { Fragment, ReactNode } from "react"
 
 export const metadata = {
-  title: 'Website Content | The Grind Academy'
+  title: 'Users | The Grind Academy'
 }
 
-export default function WebsiteContentLayout({ children }: { children: ReactNode }) {
+export default function UsersLayout({ children }: { children: ReactNode }) {
   return <Fragment>{children}</Fragment>
 }
