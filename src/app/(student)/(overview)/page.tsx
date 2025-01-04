@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react'
-import StatisticsCard from '../_components/StatisticsCard'
+import StatisticsCard from '../../../components/StatisticsCard'
 import Card from '@/components/Card'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'

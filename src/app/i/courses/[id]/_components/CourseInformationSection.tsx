@@ -32,7 +32,7 @@ export default function CourseInformationSection({ course }: ICourseInformationS
       name: course?.name,
       shortDescription: course?.shortDescription,
       description: course?.description,
-      telegramChannelId: course?.telegramChannelId,
+      telegramChannelId: `https://web.telegram.org/a/#${course?.telegramChannelId}`,
       status: course?.status,
       isFeatured: course?.isFeatured,
     },

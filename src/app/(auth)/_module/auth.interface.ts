@@ -3,6 +3,15 @@ export interface LoginForm {
   password: string
 }
 
+export interface RegisterForm {
+  firstName: string
+  lastName: string
+  telegramUserName: string
+  email: string
+  password: string
+  confirmPassword: string
+}
+
 export interface PasswordForm {
   password: string
   confirmPassword: string

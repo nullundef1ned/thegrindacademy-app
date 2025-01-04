@@ -3,7 +3,7 @@
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { adminRoutes } from '../../_module/admin.routes'
 import { BreadcrumbItem } from '@/components/Breadcrumbs'
-import StatisticsCard, { StatisticsCardProps } from '@/app/(student)/_components/StatisticsCard'
+import StatisticsCard, { StatisticsCardProps } from '@/components/StatisticsCard';
 import ActiveInactiveUserGraph from '../_components/ActiveInactiveUserGraph';
 import { useFetchUserReport } from '../../_module/_apis/useFetchReports';
 import ActiveInactiveUserTrendGraph from '../_components/ActiveInactiveUserTrendGraph';

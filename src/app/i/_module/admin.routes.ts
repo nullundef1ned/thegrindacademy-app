@@ -1,6 +1,7 @@
 export const anchor = 'i'
 
 export const adminRoutes = {
+  login: `/${anchor}/login`,
   dashboard: `/${anchor}/overview`,
   courses: `/${anchor}/courses`,
   users: `/${anchor}/users`,
@@ -24,5 +25,4 @@ export const adminRoutes = {
     subscriptions: `/${anchor}/reports/subscriptions`,
   },
   settings: `/${anchor}/settings`,
-
 }

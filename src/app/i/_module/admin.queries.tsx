@@ -9,17 +9,6 @@ export default function AdminQueries() {
 
   const axiosHandler = useAxios();
 
-  // const useFetchDashboardDataQuery = () => useQuery({
-  //   queryKey: [user?.id, 'dashboard-data'],
-  //   queryFn: async (): Promise<IDashboardData> => {
-  //     const response = await axiosHandler.get(`/student/dashboard`)
-  //     const dashboardData = response.data;
-  //     return dashboardData;
-  //   },
-  //   refetchOnWindowFocus: false,
-  //   refetchInterval: false,
-  // })
-
   const useFetchCoursesQuery = (params?: ICoursePaginationParams) => useQuery({
     queryKey: [user?.id, 'courses', params?.status, params],
     queryFn: async (): Promise<IPagination<ICourse>> => {
@@ -62,7 +51,6 @@ export default function AdminQueries() {
   })
 
   return {
-    // useFetchDashboardDataQuery,
     useFetchCoursesQuery, useFetchCourseDetailQuery,
     useFetchAuthenticationQuery,
     useFetchSubscriptionQuery,

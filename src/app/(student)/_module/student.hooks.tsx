@@ -1,7 +1,7 @@
 import { IReferral } from './student.interface';
 import { IBankDetails } from './student.interface';
 import useAxios from '@/hooks/useAxios';
-import { useStudentStore } from './student.store';
+import { useStudentStore } from '../../../stores/student.store';
 
 export default function useStudentHooks() {
   const axiosHandler = useAxios();

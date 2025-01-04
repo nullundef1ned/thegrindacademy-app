@@ -1,19 +1,22 @@
 'use client';
 
 import ReferralCodeCard from '../(overview)/_components/ReferralCodeCard'
-import StatisticsCard, { StatisticsCardProps } from '../_components/StatisticsCard'
+import StatisticsCard, { StatisticsCardProps } from '@/components/StatisticsCard'
 import { IPayout } from '../_module/student.interface';
 import { TableHeader } from '@/components/table/table.interface';
 import { TableHeaderTypeEnum } from '@/components/table/table.enum';
 import Table from '@/components/table';
 import Card from '@/components/Card';
 import StudentQueries from '../_module/student.queries';
+import useURL from '@/hooks/useURL';
 
 export default function ReferralsPage() {
+  const { searchParams } = useURL();
+  const searchValue = searchParams.get('search') || '';
 
   const { useFetchPayoutsQuery, useFetchReferralStatisticsQuery } = StudentQueries();
 
-  const { data: payouts, isPending: isPayoutsLoading } = useFetchPayoutsQuery();
+  const { data: payouts, isPending: isPayoutsLoading } = useFetchPayoutsQuery({ search: searchValue });
   const { data, isPending: isReferralStatisticsLoading } = useFetchReferralStatisticsQuery();
 
   const referralStatistics: StatisticsCardProps[] = [

@@ -3,7 +3,7 @@
 import Card from '@/components/Card'
 import IconifyIcon from '@/components/IconifyIcon'
 import notificationUtil from '@/utils/notification.util';
-import { useStudentStore } from '../../_module/student.store';
+import { useStudentStore } from '../../../../stores/student.store';
 import StudentQueries from '../../_module/student.queries';
 import Skeleton from 'react-loading-skeleton';
 

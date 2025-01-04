@@ -76,7 +76,7 @@ export default function StatisticsCard({ title, value, icon, type = 'number', lo
                 <div style={{ backgroundColor: percentageColor }}
                   className={clsx("flex items-center gap-1 border h-6 rounded-full px-2 py-0", `border-${percentageColor}`)}>
                   <IconifyIcon icon={percentageIcon} className={clsx('text-xs opacity-80')} />
-                  <p className={clsx('text-xs opacity-80 font-medium')}>{Math.abs(percentageValue)}%</p>
+                  <p className={clsx('text-xs opacity-80 font-medium')}>{Math.abs(percentageValue).toFixed(2)}%</p>
                 </div>
               </div>
             }

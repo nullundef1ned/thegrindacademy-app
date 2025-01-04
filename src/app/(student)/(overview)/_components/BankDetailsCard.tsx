@@ -1,7 +1,7 @@
 import IconifyIcon from '@/components/IconifyIcon'
 import { Button } from '@/components/ui/button'
 import React from 'react'
-import { useStudentStore } from '../../_module/student.store';
+import { useStudentStore } from '../../../../stores/student.store';
 import ReferralCodeCard from './ReferralCodeCard';
 import StudentQueries from '../../_module/student.queries';
 import Skeleton from 'react-loading-skeleton';

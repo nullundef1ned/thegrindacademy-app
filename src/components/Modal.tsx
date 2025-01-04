@@ -23,7 +23,7 @@ export default function Modal({ title, className, rounded, width, height, positi
     'xs': 'max-w-[340px]',
     'sm': 'max-w-[420px]',
     'md': 'max-w-[488px]',
-    'lg': 'max-w-[1024px]',
+    'lg': 'max-w-[800px]',
     'xl': 'max-w-[1280px]',
     '2xl': 'max-w-[1536px]',
     '3xl': 'max-w-[1792px]',
