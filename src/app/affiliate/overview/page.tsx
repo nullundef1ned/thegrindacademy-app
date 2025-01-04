@@ -4,7 +4,6 @@ import StatisticsCard, { StatisticsCardProps } from '@/components/StatisticsCard
 import IconifyIcon from '@/components/IconifyIcon';
 import Card from '@/components/Card';
 import Link from 'next/link';
-import MailMarketing from './_components/MailMarketingModal';
 import AffiliateBankDetailsCard from '../_components/AffiliateBankDetailsCard';
 import PayoutTrendGraph from './_components/PayoutTrendGraph';
 import RevenueVsVisitCountGraph from './_components/RevenueVsVisitCountGraph';
