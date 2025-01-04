@@ -41,12 +41,6 @@ export default function FinanceReportsPage() {
       icon: 'ri:pause-circle-fill',
       type: 'currency',
     },
-    // {
-    //   title: 'Average Revenue Per User',
-    //   value: financeReport?.averageRevenuePerUser || 0,
-    //   icon: 'ri:account-circle-fill',
-    //   type: 'currency',
-    // },
   ]
 
   const tableHeaders: TableHeader<IPayout>[] = [
@@ -54,6 +48,8 @@ export default function FinanceReportsPage() {
     // @ts-expect-error nested object
     { key: 'user.info.firstName+user.info.lastName', value: 'User' },
     { key: 'amount', value: 'Amount', type: TableHeaderTypeEnum.CURRENCY },
+    // @ts-expect-error nested object
+    { key: 'user.role', value: 'Account Type', type: TableHeaderTypeEnum.STATUS },
     { key: 'status', value: 'Status', type: TableHeaderTypeEnum.STATUS },
   ]
 

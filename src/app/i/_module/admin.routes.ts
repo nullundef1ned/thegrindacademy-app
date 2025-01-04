@@ -5,6 +5,7 @@ export const adminRoutes = {
   dashboard: `/${anchor}/overview`,
   courses: `/${anchor}/courses`,
   users: `/${anchor}/users`,
+  affiliates: `/${anchor}/affiliates`,
   websiteContent: {
     root: `/${anchor}/website-content`,
     dynamicContent: `/${anchor}/website-content/dynamic-content`,
@@ -15,6 +16,7 @@ export const adminRoutes = {
     faqs: `/${anchor}/website-content/faqs`,
     metaInformation: `/${anchor}/website-content/meta-information`,
     privacyPolicy: `/${anchor}/website-content/privacy-policy`,
+    referralPolicy: `/${anchor}/website-content/referral-policy`,
     termsOfService: `/${anchor}/website-content/terms-of-service`,
   },
   reports: {

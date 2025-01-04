@@ -42,6 +42,31 @@ export default function useAdminMutations() {
     }
   })
 
+  const updateAffiliateTelegramMutation = useMutation({
+    mutationFn: async (values: IUserTelegramUpdate) => {
+      const { id, ...payload } = values;
+      const response = await axiosHandler.patch(`/admin/affiliate/${id}/telegram`, payload)
+      return response.data
+    },
+    onSettled: (data, variables, context) => {
+      queryClient.refetchQueries({ queryKey: ['affiliate', context.id] })
+      queryClient.refetchQueries({ queryKey: ['affiliates'] })
+    }
+  })
+
+  const updateAffiliateStatusMutation = useMutation({
+    mutationFn: async (values: IUserStatusUpdate) => {
+      const payload = { status: values.status, reason: values.reason };
+      if (!values.reason) delete payload.reason;
+      const response = await axiosHandler.patch(`/admin/affiliate/${values.id}`, payload)
+      return response.data
+    },
+    onSettled: (data, variables, context) => {
+      queryClient.refetchQueries({ queryKey: ['affiliate', context.id] })
+      queryClient.refetchQueries({ queryKey: ['affiliates'] })
+    }
+  })
+
   const deleteUserMutation = useMutation({
     mutationFn: async (value: string) => {
       const response = await axiosHandler.delete(`/admin/user/${value}`)
@@ -52,10 +77,23 @@ export default function useAdminMutations() {
     }
   })
 
+  const deleteAffiliateMutation = useMutation({
+    mutationFn: async (value: string) => {
+      const response = await axiosHandler.delete(`/admin/affiliate/${value}`)
+      return response.data
+    },
+    onSettled: () => {
+      queryClient.refetchQueries({ queryKey: ['affiliates'] })
+    }
+  })
+
   return {
     updateAdminAccountInformationMutation,
     updateUserTelegramMutation,
     updateUserStatusMutation,
-    deleteUserMutation
+    deleteUserMutation,
+    updateAffiliateTelegramMutation,
+    updateAffiliateStatusMutation,
+    deleteAffiliateMutation
   }
 }
