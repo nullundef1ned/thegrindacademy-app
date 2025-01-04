@@ -30,6 +30,8 @@ export default function Status({ status, showIcon }: StatusProps) {
     'student': 'bg-blue-900 text-blue-100',
     'general': 'bg-gray-700 text-gray-50',
     'unpaid': 'bg-red-900 text-red-100',
+    'admin': 'bg-primary text-primary-50',
+    'affiliate': 'bg-green-900 text-green-100',
   }[status]
 
   const displayText = status.replaceAll('-', ' ');

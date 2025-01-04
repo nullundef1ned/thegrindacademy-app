@@ -28,6 +28,17 @@ export interface IMetaInformationForm {
   socialMediaLinks: ISocialMediaLink[];
 }
 
+export interface IReferralPolicy {
+  id: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IReferralPolicyForm {
+  content: string;
+}
+
 export interface IPrivacyPolicy {
   id: string;
   content: string;

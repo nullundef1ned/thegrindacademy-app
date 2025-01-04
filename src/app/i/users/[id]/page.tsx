@@ -84,14 +84,13 @@ export default function UserPage({ params }: { params: { id: string } }) {
       <div className="flex flex-wrap gap-4 items-center justify-between">
         <p className="text-xl font-medium">User Information</p>
         <div className="flex items-center gap-3">
-          <Button onClick={openUpdateUserTelegramModal} size="sm">Update Telegram Username</Button>
           {user.status !== 'suspended' ? <Button onClick={openSuspendUserModal} size="sm">Suspend User</Button> :
             <Button onClick={reactivateUser} loading={updateUserStatusMutation.isPending} size="sm">Reactivate User</Button>
           }
           <Button onClick={openDeleteUserModal} size="sm" variant="destructive">Delete User</Button>
         </div>
       </div>
-      <div className="flex flex-wrap items-end gap-5 border-b pb-6">
+      <div className="flex flex-wrap items-start gap-5 border-b pb-6">
         <Avatar src={user.info.avi} size={60} alt={`${user.info.firstName} ${user.info.lastName}`} type="square" />
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
@@ -102,11 +101,10 @@ export default function UserPage({ params }: { params: { id: string } }) {
             <IconifyIcon icon="ri:mail-fill" className="text-xl" />
             <a href={`mailto:${user.email}`} className="text-sm font-medium">{user.email}</a>
           </div>
-        </div>
-        <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
             <IconifyIcon icon="ri:telegram-fill" className="text-xl" />
             <p className="text-sm font-medium">{user.info.telegramUserName}</p>
+            <p onClick={openUpdateUserTelegramModal} className="text-xs text-accent cursor-pointer">Edit</p>
           </div>
         </div>
         <div className="flex flex-col gap-3">
@@ -124,19 +122,21 @@ export default function UserPage({ params }: { params: { id: string } }) {
             <IconifyIcon icon="ri:file-list-2-fill" className="text-xl" />
             <p className="text-sm font-medium">Plan</p>
           </div>
-          {subscription ? <p className="text-sm text-accent">{subscription.subscriptionPlan.name} Plan</p> :
+          {subscription ? <p className="text-sm text-accent">{subscription?.subscriptionPlan.name} Plan</p> :
             <p className="text-sm text-accent">No active subscription</p>
           }
         </div>
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-2 text-primary-100">
-            <IconifyIcon icon="ri:calendar-event-fill" className="text-xl" />
-            {subscription.autoRenewal ? <p className="text-sm font-medium">Renewal Date</p> :
-              <p className="text-sm font-medium">Expiration Date</p>
-            }
+        {subscription && (
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-2 text-primary-100">
+              <IconifyIcon icon="ri:calendar-event-fill" className="text-xl" />
+              {subscription?.autoRenewal ? <p className="text-sm font-medium">Renewal Date</p> :
+                <p className="text-sm font-medium">Expiration Date</p>
+              }
+            </div>
+            <p className="text-sm text-accent">{helperUtil.formatDate(subscription?.endDate)} <span className="text-xs text-muted-foreground">(in {helperUtil.getTimeTo(subscription?.endDate)})</span></p>
           </div>
-          <p className="text-sm text-accent">{helperUtil.formatDate(subscription.endDate)} <span className="text-xs text-muted-foreground">(in {helperUtil.getTimeTo(subscription.endDate)})</span></p>
-        </div>
+        )}
       </div>
       <div className="space-y-4">
         <p className="text-sm text-accent">Enrolled Courses</p>

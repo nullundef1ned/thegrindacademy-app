@@ -52,6 +52,12 @@ export interface IUserReport {
   suspended: Omit<IReport, 'percentageChange'>;
 }
 
+export interface IAdminAffiliateReport {
+  totalAffiliates: number;
+  activeAffiliates: number;
+  totalPayout: number;
+}
+
 export interface ICourseReport {
   totalCourses: number;
   enrollmentsThisMonth: number;
