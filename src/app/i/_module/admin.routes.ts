@@ -6,6 +6,7 @@ export const adminRoutes = {
   courses: `/${anchor}/courses`,
   users: `/${anchor}/users`,
   affiliates: `/${anchor}/affiliates`,
+  resources: `/${anchor}/resources`,
   websiteContent: {
     root: `/${anchor}/website-content`,
     dynamicContent: `/${anchor}/website-content/dynamic-content`,

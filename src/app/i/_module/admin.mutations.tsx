@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/providers/tanstack-query.provder';
 import { IAccountInformationForm } from '@/app/_module/app.interface';
 import { IUserStatusUpdate, IUserTelegramUpdate } from './_interfaces/user.interface';
+import { IResourceUpload } from './_interfaces/resource.interface';
 
 export default function useAdminMutations() {
   const axiosHandler = useAxios();
@@ -54,6 +55,16 @@ export default function useAdminMutations() {
     }
   })
 
+  const uploadResourceMutation = useMutation({
+    mutationFn: async (values: IResourceUpload) => {
+      const response = await axiosHandler.post('/admin/resource', values)
+      return response.data
+    },
+    onSettled: () => {
+      queryClient.refetchQueries({ queryKey: ['resources'] })
+    }
+  })
+
   const updateAffiliateStatusMutation = useMutation({
     mutationFn: async (values: IUserStatusUpdate) => {
       const payload = { status: values.status, reason: values.reason };
@@ -77,6 +88,16 @@ export default function useAdminMutations() {
     }
   })
 
+  const deleteResourceMutation = useMutation({
+    mutationFn: async (value: string) => {
+      const response = await axiosHandler.delete(`/admin/resource/${value}`)
+      return response.data
+    },
+    onSettled: () => {
+      queryClient.refetchQueries({ queryKey: ['resources'] })
+    }
+  })
+
   const deleteAffiliateMutation = useMutation({
     mutationFn: async (value: string) => {
       const response = await axiosHandler.delete(`/admin/affiliate/${value}`)
@@ -91,9 +112,11 @@ export default function useAdminMutations() {
     updateAdminAccountInformationMutation,
     updateUserTelegramMutation,
     updateUserStatusMutation,
+    uploadResourceMutation,
     deleteUserMutation,
     updateAffiliateTelegramMutation,
     updateAffiliateStatusMutation,
-    deleteAffiliateMutation
+    deleteAffiliateMutation,
+    deleteResourceMutation
   }
 }

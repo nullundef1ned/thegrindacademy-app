@@ -48,7 +48,7 @@ export default function WebsiteContentPage() {
       link: adminRoutes.websiteContent.metaInformation
     },
     {
-      icon: 'ri:shield-user-fill', name: 'Referral & Affiliate Policy',
+      icon: 'tabler:affiliate-filled', name: 'Referral & Affiliate Policy',
       description: "Outline how users can refer and earn from their friends and audiences",
       linkText: 'Update Referral & Affiliate Policy',
       link: adminRoutes.websiteContent.referralPolicy
