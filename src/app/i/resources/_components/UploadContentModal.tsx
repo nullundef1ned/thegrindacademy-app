@@ -6,7 +6,8 @@ import { Textarea } from '@/components/ui/textarea'
 import clsx from 'clsx';
 import useAdminMutations from '../../_module/admin.mutations';
 import { useFormik } from 'formik';
-import { IResourceUpload } from '../../_module/_interfaces/resource.interface';
+import { Fragment } from 'react';
+import { AffiliateResourceType, IAffiliateResourceForm } from '../../_module/_interfaces/affiliate.interface';
 
 export default function UploadContentModal() {
 
@@ -18,20 +19,21 @@ export default function UploadContentModal() {
     { name: 'document', icon: 'ri:file-3-line' },
   ];
 
-  const { uploadResourceMutation } = useAdminMutations();
+  const { createAffiliateResourceMutation } = useAdminMutations();
 
-  const { handleSubmit, handleChange, values, setFieldValue } = useFormik<IResourceUpload>({
+  const { handleSubmit, handleChange, values, setFieldValue } = useFormik<IAffiliateResourceForm>({
     initialValues: {
-      text: '',
-      type: '',
+      type: AffiliateResourceType.MESSAGE,
+      message: '',
       url: '',
     },
     onSubmit: (values) => {
-      uploadResourceMutation.mutate(values);
+      createAffiliateResourceMutation.mutate(values);
     }
   })
 
   const toggleType = (type: FileType) => {
+    if (values.url) return;
     if (values.type === type) {
       setFieldValue('type', '');
     } else {
@@ -39,7 +41,11 @@ export default function UploadContentModal() {
     }
   }
 
-  const isDisabled = !values.text && !values.type;
+  const removeURL = () => {
+    setFieldValue('url', '');
+  }
+
+  const isDisabled = !values.message && !values.type;
 
   return (
     <Modal title='Upload Resource Content'>
@@ -52,8 +58,24 @@ export default function UploadContentModal() {
           </div>
         ))}
       </div>
-      <Textarea placeholder='Caption' name='text' value={values.text} onChange={handleChange} />
-      {values.type && <FileUploader provider="do-spaces" type="others" fileType={values.type as 'image' | 'video' | 'document'} onChange={(url) => setFieldValue('url', url)} />}
+      <Textarea placeholder='Mssage' name='message' value={values.message} onChange={handleChange} />
+      {values.type && (
+        <Fragment>
+          <FileUploader provider="do-spaces" type="others" fileType={values.type as 'image' | 'video' | 'document'} onChange={(url) => setFieldValue('url', url)} />
+          {values.url && (
+            <div className='w-full flex items-center gap-3 relative border bg-black/40 p-3 rounded'>
+              {{
+                image: <IconifyIcon icon="ri:image-2-fill" className='text-primary-100' />,
+                video: <IconifyIcon icon="ri:video-fill" className='text-primary-100' />,
+                document: <IconifyIcon icon="ri:file-3-line" className='text-primary-100' />,
+                message: null
+              }[values.type]}
+              <p className='text-sm'>{values.type} uploaded</p>
+              <p onClick={removeURL} className='text-xs text-accent !ml-auto cursor-pointer'>Remove</p>
+            </div>
+          )}
+        </Fragment>
+      )}
       <Button className='w-full' size="sm" disabled={isDisabled} onClick={() => handleSubmit()}>Upload</Button>
     </Modal>
   )
