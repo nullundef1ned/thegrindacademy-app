@@ -1,62 +1,26 @@
 import Card from '@/components/Card'
 import ResourceContent from './ResourceContent';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import IconifyIcon from '@/components/IconifyIcon';
 import { useModal } from '@/providers/modal.provider';
 import UploadContentModal from './UploadContentModal';
 import { clsx } from 'clsx';
-import useURL from '@/hooks/useURL';
 import { useFetchAdminResources } from '../../_module/_apis/useAdminResources';
-import { IResource } from '../../_module/_interfaces/resource.interface';
+import LoadingIcons from 'react-loading-icons';
 
 export default function ResourceManager() {
-  const resources: IResource[] = [
-    {
-      id: '1',
-      createdAt: '2024-01-01',
-      updatedAt: '2024-01-01',
-      text: 'open the door iin the winf od the space in the catacombs og  the evil ocean deallwrs open the door iin the winf od the space in the catacombs og  the evil ocean deallwrsopen the door iin the winf od the space in the catacombs og  the evil ocean deallwrsopen the door iin the winf od the space in the catacombs og  the evil ocean deallwrs',
-      type: 'image', url: 'https://thegrindacademy.fra1.cdn.digitaloceanspaces.com/others/1735620298273-f1ae319f-8bbc-4ec1-a15d-c9e6a3fd1b62.jpeg'
-    },
-    {
-      id: '2',
-      createdAt: '2024-01-01',
-      updatedAt: '2024-01-01',
-      text: 'open the door',
-      type: 'image',
-      url: 'https://thegrindacademy.fra1.cdn.digitaloceanspaces.com/others/1735620298273-f1ae319f-8bbc-4ec1-a15d-c9e6a3fd1b62.jpeg'
-    },
-    {
-      id: '3',
-      createdAt: '2024-01-01',
-      updatedAt: '2024-01-01',
-      text: 'open the door',
-      type: 'video',
-      url: 'https://thegrindacademy.fra1.cdn.digitaloceanspaces.com/others/1735620298273-f1ae319f-8bbc-4ec1-a15d-c9e6a3fd1b62.jpeg'
-    },
-    {
-      id: '4',
-      createdAt: '2024-01-01',
-      updatedAt: '2024-01-01',
-      text: 'open the door',
-      type: 'document',
-      url: 'https://thegrindacademy.fra1.cdn.digitaloceanspaces.com/others/1735620298273-f1ae319f-8bbc-4ec1-a15d-c9e6a3fd1b62.jpeg'
-    },
-  ]
-
-  const { data } = useFetchAdminResources();
-
   const { showModal } = useModal();
-  const { searchParams, updateParams } = useURL();
+  const [page, setPage] = useState(1);
+  const { data, isPending } = useFetchAdminResources();
 
-  const page = searchParams.get('page') || 1;
+  const resources = data?.result || [];
 
   const nextPage = () => {
-    updateParams({ key: 'page', value: (Number(page) + 1).toString() });
+    setPage(page + 1);
   }
 
   const prevPage = () => {
-    updateParams({ key: 'page', value: (Number(page) - 1).toString() });
+    setPage(page - 1);
   }
 
   const showUploadContentModal = () => showModal(<UploadContentModal />);
@@ -89,6 +53,17 @@ export default function ResourceManager() {
           {resources.map((resource, index) => (
             <ResourceContent resource={resource} key={index} />
           ))}
+          {isPending && (
+            <div className="flex col-span-2 flex-col items-center justify-center gap-2 h-40">
+              <LoadingIcons.TailSpin />
+            </div>
+          )}
+          {resources.length == 0 && !isPending && (
+            <div className="flex col-span-2 flex-col items-center justify-center gap-2 h-40">
+              <IconifyIcon icon="ri:file-list-3-line" className="text-primary-200 text-4xl" />
+              <p className="text-center text-sm text-muted-foreground">No resources found</p>
+            </div>
+          )}
         </div>
       </Card>
     </Fragment>

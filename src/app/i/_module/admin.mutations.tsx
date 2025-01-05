@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/providers/tanstack-query.provder';
 import { IAccountInformationForm } from '@/app/_module/app.interface';
 import { IUserStatusUpdate, IUserTelegramUpdate } from './_interfaces/user.interface';
-import { IResourceUpload } from './_interfaces/resource.interface';
+import { IAffiliateResourceForm, IAffiliateTelegramCommunityUpdate } from './_interfaces/affiliate.interface';
 
 export default function useAdminMutations() {
   const axiosHandler = useAxios();
@@ -55,16 +55,6 @@ export default function useAdminMutations() {
     }
   })
 
-  const uploadResourceMutation = useMutation({
-    mutationFn: async (values: IResourceUpload) => {
-      const response = await axiosHandler.post('/admin/resource', values)
-      return response.data
-    },
-    onSettled: () => {
-      queryClient.refetchQueries({ queryKey: ['resources'] })
-    }
-  })
-
   const updateAffiliateStatusMutation = useMutation({
     mutationFn: async (values: IUserStatusUpdate) => {
       const payload = { status: values.status, reason: values.reason };
@@ -78,6 +68,36 @@ export default function useAdminMutations() {
     }
   })
 
+  const createAffiliateResourceMutation = useMutation({
+    mutationFn: async (values: IAffiliateResourceForm) => {
+      const response = await axiosHandler.post(`/admin/affiliate/community/resource`, values)
+      return response.data
+    },
+    onSettled: () => {
+      queryClient.refetchQueries({ queryKey: ['resources'] })
+    }
+  })
+
+  const deleteAffiliateResourceMutation = useMutation({
+    mutationFn: async (resourceId: string) => {
+      const response = await axiosHandler.delete(`/admin/affiliate/community/resource/${resourceId}`)
+      return response.data
+    },
+    onSettled: () => {
+      queryClient.refetchQueries({ queryKey: ['resources'] })
+    }
+  })
+
+  const createOrUpdateAffiliateTelegramCommunityMutation = useMutation({
+    mutationFn: async (values: IAffiliateTelegramCommunityUpdate) => {
+      const response = await axiosHandler.patch(`/admin/affiliate/community`, values)
+      return response.data
+    },
+    onSettled: () => {
+      queryClient.refetchQueries({ queryKey: ['affiliate-telegram-community'] })
+    }
+  })
+
   const deleteUserMutation = useMutation({
     mutationFn: async (value: string) => {
       const response = await axiosHandler.delete(`/admin/user/${value}`)
@@ -85,16 +105,6 @@ export default function useAdminMutations() {
     },
     onSettled: () => {
       queryClient.refetchQueries({ queryKey: ['users'] })
-    }
-  })
-
-  const deleteResourceMutation = useMutation({
-    mutationFn: async (value: string) => {
-      const response = await axiosHandler.delete(`/admin/resource/${value}`)
-      return response.data
-    },
-    onSettled: () => {
-      queryClient.refetchQueries({ queryKey: ['resources'] })
     }
   })
 
@@ -109,14 +119,15 @@ export default function useAdminMutations() {
   })
 
   return {
+    createAffiliateResourceMutation,
+    createOrUpdateAffiliateTelegramCommunityMutation,
     updateAdminAccountInformationMutation,
     updateUserTelegramMutation,
     updateUserStatusMutation,
-    uploadResourceMutation,
     deleteUserMutation,
     updateAffiliateTelegramMutation,
     updateAffiliateStatusMutation,
     deleteAffiliateMutation,
-    deleteResourceMutation
+    deleteAffiliateResourceMutation
   }
 }

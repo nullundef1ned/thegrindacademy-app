@@ -9,6 +9,7 @@ import useAffiliateMutations from '@/hooks/api/affiliate/useAffiliateMutations'
 import notificationUtil from '@/utils/notification.util'
 import Modal from '@/components/Modal'
 import { ChangeEvent } from 'react'
+import { useModal } from '@/providers/modal.provider'
 
 export default function MailMarketingModal() {
   const defaultMessage = `<p>
@@ -22,6 +23,7 @@ export default function MailMarketingModal() {
 
   const maxRecipients = 50
 
+  const { hideModal } = useModal();
   const { sendMailMarketingMutation } = useAffiliateMutations();
 
   const { values, errors, touched, handleChange, handleBlur, setFieldValue, handleSubmit, resetForm } = useFormik<IMailMarketingForm>({
@@ -39,6 +41,7 @@ export default function MailMarketingModal() {
       sendMailMarketingMutation.mutate(values, {
         onSuccess: () => {
           notificationUtil.success('Campaign sent successfully')
+          hideModal()
           resetForm()
         }
       })

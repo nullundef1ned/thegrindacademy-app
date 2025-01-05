@@ -1,20 +1,24 @@
 import IconifyIcon from '@/components/IconifyIcon'
 import Modal from '@/components/Modal'
+import { Button } from '@/components/ui/button'
 import Video from '@/components/Video'
 import helperUtil from '@/utils/helper.util'
 import Image from 'next/image'
 import React from 'react'
+import { AffiliateResourceType } from '../../_module/_interfaces/affiliate.interface'
 
 interface IMediaPreviewerModalProps {
-  type: 'image' | 'video' | 'document'
-  url: string
+  type: AffiliateResourceType;
+  url: string;
+  showDownloadButton?: boolean;
 }
 
-export default function MediaPreviewerModal({ type, url }: IMediaPreviewerModalProps) {
+export default function MediaPreviewerModal({ type, url, showDownloadButton = true }: IMediaPreviewerModalProps) {
   const mediaTitle = {
     image: 'Image Preview',
     video: 'Video Preview',
     document: 'Document Preview',
+    message: 'Message Preview',
   }[type]
 
 
@@ -33,9 +37,11 @@ export default function MediaPreviewerModal({ type, url }: IMediaPreviewerModalP
               <IconifyIcon icon="ri:file-3-line" className='text-primary-100' />
               <p onClick={downloadDocument} className='text-xs cursor-pointer underline'>Download document</p>
             </div>,
+            message: null,
           }[type]
         }
       </div>
+      {showDownloadButton && type !== 'document' && <Button onClick={downloadDocument} className='mt-4'>Download {type}</Button>}
     </Modal>
   )
 }
