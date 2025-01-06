@@ -5,18 +5,17 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea';
 import React from 'react'
-import StudentQueries from '@/app/(student)/_module/student.queries';
 import LoadingIcons from 'react-loading-icons';
 import { useFormik } from 'formik';
-import useStudentMutations from '@/app/(student)/_module/student.mutations';
 import notificationUtil from '@/utils/notification.util';
 import { IContactSupportForm } from '@/app/(student)/_module/student.interface';
+import { useFetchAffiliateFAQsQuery } from '@/hooks/api/affiliate/useAffiliateSupport';
+import useAffiliateMutations from '@/hooks/api/affiliate/useAffiliateMutations';
 
 export default function SupportPage() {
-  const { useFetchFAQsQuery } = StudentQueries();
-  const { data: faqs, isPending } = useFetchFAQsQuery();
+  const { data: faqs, isPending } = useFetchAffiliateFAQsQuery();
 
-  const { contactSupportMutation } = useStudentMutations();
+  const { contactSupportMutation } = useAffiliateMutations();
 
   const { handleSubmit, handleChange, resetForm, values } = useFormik<IContactSupportForm>({
     initialValues: {

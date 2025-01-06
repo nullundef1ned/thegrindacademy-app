@@ -1,6 +1,7 @@
 export enum FAQType {
   STUDENT = 'student',
-  GENERAL = 'general'
+  GENERAL = 'general',
+  AFFILIATE = 'affiliate'
 }
 
 export interface IFAQ {

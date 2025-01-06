@@ -1,5 +1,5 @@
 import { PasswordForm } from '@/app/(auth)/_module/auth.interface';
-import { IBankDetailCreationResponse } from '@/app/(student)/_module/student.interface';
+import { IBankDetailCreationResponse, IContactSupportForm } from '@/app/(student)/_module/student.interface';
 import { IBankDetailForm } from '@/app/(student)/_module/student.interface';
 import { useFetchUser } from '@/app/_module/_apis/useFetchUser';
 import useAppHooks from '@/app/_module/app.hooks';
@@ -66,6 +66,13 @@ export default function useAffiliateMutations() {
     }
   })
 
+  const contactSupportMutation = useMutation({
+    mutationFn: async (values: IContactSupportForm) => {
+      const response = await axiosHandler.post('/affiliate/support/contact', values)
+      return response.data
+    },
+  })
+
   const sendMailMarketingMutation = useMutation({
     mutationFn: async (payload: IMailMarketingForm) => {
       const response = await axiosHandler.post('/affiliate/mail-marketing', payload)
@@ -101,6 +108,7 @@ export default function useAffiliateMutations() {
     deleteAffiliateMutation,
     changePasswordMutation,
     updateAffiliateReferralCodeMutation,
-    sendMailMarketingMutation
+    sendMailMarketingMutation,
+    contactSupportMutation
   }
 }
