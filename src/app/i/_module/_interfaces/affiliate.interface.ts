@@ -33,3 +33,8 @@ export interface IAffiliateResourceForm {
   message?: string,
   url?: string,
 }
+
+export interface ISendTelegramMessage {
+  courseIds: string[],
+  message: string,
+}
