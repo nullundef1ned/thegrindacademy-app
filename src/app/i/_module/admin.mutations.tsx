@@ -4,6 +4,8 @@ import { queryClient } from '@/providers/tanstack-query.provder';
 import { IAccountInformationForm } from '@/app/_module/app.interface';
 import { IUserStatusUpdate, IUserTelegramUpdate } from './_interfaces/user.interface';
 import { AffiliateResourceType, IAffiliateResourceForm, IAffiliateTelegramCommunityUpdate, ISendTelegramMessage } from './_interfaces/affiliate.interface';
+import helperUtil from '@/utils/helper.util';
+import notificationUtil from '@/utils/notification.util';
 
 export default function useAdminMutations() {
   const axiosHandler = useAxios();
@@ -78,6 +80,17 @@ export default function useAdminMutations() {
     }
   })
 
+  const exportUsersMutation = useMutation({
+    mutationFn: async (): Promise<string> => {
+      return (await axiosHandler.get('/admin/report/user/export/csv')) as string
+    },
+    onSuccess: (data) => {
+      notificationUtil.success('Users exported successfully')
+      const url = URL.createObjectURL(new Blob([data]))
+      helperUtil.downloadFile(url, 'The Grind Academy Users.csv')
+    }
+  })
+
   const createAffiliateResourceMutation = useMutation({
     mutationFn: async (values: IAffiliateResourceForm) => {
       if (values.type === AffiliateResourceType.MESSAGE) delete values.url;
@@ -140,6 +153,7 @@ export default function useAdminMutations() {
     updateAffiliateTelegramMutation,
     updateAffiliateStatusMutation,
     deleteAffiliateMutation,
-    deleteAffiliateResourceMutation
+    deleteAffiliateResourceMutation,
+    exportUsersMutation
   }
 }
