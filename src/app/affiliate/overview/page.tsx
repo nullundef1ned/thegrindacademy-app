@@ -10,10 +10,13 @@ import RevenueVsVisitCountGraph from './_components/RevenueVsVisitCountGraph';
 import { useFetchAffiliateDashboardReportQuery } from '@/hooks/api/affiliate/useAffiliateReports';
 import { useModal } from '@/providers/modal.provider';
 import MailMarketingModal from './_components/MailMarketingModal';
+import { useAffiliateCommunityQuery } from '@/hooks/api/affiliate/useAffiliateCommunity';
 
 export default function OverviewPage() {
-  const { data: dashboardReport, isPending } = useFetchAffiliateDashboardReportQuery();
   const { showModal } = useModal();
+  const { data: dashboardReport, isPending } = useFetchAffiliateDashboardReportQuery();
+  const { data: community } = useAffiliateCommunityQuery();
+
 
   const overviewStatistics: StatisticsCardProps[] = [
     {
@@ -55,19 +58,20 @@ export default function OverviewPage() {
         </div>
         <div className='col-span-1 lg:col-span-2 space-y-4'>
           <p className='text-accent font-medium'>Quick Links</p>
-          <Card className='flex items-center gap-3 !p-3 group'>
-            <IconifyIcon icon="mdi:telegram" className="text-2xl" />
-            <Link href='https://t.me/thegrindacademy' target='_blank' className="flex items-center gap-1 justify-between w-full">
-              <p className='text-sm font-medium'>Telegram Affiliate Community</p>
-              <IconifyIcon icon="ri:arrow-right-up-line" className="text-lg group-hover:-translate-y-1 group-hover:translate-x-1 transition-all duration-300" />
-            </Link>
-          </Card>
+          {community && (
+            <Card className='flex items-center gap-3 !p-3 group'>
+              <IconifyIcon icon="mdi:telegram" className="text-2xl" />
+              <Link href={community} target='_blank' className="flex items-center gap-1 justify-between w-full">
+                <p className='text-sm font-medium'>Telegram Affiliate Community</p>
+                <IconifyIcon icon="ri:arrow-right-up-line" className="text-lg group-hover:-translate-y-1 group-hover:translate-x-1 transition-all duration-300" />
+              </Link>
+            </Card>
+          )}
           <AffiliateBankDetailsCard />
           <Card className='flex items-center gap-3 !p-3 group cursor-pointer'>
             <IconifyIcon icon="ri:mail-fill" className="text-2xl" />
             <div onClick={handleOpenMailMarketingModal} className="flex items-center gap-1 justify-between w-full">
               <p className='text-sm font-medium'>Send Mail Campaign</p>
-              {/* <IconifyIcon icon="ri:arrow-right-up-line" className="text-lg group-hover:-translate-y-1 group-hover:translate-x-1 transition-all duration-300" /> */}
             </div>
           </Card>
         </div>

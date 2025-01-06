@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button'
-import RichTextEditor from '@/components/RichTextEditor'
 import IconifyIcon from '@/components/IconifyIcon'
 import { Input } from '@/components/ui/input'
 import { useFormik } from 'formik'
@@ -10,16 +9,14 @@ import notificationUtil from '@/utils/notification.util'
 import Modal from '@/components/Modal'
 import { ChangeEvent } from 'react'
 import { useModal } from '@/providers/modal.provider'
+import { Textarea } from '@/components/ui/textarea'
 
 export default function MailMarketingModal() {
-  const defaultMessage = `<p>
-  Hi there,
-  <br />
-  <br />I hope you're doing well!
-  <br />
-  <br />Thank you for your interest in our product. We're excited to have you on board!<br /><br />Best regards,
-  <br />The Grind Academy Team
-  </p>`
+  const defaultMessage = `Hi there,
+I hope you're doing well!
+Thank you for your interest in our product. We're excited to have you on board!
+Best regards,
+The Grind Academy Team`
 
   const maxRecipients = 50
 
@@ -106,7 +103,7 @@ export default function MailMarketingModal() {
             ))}
           </div>
         )}
-        <RichTextEditor value={values.content} onChange={(value) => setFieldValue('content', value)} />
+        <Textarea placeholder='Campaign content' value={values.content} onChange={(e) => setFieldValue('content', e.target.value)} />
         {values.content !== defaultMessage && (
           <p className='text-xs text-accent cursor-pointer' onClick={() => setFieldValue('content', defaultMessage)}>Restore default message</p>
         )}
