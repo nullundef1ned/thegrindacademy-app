@@ -7,7 +7,7 @@ import { IMailMarketingForm } from '../../_module/affiliate.interface'
 import useAffiliateMutations from '@/hooks/api/affiliate/useAffiliateMutations'
 import notificationUtil from '@/utils/notification.util'
 import Modal from '@/components/Modal'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, useRef } from 'react'
 import { useModal } from '@/providers/modal.provider'
 import { Textarea } from '@/components/ui/textarea'
 
@@ -21,6 +21,8 @@ The Grind Academy Team`
   const maxRecipients = 50
 
   const { hideModal } = useModal();
+  const emailRef = useRef<HTMLInputElement>(null);
+
   const { sendMailMarketingMutation } = useAffiliateMutations();
 
   const { values, errors, touched, handleChange, handleBlur, setFieldValue, handleSubmit, resetForm } = useFormik<IMailMarketingForm>({
@@ -71,6 +73,11 @@ The Grind Academy Team`
     setFieldValue('bcc', newRecipientEmails)
   }
 
+  const handleButtonClick = () => {
+    addRecipientEmail(emailRef.current?.value || '')
+    emailRef.current!.value = ''
+  }
+
   const isDisabled = values.subject === '' || values.bcc.length === 0 || values.content === '<p><br></p>'
 
   return (
@@ -81,15 +88,21 @@ The Grind Academy Team`
             onBlur={handleBlur}
             placeholder='Subject' name='subject'
             value={values.subject} onChange={handleChange} />
-          <Input icon='ri:at-fill' className='col-span-1 lg:col-span-4' name='bcc'
-            disabled={values.bcc.length >= maxRecipients}
-            errors={errors}
-            touched={touched}
-            onBlur={handleBlur}
-            onChange={handleAddRecipientEmail}
-            placeholder='Enter recipient emails or paste from clipboard'
-            onKeyDown={handleAddRecipientEmail}
-          />
+          <div className="flex gap-3 col-span-1 lg:col-span-4">
+            <Input icon='ri:at-fill' className='w-full' name='bcc'
+              ref={emailRef}
+              disabled={values.bcc.length >= maxRecipients}
+              errors={errors}
+              touched={touched}
+              onBlur={handleBlur}
+              onChange={handleAddRecipientEmail}
+              placeholder='Enter recipient emails or paste from clipboard'
+              onKeyDown={handleAddRecipientEmail}
+            />
+            <div className='flex items-center justify-center p-2 w-12 rounded-md bg-[#B0CAFF1A] cursor-pointer' onClick={handleButtonClick}>
+              <IconifyIcon icon="fluent:arrow-enter-left-20-filled" className='text-xl' />
+            </div>
+          </div>
         </div>
         {values.bcc.length > 0 && (
           <div className="flex flex-wrap items-center gap-2">
@@ -103,7 +116,7 @@ The Grind Academy Team`
             ))}
           </div>
         )}
-        <Textarea placeholder='Campaign content' value={values.content} onChange={(e) => setFieldValue('content', e.target.value)} />
+        <Textarea placeholder='Campaign content' rows={10} value={values.content} onChange={(e) => setFieldValue('content', e.target.value)} />
         {values.content !== defaultMessage && (
           <p className='text-xs text-accent cursor-pointer' onClick={() => setFieldValue('content', defaultMessage)}>Restore default message</p>
         )}

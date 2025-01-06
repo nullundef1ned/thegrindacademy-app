@@ -6,7 +6,7 @@ import ModuleCard from "@/components/ModuleCard";
 export default function ReportsPage() {
   const modules = [
     {
-      icon: 'ri:user-6-fill', name: 'Total Users',
+      icon: 'ri:user-6-fill', name: 'Users',
       description: 'Track total signups, active users, and engagement trends',
       linkText: 'View Report',
       link: adminRoutes.reports.users

@@ -92,7 +92,7 @@ export default function FAQPage({ params }: { params: { id: string } }) {
           placeholder='Question'
         />
         <Textarea
-          name='content'
+          name='answer'
           required
           value={values.answer}
           onChange={handleChange}
@@ -100,7 +100,7 @@ export default function FAQPage({ params }: { params: { id: string } }) {
         />
         <div className='space-y-2'>
           <p className='text-sm text-accent'>Select the type of FAQ</p>
-          <RadioGroup defaultValue={FAQType.GENERAL} name='type' value={values.type} onValueChange={(value) => setFieldValue('type', value)} className='grid grid-cols-2 gap-2'>
+          <RadioGroup defaultValue={FAQType.GENERAL} name='type' value={values.type} onValueChange={(value) => setFieldValue('type', value)} className='grid grid-cols-1 lg:grid-cols-3 gap-2'>
             <label htmlFor={FAQType.GENERAL} className='flex items-center gap-2 bg-[#00246B33] p-3 rounded border border-[#B0CAFF1A] cursor-pointer'>
               <RadioGroupItem value={FAQType.GENERAL} id={FAQType.GENERAL} />
               <p className='text-sm'>General</p>
@@ -108,6 +108,10 @@ export default function FAQPage({ params }: { params: { id: string } }) {
             <label htmlFor={FAQType.STUDENT} className='flex items-center gap-2 bg-[#00246B33] p-3 rounded border border-[#B0CAFF1A] cursor-pointer'>
               <RadioGroupItem value={FAQType.STUDENT} id={FAQType.STUDENT} />
               <p className='text-sm'>Student</p>
+            </label>
+            <label htmlFor={FAQType.AFFILIATE} className='flex items-center gap-2 bg-[#00246B33] p-3 rounded border border-[#B0CAFF1A] cursor-pointer'>
+              <RadioGroupItem value={FAQType.AFFILIATE} id={FAQType.AFFILIATE} />
+              <p className='text-sm'>Affiliate</p>
             </label>
           </RadioGroup>
         </div>
