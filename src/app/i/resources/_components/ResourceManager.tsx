@@ -5,13 +5,14 @@ import IconifyIcon from '@/components/IconifyIcon';
 import { useModal } from '@/providers/modal.provider';
 import UploadContentModal from './UploadContentModal';
 import { clsx } from 'clsx';
-import { useFetchAdminResources } from '../../_module/_apis/useAdminResources';
+import { useFetchAdminAffiliateTelegramCommunity, useFetchAdminResources } from '../../_module/_apis/useAdminResources';
 import LoadingIcons from 'react-loading-icons';
 
 export default function ResourceManager() {
   const { showModal } = useModal();
   const [page, setPage] = useState(1);
   const { data, isPending } = useFetchAdminResources();
+  const { data: affiliateTelegramCommunity } = useFetchAdminAffiliateTelegramCommunity();
 
   const resources = data?.result || [];
 
@@ -43,10 +44,12 @@ export default function ResourceManager() {
             </div>
           </div>
         </div>
-        <div onClick={showUploadContentModal} className="flex items-center gap-2 cursor-pointer group">
-          <p className="text-sm text-accent group-hover:text-primary-200">Upload Content</p>
-          <IconifyIcon icon="ri:upload-line" className="text-accent group-hover:text-primary-200" />
-        </div>
+        {affiliateTelegramCommunity?.telegramChannelId &&
+          <div onClick={showUploadContentModal} className="flex items-center gap-2 cursor-pointer group">
+            <p className="text-sm text-accent group-hover:text-primary-200">Upload Content</p>
+            <IconifyIcon icon="ri:upload-line" className="text-accent group-hover:text-primary-200" />
+          </div>
+        }
       </div>
       <Card className="flex flex-col justify-between gap-4 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -62,6 +65,7 @@ export default function ResourceManager() {
             <div className="flex col-span-2 flex-col items-center justify-center gap-2 h-40">
               <IconifyIcon icon="ri:file-list-3-line" className="text-primary-200 text-4xl" />
               <p className="text-center text-sm text-muted-foreground">No resources found</p>
+              <p className="text-center text-xs text-accent">Add the affiliate channel to upload a resource</p>
             </div>
           )}
         </div>

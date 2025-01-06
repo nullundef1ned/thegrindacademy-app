@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/providers/tanstack-query.provder';
 import { IAccountInformationForm } from '@/app/_module/app.interface';
 import { IUserStatusUpdate, IUserTelegramUpdate } from './_interfaces/user.interface';
-import { IAffiliateResourceForm, IAffiliateTelegramCommunityUpdate } from './_interfaces/affiliate.interface';
+import { AffiliateResourceType, IAffiliateResourceForm, IAffiliateTelegramCommunityUpdate, ISendTelegramMessage } from './_interfaces/affiliate.interface';
 
 export default function useAdminMutations() {
   const axiosHandler = useAxios();
@@ -68,8 +68,19 @@ export default function useAdminMutations() {
     }
   })
 
+  const sendTelegramMessageMutation = useMutation({
+    mutationFn: async (values: ISendTelegramMessage) => {
+      const response = await axiosHandler.post(`/admin/course/telegram/broadcast`, values)
+      return response.data
+    },
+    onSettled: () => {
+      queryClient.refetchQueries({ queryKey: ['resources'] })
+    }
+  })
+
   const createAffiliateResourceMutation = useMutation({
     mutationFn: async (values: IAffiliateResourceForm) => {
+      if (values.type === AffiliateResourceType.MESSAGE) delete values.url;
       const response = await axiosHandler.post(`/admin/affiliate/community/resource`, values)
       return response.data
     },
@@ -90,7 +101,7 @@ export default function useAdminMutations() {
 
   const createOrUpdateAffiliateTelegramCommunityMutation = useMutation({
     mutationFn: async (values: IAffiliateTelegramCommunityUpdate) => {
-      const response = await axiosHandler.patch(`/admin/affiliate/community`, values)
+      const response = await axiosHandler.post(`/admin/affiliate/community`, values)
       return response.data
     },
     onSettled: () => {
@@ -119,6 +130,7 @@ export default function useAdminMutations() {
   })
 
   return {
+    sendTelegramMessageMutation,
     createAffiliateResourceMutation,
     createOrUpdateAffiliateTelegramCommunityMutation,
     updateAdminAccountInformationMutation,

@@ -6,6 +6,8 @@ import { useFormik } from 'formik'
 import React, { useState } from 'react'
 import { useFetchAdminAffiliateTelegramCommunity } from '../../_module/_apis/useAdminResources'
 import useAdminMutations from '../../_module/admin.mutations'
+import helperUtil from '@/utils/helper.util'
+import notificationUtil from '@/utils/notification.util'
 
 export default function AffiliateTelegramCommunityCard() {
 
@@ -16,13 +18,23 @@ export default function AffiliateTelegramCommunityCard() {
 
   const { createOrUpdateAffiliateTelegramCommunityMutation } = useAdminMutations();
 
+  const telegramChannelURL = `https://web.telegram.org/a/#${data?.telegramChannelId}`;
+
   const { handleSubmit, handleChange, values } = useFormik({
     initialValues: {
-      telegramChannelId: `https://web.telegram.org/a/#${data?.telegramChannelId}`
+      telegramChannelId: telegramChannelURL
     },
     onSubmit: (values) => {
-      setIsEditing(false);
-      createOrUpdateAffiliateTelegramCommunityMutation.mutate(values);
+      const telegramChannelId = helperUtil.extractTelegramChannelId(values.telegramChannelId);
+      if (!telegramChannelId) return notificationUtil.error('Invalid Telegram Channel Link');
+      createOrUpdateAffiliateTelegramCommunityMutation.mutate({ telegramChannelId }, {
+        onSuccess: () => {
+          setIsEditing(false);
+        },
+        onError: (error) => {
+          notificationUtil.error(error.message);
+        }
+      });
     }
   })
 
@@ -49,7 +61,7 @@ export default function AffiliateTelegramCommunityCard() {
         <div className="flex items-center gap-2">
           <IconifyIcon icon="ri:telegram-2-fill" className="text-lg" />
           {data ? (
-            <p className="text-sm">{data.telegramChannelId}</p>
+            <p className="text-sm">{telegramChannelURL}</p>
           ) : (
             <p className="text-sm text-accent">No Channel link added yet. <span className="text-primary-200 cursor-pointer" onClick={toggleEditing}>Add Now</span></p>
           )}

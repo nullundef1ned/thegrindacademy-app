@@ -69,7 +69,7 @@ export default function CourseBasicDetailsForm() {
           name='telegramChannelId'
           icon='ri:telegram-2-fill'
           type='url'
-          placeholder='Telegram Channel Link'
+          placeholder='Telegram Channel Link eg https://web.telegram.org/a/#-...'
           required
           value={values.telegramChannelId}
           onChange={handleChange} />

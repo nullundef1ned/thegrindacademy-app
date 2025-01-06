@@ -18,7 +18,7 @@ export default function CourseSelectorModal({ selectedCourses, setSelectedCourse
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<IAdminCourse[]>(selectedCourses);
 
-  const { data, isPending, isError, refetch } = useFetchAdminCourses({ page, search });
+  const { data, isPending, isError, refetch } = useFetchAdminCourses({ page, search, status: 'published' });
   const courses = data?.result || [];
 
   const toggleCourseSelection = (course: IAdminCourse) => {
@@ -36,7 +36,7 @@ export default function CourseSelectorModal({ selectedCourses, setSelectedCourse
   }
 
   return (
-    <Modal title='Select Telegram Groups and Channels' position='bottom-left' height='max'>
+    <Modal title='Select Courses' position='bottom-left' height='max'>
       <div className="flex w-full gap-4">
         <Input className='w-full' placeholder='Search' value={search} onChange={(e) => setSearch(e.target.value)} />
         <div className="flex items-center gap-2">

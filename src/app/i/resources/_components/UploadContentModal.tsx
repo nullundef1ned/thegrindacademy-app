@@ -8,6 +8,7 @@ import useAdminMutations from '../../_module/admin.mutations';
 import { useFormik } from 'formik';
 import { Fragment } from 'react';
 import { AffiliateResourceType, IAffiliateResourceForm } from '../../_module/_interfaces/affiliate.interface';
+import { useModal } from '@/providers/modal.provider';
 
 export default function UploadContentModal() {
 
@@ -19,6 +20,7 @@ export default function UploadContentModal() {
     { name: 'document', icon: 'ri:file-3-line' },
   ];
 
+  const { hideModal } = useModal();
   const { createAffiliateResourceMutation } = useAdminMutations();
 
   const { handleSubmit, handleChange, values, setFieldValue } = useFormik<IAffiliateResourceForm>({
@@ -28,7 +30,11 @@ export default function UploadContentModal() {
       url: '',
     },
     onSubmit: (values) => {
-      createAffiliateResourceMutation.mutate(values);
+      createAffiliateResourceMutation.mutate(values, {
+        onSuccess: () => {
+          hideModal();
+        }
+      });
     }
   })
 
@@ -45,7 +51,7 @@ export default function UploadContentModal() {
     setFieldValue('url', '');
   }
 
-  const isDisabled = !values.message && !values.type;
+  const isDisabled = (!values.message && values.type === AffiliateResourceType.MESSAGE) || (values.type !== AffiliateResourceType.MESSAGE && !values.url);
 
   return (
     <Modal title='Upload Resource Content'>
@@ -58,8 +64,8 @@ export default function UploadContentModal() {
           </div>
         ))}
       </div>
-      <Textarea placeholder='Mssage' name='message' value={values.message} onChange={handleChange} />
-      {values.type && (
+      <Textarea placeholder='Message' name='message' value={values.message} onChange={handleChange} />
+      {values.type && values.type !== AffiliateResourceType.MESSAGE && (
         <Fragment>
           <FileUploader provider="do-spaces" type="others" fileType={values.type as 'image' | 'video' | 'document'} onChange={(url) => setFieldValue('url', url)} />
           {values.url && (
@@ -76,7 +82,7 @@ export default function UploadContentModal() {
           )}
         </Fragment>
       )}
-      <Button className='w-full' size="sm" disabled={isDisabled} onClick={() => handleSubmit()}>Upload</Button>
+      <Button loading={createAffiliateResourceMutation.isPending} className='w-full' size="sm" disabled={isDisabled} onClick={() => handleSubmit()}>Upload</Button>
     </Modal>
   )
 }
