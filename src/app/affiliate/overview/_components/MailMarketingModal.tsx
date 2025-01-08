@@ -9,14 +9,10 @@ import notificationUtil from '@/utils/notification.util'
 import Modal from '@/components/Modal'
 import { ChangeEvent, useRef } from 'react'
 import { useModal } from '@/providers/modal.provider'
-import { Textarea } from '@/components/ui/textarea'
+import RichTextEditor from '@/components/RichTextEditor'
 
 export default function MailMarketingModal() {
-  const defaultMessage = `Hi there,
-I hope you're doing well!
-Thank you for your interest in our product. We're excited to have you on board!
-Best regards,
-The Grind Academy Team`
+  const defaultMessage = `<p>Hi there,<br/>I hope you're doing well!<br/>Thank you for your interest in our product. We're excited to have you on board!</p><br/><p>Best regards,<br/>The Grind Academy Team</p>`
 
   const maxRecipients = 50
 
@@ -99,7 +95,7 @@ The Grind Academy Team`
               placeholder='Enter recipient emails or paste from clipboard'
               onKeyDown={handleAddRecipientEmail}
             />
-            <div className='flex items-center justify-center p-2 w-12 rounded-md bg-[#B0CAFF1A] cursor-pointer' onClick={handleButtonClick}>
+            <div className='flex items-center justify-center p-2 w-12 h-[46px] rounded-md bg-[#B0CAFF1A] cursor-pointer' onClick={handleButtonClick}>
               <IconifyIcon icon="fluent:arrow-enter-left-20-filled" className='text-xl' />
             </div>
           </div>
@@ -116,7 +112,7 @@ The Grind Academy Team`
             ))}
           </div>
         )}
-        <Textarea placeholder='Campaign content' rows={10} value={values.content} onChange={(e) => setFieldValue('content', e.target.value)} />
+        <RichTextEditor value={values.content} onChange={(value) => setFieldValue('content', value)} />
         {values.content !== defaultMessage && (
           <p className='text-xs text-accent cursor-pointer' onClick={() => setFieldValue('content', defaultMessage)}>Restore default message</p>
         )}

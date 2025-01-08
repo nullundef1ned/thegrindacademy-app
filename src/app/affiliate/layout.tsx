@@ -50,7 +50,7 @@ function AffiliateLayout({ children }: { children: React.ReactNode }) {
       const addBankDetailsBanner: IBanner = {
         slug: 'add-bank-details',
         message: 'Add your bank details to receive payouts. Your referral payouts are waiting!',
-        link: '/profile#bank-information',
+        link: '/affiliate/settings#bank-information',
         buttonText: 'Add Bank Details',
         permanent: false,
         type: 'info',
