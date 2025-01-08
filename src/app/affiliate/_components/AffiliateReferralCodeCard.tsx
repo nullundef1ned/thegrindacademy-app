@@ -9,12 +9,13 @@ import Skeleton from 'react-loading-skeleton';
 import AffilicateCodeCustomizerModal from './AffilicateCodeCustomizerModal';
 import { useFetchUser } from '@/app/_module/_apis/useFetchUser';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import environmentUtil from '@/utils/env.util';
 
 export default function AffiliateReferralCodeCard() {
   const { data: user } = useFetchUser();
   const { data: referralCode, isPending } = useFetchAffiliateReferralQuery();
 
-  const referralCodeLink = `https://thegrindacademy.co/?referral=${referralCode?.code}`
+  const referralCodeLink = `${environmentUtil.WEBSITE_URL}/?referral=${referralCode?.code}`
 
   const { showModal } = useModal();
 
