@@ -58,7 +58,7 @@ export default function UserPage({ params }: { params: { id: string } }) {
 
   const tableHeaders: TableHeader<IUserReferral>[] = [
     // @ts-expect-error nested object
-    { key: 'referee.firstName+referee.lastName', value: 'Student Name' },
+    { key: 'referee.info.firstName+referee.info.lastName', value: 'Student Name' },
     { key: 'createdAt', value: 'Date', type: TableHeaderTypeEnum.DATE },
   ]
 
