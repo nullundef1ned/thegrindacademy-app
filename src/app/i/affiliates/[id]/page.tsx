@@ -58,7 +58,7 @@ export default function UserPage({ params }: { params: { id: string } }) {
 
   const tableHeaders: TableHeader<IUserReferral>[] = [
     // @ts-expect-error nested object
-    { key: 'referee.firstName+referee.lastName', value: 'Student Name' },
+    { key: 'referee.info.firstName+referee.info.lastName', value: 'Student Name' },
     { key: 'createdAt', value: 'Date', type: TableHeaderTypeEnum.DATE },
   ]
 
@@ -82,7 +82,7 @@ export default function UserPage({ params }: { params: { id: string } }) {
     <div className='w-full responsive-section !max-w-screen-md space-y-8'>
       <Breadcrumbs items={breadcrumbs} />
       <div className="flex flex-wrap gap-4 items-center justify-between">
-        <p className="text-xl font-medium">User Information</p>
+        <p className="text-xl font-medium">Affiliate Information</p>
         <div className="flex items-center gap-3">
           {affiliate.status !== 'suspended' ? <Button onClick={openSuspendAffiliateModal} size="sm">Suspend Affiliate</Button> :
             <Button onClick={reactivateUser} loading={updateAffiliateStatusMutation.isPending} size="sm">Reactivate Affiliate</Button>
