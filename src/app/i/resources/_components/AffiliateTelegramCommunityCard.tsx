@@ -21,6 +21,7 @@ export default function AffiliateTelegramCommunityCard() {
   const telegramChannelURL = `https://web.telegram.org/a/#${data?.telegramChannelId}`;
 
   const { handleSubmit, handleChange, values } = useFormik({
+    enableReinitialize: true,
     initialValues: {
       telegramChannelId: telegramChannelURL
     },
