@@ -41,7 +41,7 @@ export default function UploadContentModal() {
   const toggleType = (type: FileType) => {
     if (values.url) return;
     if (values.type === type) {
-      setFieldValue('type', '');
+      setFieldValue('type', AffiliateResourceType.MESSAGE);
     } else {
       setFieldValue('type', type);
     }
