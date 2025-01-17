@@ -12,14 +12,15 @@ import { useTitle } from '@/providers/title.provider';
 import Image from 'next/image';
 import Link from 'next/link';
 import AdminAuthQueries from '../_module/admin.auth.queries';
+import useURL from '@/hooks/useURL';
 
-
-export default function ResetPasswordPage({ searchParams }: { searchParams: { token: string } }) {
+export default function ResetPasswordPage() {
   const { setTitle } = useTitle()
+  const { searchParams } = useURL();
   const { resetPasswordMutation } = useAdminAuthMutations()
   const { useVerifyResetPasswordTokenQuery } = AdminAuthQueries()
 
-  const token = searchParams.token;
+  const token = searchParams.get('token') || '';
 
   const { data: tokenData, isPending, isError } = useVerifyResetPasswordTokenQuery(token)
 

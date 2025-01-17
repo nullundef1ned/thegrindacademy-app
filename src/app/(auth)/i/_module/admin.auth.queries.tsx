@@ -6,7 +6,7 @@ export default function AdminAuthQueries() {
 
   const useVerifyResetPasswordTokenQuery = (token: string) => useQuery({
     queryKey: ['verify-reset-password-token'],
-    queryFn: () => axiosHandler.get(`/student/auth/password/reset?token=${token}`),
+    queryFn: () => axiosHandler.get(`/admin/auth/password/reset?token=${token}`),
   })
 
   return { useVerifyResetPasswordTokenQuery }

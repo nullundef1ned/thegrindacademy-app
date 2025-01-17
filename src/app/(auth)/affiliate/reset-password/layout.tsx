@@ -1,8 +1,8 @@
 import { ReactNode } from "react"
 
 export const metadata = {
-  title: 'Welcome to The Grind Academy',
-  description: 'Setup your account to continue'
+  title: 'Reset Password',
+  description: 'Reset your password'
 }
 
 export default function SetupAccountLayout({ children }: { children: ReactNode }) {

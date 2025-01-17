@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 
 export const metadata = {
-  title: 'Affiliate Register | The Grind Academy',
+  title: 'Affiliate Registration | The Grind Academy',
   description: 'Register to become an affiliate of The Grind Academy'
 }
 

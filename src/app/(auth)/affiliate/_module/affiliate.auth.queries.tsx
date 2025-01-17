@@ -6,7 +6,7 @@ export const useVerifyResetPasswordTokenQuery = (token: string) => {
   const axiosHandler = useAxios();
   const query = useQuery({
     queryKey: ['verify-affiliate-reset-password-token'],
-    queryFn: () => axiosHandler.post(`/affiliate/auth/password/reset?token=${token}`),
+    queryFn: () => axiosHandler.get(`/affiliate/auth/password/reset?token=${token}`),
   })
 
   return query;
