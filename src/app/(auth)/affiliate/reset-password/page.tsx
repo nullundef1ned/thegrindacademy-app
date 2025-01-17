@@ -13,13 +13,15 @@ import Link from 'next/link';
 import { useVerifyResetPasswordTokenQuery } from '../_module/affiliate.auth.queries';
 import useAffiliateAuthMutations from '../_module/affiliate.auth.mutations';
 import * as yup from 'yup';
+import useURL from '@/hooks/useURL';
 
 
-export default function ResetPasswordPage({ searchParams }: { searchParams: { token: string } }) {
+export default function ResetPasswordPage() {
   const { setTitle } = useTitle()
-  const { resetPasswordMutation } = useAffiliateAuthMutations()
+  const { searchParams } = useURL();
+  const { resetPasswordMutation } = useAffiliateAuthMutations();
 
-  const token = searchParams.token;
+  const token = searchParams.get('token') || '';
 
   const { data: tokenData, isPending, isError } = useVerifyResetPasswordTokenQuery(token)
 
