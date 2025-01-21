@@ -1,6 +1,6 @@
 'use client';
 
-import StatisticsCard from "@/app/(student)/_components/StatisticsCard";
+import StatisticsCard from '@/components/StatisticsCard';
 import { IUser } from "@/app/_module/app.interface";
 import Card from "@/components/Card";
 import Table from "@/components/table";

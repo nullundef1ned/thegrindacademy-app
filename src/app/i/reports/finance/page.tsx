@@ -3,7 +3,7 @@
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { adminRoutes } from '../../_module/admin.routes'
 import { BreadcrumbItem } from '@/components/Breadcrumbs'
-import StatisticsCard, { StatisticsCardProps } from '@/app/(student)/_components/StatisticsCard'
+import StatisticsCard, { StatisticsCardProps } from '@/components/StatisticsCard';
 import RevenueTrendGraph from '../../overview/_components/RevenueTrendGraph';
 import Card from '@/components/Card';
 import Table from '@/components/table';
@@ -41,12 +41,6 @@ export default function FinanceReportsPage() {
       icon: 'ri:pause-circle-fill',
       type: 'currency',
     },
-    // {
-    //   title: 'Average Revenue Per User',
-    //   value: financeReport?.averageRevenuePerUser || 0,
-    //   icon: 'ri:account-circle-fill',
-    //   type: 'currency',
-    // },
   ]
 
   const tableHeaders: TableHeader<IPayout>[] = [
@@ -54,6 +48,8 @@ export default function FinanceReportsPage() {
     // @ts-expect-error nested object
     { key: 'user.info.firstName+user.info.lastName', value: 'User' },
     { key: 'amount', value: 'Amount', type: TableHeaderTypeEnum.CURRENCY },
+    // @ts-expect-error nested object
+    { key: 'user.role', value: 'Account Type', type: TableHeaderTypeEnum.STATUS },
     { key: 'status', value: 'Status', type: TableHeaderTypeEnum.STATUS },
   ]
 

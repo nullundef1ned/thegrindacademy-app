@@ -58,7 +58,7 @@ export default function FileUploader({ provider, type, fileType, onChange }: Fil
   }
 
   return (
-    <div className='w-full bg-[#00246B33] rounded border border-dashed border-primary-100/10 p-4 h-40 grid place-items-center place-content-center gap-2'>
+    <div className='w-full bg-[#00246B33] rounded-md border border-dashed border-primary-100/10 p-4 h-40 grid place-items-center place-content-center gap-2'>
       {uploading &&
         <Fragment>
           <LoadingIcons.TailSpin className='size-6' />
@@ -82,7 +82,7 @@ export default function FileUploader({ provider, type, fileType, onChange }: Fil
       {!uploading && !error && !isSuccess &&
         <Fragment>
           <IconifyIcon icon={icon} className='text-primary-100 text-4xl' />
-          <p className='text-sm text-primary-100'>Drag and drop your {fileType === 'any' ? 'file' : fileType} here or  <span onClick={() => inputRef.current?.click()} className='text-[#548DFF] underline cursor-pointer'>click to upload</span></p>
+          <p className='text-sm text-primary-100'>Click <span onClick={() => inputRef.current?.click()} className='text-[#548DFF] underline cursor-pointer'>here</span> to upload your {fileType === 'any' ? 'file' : fileType}  </p>
         </Fragment>
       }
       <input ref={inputRef} accept={accept} onChange={handleChange} type="file" className='hidden' />

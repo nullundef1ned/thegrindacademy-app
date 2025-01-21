@@ -1,9 +1,12 @@
 export const anchor = 'i'
 
 export const adminRoutes = {
+  login: `/${anchor}/login`,
   dashboard: `/${anchor}/overview`,
   courses: `/${anchor}/courses`,
   users: `/${anchor}/users`,
+  affiliates: `/${anchor}/affiliates`,
+  resources: `/${anchor}/resources`,
   websiteContent: {
     root: `/${anchor}/website-content`,
     dynamicContent: `/${anchor}/website-content/dynamic-content`,
@@ -14,6 +17,7 @@ export const adminRoutes = {
     faqs: `/${anchor}/website-content/faqs`,
     metaInformation: `/${anchor}/website-content/meta-information`,
     privacyPolicy: `/${anchor}/website-content/privacy-policy`,
+    referralPolicy: `/${anchor}/website-content/referral-policy`,
     termsOfService: `/${anchor}/website-content/terms-of-service`,
   },
   reports: {
@@ -24,5 +28,4 @@ export const adminRoutes = {
     subscriptions: `/${anchor}/reports/subscriptions`,
   },
   settings: `/${anchor}/settings`,
-
 }

@@ -3,10 +3,12 @@
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { adminRoutes } from '../../_module/admin.routes'
 import { BreadcrumbItem } from '@/components/Breadcrumbs'
-import StatisticsCard, { StatisticsCardProps } from '@/app/(student)/_components/StatisticsCard'
+import StatisticsCard, { StatisticsCardProps } from '@/components/StatisticsCard';
 import ActiveInactiveUserGraph from '../_components/ActiveInactiveUserGraph';
 import { useFetchUserReport } from '../../_module/_apis/useFetchReports';
 import ActiveInactiveUserTrendGraph from '../_components/ActiveInactiveUserTrendGraph';
+import { Button } from '@/components/ui/button';
+import useAdminMutations from '../../_module/admin.mutations';
 
 export default function UserReportsPage() {
   const breadcrumbs: BreadcrumbItem[] = [
@@ -15,6 +17,7 @@ export default function UserReportsPage() {
   ]
 
   const { data: userReport } = useFetchUserReport();
+  const { exportUsersMutation } = useAdminMutations();
 
   const statistics: StatisticsCardProps[] = [
     {
@@ -50,6 +53,7 @@ export default function UserReportsPage() {
           <p className="text-lg font-medium">User Reports</p>
           <p className="text-sm text-accent">Track user activity, engagement, and retention</p>
         </div>
+        <Button onClick={() => exportUsersMutation.mutate()} loading={exportUsersMutation.isPending} size='sm'>Export Users</Button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {statistics.map((statistic, index) => (

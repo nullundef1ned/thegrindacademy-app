@@ -3,7 +3,7 @@ import ProfileSection from '../../../../components/ProfileSection'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input';
 import ReferralCodeCard from '../../(overview)/_components/ReferralCodeCard';
-import { useStudentStore } from '../../_module/student.store';
+import { useStudentStore } from '../../../../stores/student.store';
 import { useFormik } from 'formik';
 import { IBankDetailForm } from '../../_module/student.interface';
 import useStudentMutations from '../../_module/student.mutations';

@@ -3,6 +3,12 @@ export interface IGraphData {
   y: number;
 }
 
+export interface IAffiliateRefferalVsVisitCountGraphData {
+  name: string;
+  referral: number;
+  visit: number;
+}
+
 export interface IActiveInactiveUserTrendGraphData {
   name: string;
   active: number;
@@ -18,6 +24,12 @@ export interface IEnrollmentsAndCompletionGraphData {
 interface IReport {
   count: number;
   percentageChange: number;
+}
+
+export interface IAffiliateDashboardReport {
+  totalPayout: number;
+  totalReferrals: number;
+  totalViews: number;
 }
 
 export interface IDashboardReport {
@@ -38,6 +50,12 @@ export interface IUserReport {
   total: IReport;
   subscribed: IReport;
   suspended: Omit<IReport, 'percentageChange'>;
+}
+
+export interface IAdminAffiliateReport {
+  totalAffiliates: number;
+  activeAffiliates: number;
+  totalPayout: number;
 }
 
 export interface ICourseReport {

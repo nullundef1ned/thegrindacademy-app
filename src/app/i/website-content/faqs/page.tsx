@@ -31,7 +31,7 @@ export default function FAQsPage() {
 
   const tableHeaders: TableHeader<IFAQ>[] = [
     { key: 'question', value: 'Question' },
-    { key: 'answer', value: 'Answer' },
+    { key: 'answer', value: 'Answer', type: TableHeaderTypeEnum.LONG_TEXT },
     { key: 'type', value: 'Type', type: TableHeaderTypeEnum.STATUS },
     { key: 'updatedAt', value: 'Last Updated', type: TableHeaderTypeEnum.DATE },
   ]

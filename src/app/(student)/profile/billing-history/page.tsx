@@ -40,7 +40,7 @@ export default function BillingHistoryPage() {
           </div>
         </div>
         <Card>
-          <Table<IBillingHistory> headers={tableHeaders} loading={isBillingHistoryLoading} data={billingHistory} emptyStateMessage='No billing history yet' />
+          <Table<IBillingHistory> searchable={false} headers={tableHeaders} loading={isBillingHistoryLoading} data={billingHistory} emptyStateMessage='No billing history yet' />
         </Card>
       </div>
     </div>

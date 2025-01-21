@@ -7,6 +7,7 @@ import storageUtil, { StorageKey } from '@/utils/storage.util';
 import { usePathname } from 'next/navigation';
 import useURL from './useURL';
 import { URLKeyEnum } from '@/app/_module/app.enum';
+import usePathFinder from './usePathFinder';
 
 export type MessageResponse = {
   message: string
@@ -32,7 +33,7 @@ const config: AxiosRequestConfig = {
 export default function useAxios() {
   const pathname = usePathname();
   const { updateParams } = useURL();
-  const loginPath = pathname.startsWith('/i') ? '/i/login' : '/login';
+  const { loginPath } = usePathFinder();
 
   const axiosInstance = axios.create(config);
 
