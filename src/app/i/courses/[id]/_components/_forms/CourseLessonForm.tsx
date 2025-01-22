@@ -134,7 +134,7 @@ export default function CourseLessonForm({ lesson, position, isNewLesson, isSort
     <AccordionItem value={position.toString()}>
       <AccordionTrigger className="gap-4">
         <div className="flex items-center gap-2 overflow-hidden">
-          <p className="text-sm">Lesson {position}: <span className="font-medium">{values.title}</span></p>
+          <p className="text-sm text-left">Lesson {position}: <span className="font-medium">{values.title}</span></p>
         </div>
       </AccordionTrigger>
       <AccordionContent>
@@ -165,7 +165,7 @@ export default function CourseLessonForm({ lesson, position, isNewLesson, isSort
             <p className='text-xs font-medium text-primary-50'>Content</p>
             <RichTextEditor value={values.content || ''} onChange={(html) => setFieldValue('content', html)} />
           </div>
-          <div className="grid grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
             {(lesson as ICourseLesson).id ? (
               <Button
                 size="sm"
@@ -197,7 +197,7 @@ export default function CourseLessonForm({ lesson, position, isNewLesson, isSort
               Duplicate
             </Button>
             {!isNewLesson && (
-              <Button size="sm" className={clsx((showRemoveButton || (lesson as ICourseLesson).id) ? "col-span-3" : "col-span-4")} type="submit" loading={isLoading}>
+              <Button size="sm" className={clsx((showRemoveButton || (lesson as ICourseLesson).id) ? "col-span-2 lg:col-span-3" : "col-span-2 lg:col-span-4")} type="submit" loading={isLoading}>
                 <IconifyIcon icon="mdi:check" />
                 Save
               </Button>
