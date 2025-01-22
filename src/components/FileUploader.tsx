@@ -46,7 +46,7 @@ export default function FileUploader({ provider, type, fileType, onChange }: Fil
 
     if (file) {
       if (provider === 'bunny') {
-        uploadVideoFileMutation.mutate({ file, type: 'course' }, {
+        uploadVideoFileMutation.mutate({ file, fileType: 'course' }, {
           onSuccess: (data) => onChange(data)
         });
       } else {
