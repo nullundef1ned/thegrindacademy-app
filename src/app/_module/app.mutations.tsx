@@ -20,10 +20,10 @@ export default function useAppMutations() {
   })
 
   const uploadVideoFileMutation = useMutation({
-    mutationFn: async (values: { file: File, type: VideoFileType }): Promise<string> => {
+    mutationFn: async (values: { file: File, fileType: VideoFileType }): Promise<string> => {
       const formData = new FormData();
       formData.append('file', values.file);
-      formData.append('type', values.type);
+      formData.append('fileType', values.fileType);
       const response = await axiosHandler.post('/file/bunny', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
