@@ -77,30 +77,32 @@ export default function CourseLessonsSection({ course }: ICourseLessonsSectionPr
 
   return (
     <div className='space-y-4'>
-      <div className="flex items-center gap-4 justify-between">
+      <div className="flex flex-wrap items-center gap-4 justify-between">
         <p className="font-medium text-accent">Course Content</p>
-        {isEditing ? (
-          <div className="flex items-center gap-4">
-            <Button size="sm" variant="outline" onClick={cancelEditing}>
-              Done
-            </Button>
-            <Button size="sm" variant="secondary" onClick={toggleSorting}>
-              {isSorting ? 'Finish Reordering' : 'Reorder'}
-            </Button>
-            <Button loading={createCourseLessonMutation.isPending} size="sm" onClick={addLesson}>
-              Add Lesson
-            </Button>
-          </div>
-        ) : (
-          <div className="flex items-center gap-4">
-            <Button size="sm" variant="outline" onClick={startEditing}>
-              Edit
-            </Button>
-            <Button size="sm" variant="secondary" onClick={toggleSorting}>
-              {isSorting ? 'Finish Reordering' : 'Reorder'}
-            </Button>
-          </div>
-        )}
+        <div className='flex items-center gap-4 justify-end w-full lg:w-auto'>
+          {isEditing ? (
+            <div className="flex items-center gap-4">
+              <Button size="sm" variant="outline" onClick={cancelEditing}>
+                Done
+              </Button>
+              <Button size="sm" variant="secondary" onClick={toggleSorting}>
+                {isSorting ? 'Finish Reordering' : 'Reorder'}
+              </Button>
+              <Button loading={createCourseLessonMutation.isPending} size="sm" onClick={addLesson}>
+                Add Lesson
+              </Button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-4">
+              <Button size="sm" variant="outline" onClick={startEditing}>
+                Edit
+              </Button>
+              <Button size="sm" variant="secondary" onClick={toggleSorting}>
+                {isSorting ? 'Finish Reordering' : 'Reorder'}
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
       {isPending ? (
         <div className="flex flex-col items-center gap-3 py-6">
