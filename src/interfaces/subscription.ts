@@ -3,6 +3,7 @@ export interface ISubscriptionPlanForm {
   frequency: string;
   duration: number;
   price: string;
+  upSellPrice?: string;
   isDeal: boolean;
   features: { featureId: string }[];
 }
