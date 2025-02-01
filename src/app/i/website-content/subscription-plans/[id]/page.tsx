@@ -39,8 +39,8 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
     enableReinitialize: true,
     initialValues: {
       name: data?.name || '',
-      price: data?.price || '',
-      upSellPrice: data?.upSellPrice || '',
+      price: data?.price || 0,
+      upSellPrice: data?.upSellPrice || 0,
       frequency: data?.frequency || 'month',
       duration: data?.duration || 1,
       isDeal: data?.isDeal || false,
