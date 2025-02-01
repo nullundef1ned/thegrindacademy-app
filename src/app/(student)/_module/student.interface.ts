@@ -176,6 +176,7 @@ export interface ISubscriptionPlan {
   slug: string;
   frequency: string;
   duration: number;
+  upSellPrice?: string;
   price: string;
   isDeal: boolean;
   createdAt: string;

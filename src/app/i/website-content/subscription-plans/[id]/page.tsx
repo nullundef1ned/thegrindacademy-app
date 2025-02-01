@@ -40,6 +40,7 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
     initialValues: {
       name: data?.name || '',
       price: data?.price || '',
+      upSellPrice: data?.upSellPrice || '',
       frequency: data?.frequency || 'month',
       duration: data?.duration || 1,
       isDeal: data?.isDeal || false,
@@ -133,6 +134,13 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
           value={values.price}
           onChange={handleChange}
           placeholder='Price'
+        />
+        <Input
+          name='upSellPrice'
+          type='number'
+          value={values.upSellPrice}
+          onChange={handleChange}
+          placeholder='Up Sell Price'
         />
         <div className="flex flex-col gap-1">
           <p className="text-xs text-accent">Every</p>
