@@ -66,7 +66,7 @@ export default function UserPage({ params }: { params: { id: string } }) {
     router.push(`/i/courses/${course.course.id}`);
   }
 
-  setTitle(`${user.info.firstName} ${user.info.lastName} | User | The Grind Academy`);
+  setTitle(`${user.info.firstName} ${user.info.lastName} | Users`);
 
   const reactivateUser = () => {
     updateUserStatusMutation.mutate({ id: user.id, status: 'active' }, {
@@ -122,7 +122,10 @@ export default function UserPage({ params }: { params: { id: string } }) {
             <IconifyIcon icon="ri:file-list-2-fill" className="text-xl" />
             <p className="text-sm font-medium">Plan</p>
           </div>
-          {subscription ? <p className="text-sm text-accent">{subscription?.subscriptionPlan.name} Plan</p> :
+          {subscription ?
+            <p className="text-sm text-accent">{
+              subscription?.subscriptionPlan ? subscription?.subscriptionPlan.name : 'Plan not found'
+            }</p> :
             <p className="text-sm text-accent">No active subscription</p>
           }
         </div>

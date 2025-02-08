@@ -43,7 +43,7 @@ export default function AdminCourseDetailPage({ params }: { params: { id: string
     { name: data.name },
   ]
 
-  setTitle(`${data.name} | Course | The Grind Academy`);
+  setTitle(`${data.name} | Courses | The Grind Academy`);
 
   const updateCourseStatus = (status: CourseStatusType) => {
     if (status === 'draft') {
