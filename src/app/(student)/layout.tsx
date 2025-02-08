@@ -42,6 +42,18 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
     const banners: IBanner[] = [];
     const inThreeDays = new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000);
 
+    if (!user?.info.telegramUserName) {
+      const telegramUsernameBanner: IBanner = {
+        slug: 'telegram-username',
+        message: 'Please add your telegram username to gain the full benefits of our platform.',
+        link: '/profile',
+        buttonText: 'Add Telegram Username',
+        permanent: false,
+        type: 'info',
+      }
+      banners.push(telegramUsernameBanner)
+    }
+
     if (subscription && !isSubscriptionPending) {
       const activeSubscription = subscription.active;
       const unpaidSubscription = subscription.unpaid;
