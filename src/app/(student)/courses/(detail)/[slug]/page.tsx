@@ -18,8 +18,9 @@ import IconifyIcon from "@/components/IconifyIcon";
 export default function CoursePage({ params }: { params: { slug: string } }) {
   const { clearParams } = useURL();
 
-  const { useFetchEnrolledCourseDetailQuery, useFetchCourseTelegramInviteQuery } = StudentQueries();
+  const { useFetchEnrolledCourseDetailQuery, useFetchCourseTelegramInviteQuery, useFetchAuthenticationQuery } = StudentQueries();
 
+  const { data: user } = useFetchAuthenticationQuery();
   const { data: telegramInvite } = useFetchCourseTelegramInviteQuery(params.slug);
   const { data, isPending, isError, refetch } = useFetchEnrolledCourseDetailQuery(params.slug);
 
@@ -87,7 +88,7 @@ export default function CoursePage({ params }: { params: { slug: string } }) {
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-            {telegramInvite &&
+            {telegramInvite && user?.info.telegramUserName &&
               <Button onClick={() => window.open(telegramInvite, '_blank')} className="w-full order-first lg:order-2">
                 <IconifyIcon icon="ri:telegram-fill" className="flex items-center" size={16} />
                 Join Telegram Community
