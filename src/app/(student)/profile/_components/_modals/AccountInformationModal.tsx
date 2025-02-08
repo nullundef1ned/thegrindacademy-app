@@ -21,6 +21,7 @@ export default function AccountInformationModal() {
         firstName: user?.info.firstName || '',
         lastName: user?.info.lastName || '',
         phoneNumber: user?.info.phoneNumber || '',
+        telegramUserName: user?.info.telegramUserName || '',
         avi: user?.info.avi || '',
       }
     },
@@ -44,7 +45,7 @@ export default function AccountInformationModal() {
           <Input type='text' required placeholder='First Name' name='firstName' value={values.info.firstName} onChange={(e) => setFieldValue('info.firstName', e.target.value)} />
           <Input type='text' required placeholder='Last Name' name='lastName' value={values.info.lastName} onChange={(e) => setFieldValue('info.lastName', e.target.value)} />
         </div>
-        <Input disabled type='text' required placeholder='Telegram Username' pattern='^@[a-zA-Z0-9_]+$' name='telegramUserName' value={user?.info.telegramUserName} />
+        <Input disabled={!!user?.info.telegramUserName} type='text' required placeholder='Telegram Username' pattern='^@[a-zA-Z0-9_]+$' name='telegramUserName' value={user?.info.telegramUserName} />
         <Button loading={isPending} disabled={isPending} type='submit'>Update Account Information</Button>
       </form>
     </Modal>

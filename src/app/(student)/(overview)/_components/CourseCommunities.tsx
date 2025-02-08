@@ -9,7 +9,9 @@ import Link from "next/link"
 export default function CourseCommunities() {
   const [page, setPage] = useState(1)
 
-  const { useFetchCourseCommunitiesQuery } = StudentQueries()
+  const { useFetchCourseCommunitiesQuery, useFetchAuthenticationQuery } = StudentQueries();
+
+  const { data: user } = useFetchAuthenticationQuery();
   const { data } = useFetchCourseCommunitiesQuery({ page, limit: 4 })
 
   const nextPage = () => {
@@ -25,6 +27,8 @@ export default function CourseCommunities() {
   }
 
   const courseCommunities = data?.result || [];
+
+  if (!user?.info.telegramUserName) return null;
 
   return (
     <div className="flex flex-col gap-4">
