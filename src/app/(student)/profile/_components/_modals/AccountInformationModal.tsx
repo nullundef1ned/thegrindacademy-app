@@ -45,7 +45,13 @@ export default function AccountInformationModal() {
           <Input type='text' required placeholder='First Name' name='firstName' value={values.info.firstName} onChange={(e) => setFieldValue('info.firstName', e.target.value)} />
           <Input type='text' required placeholder='Last Name' name='lastName' value={values.info.lastName} onChange={(e) => setFieldValue('info.lastName', e.target.value)} />
         </div>
-        <Input disabled={!!user?.info.telegramUserName} type='text' required placeholder='Telegram Username' pattern='^@[a-zA-Z0-9_]+$' name='telegramUserName' value={user?.info.telegramUserName} />
+        <div className='flex flex-col gap-2'>
+          <Input disabled={!!user?.info.telegramUserName} type='text' required
+            placeholder='Telegram Username' pattern='^@[a-zA-Z0-9_]+$'
+            name='telegramUserName' value={values.info.telegramUserName}
+            onChange={(e) => setFieldValue('info.telegramUserName', e.target.value)} />
+          <p className='text-xs text-accent'>Enter your telegram username beginning with the @ symbol</p>
+        </div>
         <Button loading={isPending} disabled={isPending} type='submit'>Update Account Information</Button>
       </form>
     </Modal>

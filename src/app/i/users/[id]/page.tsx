@@ -124,7 +124,7 @@ export default function UserPage({ params }: { params: { id: string } }) {
           </div>
           {subscription ?
             <p className="text-sm text-accent">{
-              subscription?.subscriptionPlan ? subscription?.subscriptionPlan.name : 'Plan not found'
+              subscription?.subscriptionPlan ? subscription?.subscriptionPlan.name : 'Plan no longer available'
             }</p> :
             <p className="text-sm text-accent">No active subscription</p>
           }

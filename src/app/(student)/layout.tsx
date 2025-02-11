@@ -29,6 +29,11 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
   const { data: referral, isPending: isReferralPending } = useFetchReferralQuery();
   const { subscription, isPending: isSubscriptionPending, disableAccess } = useSubscriptionHook();
 
+  const removeBanner = (slug: string) => {
+    const newBanners = banners.filter((b) => b.slug !== slug);
+    setBanners(newBanners)
+  }
+
   useEffect(() => {
     const user = storageUtil.getItem(StorageKey.user) as IUser;
     if (user?.role === 'admin') {
@@ -142,7 +147,7 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
       {banners.length > 0 && (
         <div className='w-full responsive-section sticky top-36 z-40 bg-background flex flex-col gap-4'>
           {banners.map((banner, index) => (
-            <Banner banner={banner} key={index} />
+            <Banner banner={banner} key={index} removeBanner={removeBanner} />
           ))}
         </div>
       )}

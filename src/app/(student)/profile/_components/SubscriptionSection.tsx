@@ -28,7 +28,9 @@ export default function SubscriptionSection() {
             <p className='text-sm'>Plan</p>
           </div>
           {activeSubscription ? (
-            <p className='text-base'>{activeSubscription.subscriptionPlan.name} Plan</p>
+            <p className='text-base'>
+              {activeSubscription.subscriptionPlan ? `${activeSubscription.subscriptionPlan.name} Plan` : 'Plan no longer available'}
+            </p>
           ) : (
             <p className='text-accent text-base'>No active subscription</p>
           )}
