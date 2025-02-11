@@ -122,6 +122,7 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
       <form onSubmit={handleSubmit} className='space-y-4'>
         <Input
           name='name'
+          title='Name'
           required
           value={values.name}
           onChange={handleChange}
@@ -129,6 +130,7 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
         />
         <Input
           name='price'
+          title='Price'
           type='number'
           required
           value={values.price}
@@ -137,6 +139,7 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
         />
         <Input
           name='upSellPrice'
+          title='Up Sell Price'
           type='number'
           value={values.upSellPrice}
           onChange={handleChange}
@@ -176,7 +179,7 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
             <p className="text-xs text-accent">Select features to add to this subscription plan</p>
           </div>
           <AddFeatureForm />
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-4">
             {features?.map((feature, index) => (
               <div key={index} className="flex items-center gap-4 justify-between border border-[#B0CAFF1A] bg-[#00246B33] py-2.5 px-3 rounded">
                 <label htmlFor={feature.id} className="flex items-center gap-4 w-full cursor-pointer">
