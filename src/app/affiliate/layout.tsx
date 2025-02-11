@@ -34,6 +34,11 @@ function AffiliateLayout({ children }: { children: React.ReactNode }) {
   const { data: user, isPending, isError } = useFetchAffiliateAuthenticationQuery();
   const { data: referral, isPending: isReferralPending } = useFetchAffiliateReferralQuery();
 
+  const removeBanner = (slug: string) => {
+    const newBanners = banners.filter((b) => b.slug !== slug);
+    setBanners(newBanners)
+  }
+
   useEffect(() => {
     const user = storageUtil.getItem(StorageKey.user) as IUser;
     if (user?.role === 'admin') {
@@ -45,6 +50,18 @@ function AffiliateLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const banners: IBanner[] = [];
+
+    if (!user?.info.telegramUserName) {
+      const telegramUsernameBanner: IBanner = {
+        slug: 'telegram-username',
+        message: 'Please add your telegram username to gain the full benefits of our platform.',
+        link: '/affiliate/setting',
+        buttonText: 'Add Telegram Username',
+        permanent: false,
+        type: 'info',
+      }
+      banners.push(telegramUsernameBanner)
+    }
 
     if (!referral && !isReferralPending) {
       const addBankDetailsBanner: IBanner = {
@@ -91,7 +108,7 @@ function AffiliateLayout({ children }: { children: React.ReactNode }) {
       {banners.length > 0 && (
         <div className='w-full responsive-section sticky top-36 z-40 bg-background flex flex-col gap-4'>
           {banners.map((banner, index) => (
-            <Banner banner={banner} key={index} />
+            <Banner banner={banner} key={index} removeBanner={removeBanner} />
           ))}
         </div>
       )}

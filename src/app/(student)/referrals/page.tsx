@@ -53,7 +53,9 @@ export default function ReferralsPage() {
           <p className='text-xl font-medium'>Earn Rewards by Referring Friends</p>
           <p className='text-accent text-xs'>Share your unique referral code to earn <b className='text-white'>50% of all their subscription payments</b> everytime they subscribe <b className='text-white'>as long as you remain a member</b></p>
         </div>
-        <ReferralCodeCard />
+        <div className='w-full lg:w-auto'>
+          <ReferralCodeCard />
+        </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {referralStatistics.map((statistic, index) => (

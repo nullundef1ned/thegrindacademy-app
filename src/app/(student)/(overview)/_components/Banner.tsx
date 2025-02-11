@@ -7,11 +7,10 @@ import { useStudentStore } from '../../../../stores/student.store';
 
 interface IBannerProps {
   banner: IBanner;
+  removeBanner: (slug: string) => void;
 }
 
-export default function Banner({ banner }: IBannerProps) {
-  const banners = useStudentStore((state) => state.banners);
-  const setBanners = useStudentStore((state) => state.setBanners);
+export default function Banner({ banner, removeBanner }: IBannerProps) {
 
   const color = {
     info: 'bg-[#00246B66]',
@@ -19,12 +18,6 @@ export default function Banner({ banner }: IBannerProps) {
     error: 'bg-[#50051E]',
     success: 'bg-[#006644]',
   }[banner.type || 'error']
-
-  const removeBanner = () => {
-    const newBanners = banners.filter((b) => b.message !== banner.message);
-    setBanners(newBanners)
-  }
-
   return (
     <div className={clsx(color, 'p-3 w-full flex items-center justify-between')}>
       <div className='flex items-center gap-2'>
@@ -38,7 +31,7 @@ export default function Banner({ banner }: IBannerProps) {
           <Button href={banner.link} size='sm' className='rounded-[2px] !bg-white/20' target={banner.blank ? '_blank' : undefined}>{banner.buttonText}</Button>
         )}
         {!banner.permanent &&
-          <div className='cursor-pointer flex items-center justify-center' onClick={removeBanner}>
+          <div className='cursor-pointer flex items-center justify-center' onClick={() => removeBanner(banner.slug)}>
             <IconifyIcon icon='ri:close-circle-fill' className={clsx('text-xl text-white/70')} />
           </div>
         }

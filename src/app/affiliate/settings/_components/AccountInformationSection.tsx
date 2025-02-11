@@ -71,15 +71,16 @@ export default function AccountInformationSection() {
           <IconifyIcon icon='mdi:email' />
           <p className='text-accent text-sm'>{user?.email}</p>
         </div>
-        {telegramUserName &&
-          <div className="flex flex-col gap-0.5">
-            <div className='flex items-center gap-2'>
-              <IconifyIcon icon='mdi:telegram' />
-              <p className='text-accent text-sm'>{telegramUserName}</p>
-            </div>
-            <p className='text-xs text-accent'>If you would like to update your telegram username, please reach out to <Link href={affiliateRoutes.support} className='text-primary-100'>support</Link></p>
+        <div className="flex flex-col gap-0.5">
+          <div className='flex items-center gap-2'>
+            <IconifyIcon icon='mdi:telegram' />
+            {telegramUserName ?
+              <p className='text-accent text-sm'>{telegramUserName}</p> :
+              <p className='text-accent text-sm cursor-pointer hover:text-primary-100' onClick={showAccountInformationModal}>Add Telegram Username</p>
+            }
           </div>
-        }
+          {telegramUserName && <p className='text-xs text-accent'>If you would like to update your telegram username, please reach out to <Link href={affiliateRoutes.support} className='text-primary-100'>support</Link></p>}
+        </div>
       </div>
       <Button onClick={showAccountInformationModal} variant='outline'>Update Information</Button>
     </ProfileSection>

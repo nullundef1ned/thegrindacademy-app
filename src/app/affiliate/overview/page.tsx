@@ -11,12 +11,14 @@ import { useFetchAffiliateDashboardReportQuery } from '@/hooks/api/affiliate/use
 import { useModal } from '@/providers/modal.provider';
 import MailMarketingModal from './_components/MailMarketingModal';
 import { useAffiliateCommunityQuery } from '@/hooks/api/affiliate/useAffiliateCommunity';
+import { useFetchAffiliateAuthenticationQuery } from '@/hooks/api/affiliate/useAffiliateAuthentication';
 
 export default function OverviewPage() {
   const { showModal } = useModal();
+
+  const { data: user } = useFetchAffiliateAuthenticationQuery();
   const { data: dashboardReport, isPending } = useFetchAffiliateDashboardReportQuery();
   const { data: community } = useAffiliateCommunityQuery();
-
 
   const overviewStatistics: StatisticsCardProps[] = [
     {
@@ -58,7 +60,7 @@ export default function OverviewPage() {
         </div>
         <div className='col-span-1 lg:col-span-2 space-y-4'>
           <p className='text-accent font-medium'>Quick Links</p>
-          {community && (
+          {community && user?.info.telegramUserName && (
             <Card className='flex items-center gap-3 !p-3 group'>
               <IconifyIcon icon="mdi:telegram" className="text-2xl" />
               <Link href={community} target='_blank' className="flex items-center gap-1 justify-between w-full">
