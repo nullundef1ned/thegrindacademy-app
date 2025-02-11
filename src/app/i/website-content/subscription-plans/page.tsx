@@ -65,7 +65,7 @@ export default function SubscriptionPlansPage() {
                 </div>
               )}
             </div>
-            <div className="border-t border-[#1A2031] p-4 flex items-center justify-center gap-4">
+            <div className="border-t border-[#1A2031] p-4 flex items-center justify-between gap-4">
               <Link
                 href={`${adminRoutes.websiteContent.subscriptionPlans}/${subscriptionPlan.id}`}
                 className="flex items-center gap-1 text-primary-100">
@@ -86,6 +86,11 @@ export default function SubscriptionPlansPage() {
             <LoadingIcons.TailSpin />
           </div>
         )}
+        {subscriptionPlans?.length === 0 && !isPending &&
+          <div className="grid place-items-center h-[50vh]">
+            <p className="text-sm text-accent">No subscription plans found</p>
+          </div>
+        }
       </div>
     </div>
   )

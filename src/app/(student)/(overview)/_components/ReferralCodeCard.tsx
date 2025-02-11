@@ -35,7 +35,7 @@ export default function ReferralCodeCard() {
     <Card className='space-y-2'>
       <p className='text-muted text-sm'>Your referral link</p>
       <div className='flex items-center overflow-hidden justify-between gap-2 py-3 px-3 rounded-md bg-primary/10 border border-primary/20'>
-        <div className="flex items-center gap-2 overflow-hidden w-full">
+        <div className="flex items-center gap-2 overflow-hidden">
           <IconifyIcon icon="ri:links-line" />
           <p className='text-muted font-medium truncate text-sm'>{referralCodeLink}</p>
         </div>

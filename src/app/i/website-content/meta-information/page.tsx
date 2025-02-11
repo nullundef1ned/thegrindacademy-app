@@ -87,6 +87,7 @@ export default function MetaInformationPage() {
       <form onSubmit={handleSubmit} className='space-y-4'>
         <div className="flex flex-col gap-1">
           <Input
+            title='Website Title'
             name='title'
             required
             value={values.title}
@@ -97,6 +98,7 @@ export default function MetaInformationPage() {
         </div>
         <div className="flex flex-col gap-1">
           <Textarea
+            title='Website Description'
             name='description'
             required
             value={values.description}
@@ -107,6 +109,7 @@ export default function MetaInformationPage() {
         </div>
         <div className='flex flex-col gap-2'>
           <Input
+            title='Keywords'
             name='keywords'
             required
             value={values.keywords}
@@ -118,6 +121,7 @@ export default function MetaInformationPage() {
             Separate keywords with commas</p>
         </div>
         <Input
+          title='Support Email'
           name='supportEmail'
           type='email'
           value={values.supportEmail}
@@ -162,10 +166,11 @@ export default function MetaInformationPage() {
         </div>
         <div className='flex flex-col gap-2'>
           <p className='text-sm text-accent'>Social Media Links</p>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid md:grid-cols-2 gap-2">
             {socialMediaTypes.map((type, index) => (
               <Input
                 key={index}
+                title={type.charAt(0).toUpperCase() + type.slice(1)}
                 name={type}
                 type='url'
                 icon={`ri:${type}-fill`}

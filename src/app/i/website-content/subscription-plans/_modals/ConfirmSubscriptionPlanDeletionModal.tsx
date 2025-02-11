@@ -28,7 +28,7 @@ export default function ConfirmSubscriptionPlanDeletionModal({ subscriptionPlan 
   return (
     <Modal title='Delete Subscription Plan?'>
       <p className='text-sm text-accent'>Are you sure you want to permanently delete this subscription plan? This action cannot be undone</p>
-      <div className='grid grid-cols-2 gap-4'>
+      <div className='grid md:grid-cols-2 gap-4'>
         <Button onClick={hideModal} type='button' variant='outline' size="sm">Cancel</Button>
         <Button loading={deleteSubscriptionPlanMutation.isPending} onClick={handleDeleteSubscriptionPlan} type='submit' variant='destructive' size="sm">Delete Subscription Plan</Button>
       </div>

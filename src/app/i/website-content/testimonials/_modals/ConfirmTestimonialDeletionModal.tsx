@@ -24,7 +24,7 @@ export default function ConfirmTestimonialDeletionModal({ testimonial }: IConfir
   return (
     <Modal title='Delete Testimonial?'>
       <p className='text-sm text-accent'>Are you sure you want to permanently delete this testimonial? This action cannot be undone</p>
-      <div className='grid grid-cols-2 gap-4'>
+      <div className='grid md:grid-cols-2 gap-4'>
         <Button onClick={hideModal} type='button' variant='outline' size="sm">Cancel</Button>
         <Button loading={deleteTestimonialMutation.isPending} onClick={handleDeleteTestimonial} type='submit' variant='destructive' size="sm">Delete Testimonial</Button>
       </div>

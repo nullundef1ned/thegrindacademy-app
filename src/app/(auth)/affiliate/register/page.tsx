@@ -25,7 +25,7 @@ export default function RegisterPage() {
     validationSchema: yup.object({
       firstName: yup.string().required('First name is required'),
       lastName: yup.string().required('Last name is required'),
-      telegramUserName: yup.string().matches(/^@.*$/, 'Telegram username must start with @').required('Telegram username is required'),
+      telegramUserName: yup.string().matches(/^@.*$/, 'Telegram username must start with @'),
       email: yup.string().email('Invalid email address').required('Email is required'),
       password: yup.string().min(8, 'Password must be at least 8 characters')
         .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character')
@@ -80,7 +80,7 @@ export default function RegisterPage() {
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          <Input icon='ri:telegram-fill' required type='text' pattern='^@[a-zA-Z0-9_]+$'
+          <Input icon='ri:telegram-fill' type='text' pattern='^@[a-zA-Z0-9_]+$'
             name='telegramUserName' className='w-full'
             errors={errors} touched={touched}
             placeholder='Telegram Username'
@@ -114,7 +114,7 @@ export default function RegisterPage() {
         </p>
       </AuthCard>
       <Link href='/login' className='text-sm text-accent'>
-        Student login
+        Go to student dashboard
       </Link>
     </Fragment>
   )

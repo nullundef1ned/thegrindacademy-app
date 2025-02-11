@@ -26,7 +26,7 @@ export default function AffiliateBankDetailsCard() {
           <p className='text-white text-lg font-medium'>Set Up Your Bank Details</p>
           <p className='text-accent text-sm'>Add your bank details to activate referrals and receive payouts seamlessly</p>
         </div>
-        <Button href='/profile#bank-information' size='sm'>Add Bank Details</Button>
+        <Button href='/affiliate/settings#bank-information' size='sm'>Add Bank Details</Button>
       </div>
     </div>
   )

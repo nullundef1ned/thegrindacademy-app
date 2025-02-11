@@ -53,7 +53,7 @@ export default function LoginPage() {
         </div>
       </AuthCard>
       <Link href='/affiliate/login' className='text-sm text-accent'>
-        Affiliate login
+        Go to affiliate dashboard
       </Link>
     </Fragment>
   )
