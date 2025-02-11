@@ -3,7 +3,6 @@ import { IBanner } from '../../_module/student.interface';
 import IconifyIcon from '@/components/IconifyIcon';
 import clsx from 'clsx';
 import { Button } from '@/components/ui/button';
-import { useStudentStore } from '../../../../stores/student.store';
 
 interface IBannerProps {
   banner: IBanner;
