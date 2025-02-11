@@ -75,7 +75,7 @@ export default function LoginPage() {
         </div>
       </AuthCard>
       <Link href='/login' className='text-sm text-accent'>
-        Student login
+        Go to student dashboard
       </Link>
     </Fragment>
   )
