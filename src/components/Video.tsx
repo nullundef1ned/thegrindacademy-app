@@ -15,17 +15,82 @@ export default function Video({ src, poster }: IVideoProps) {
   const [videoSpeed, setVideoSpeed] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [percentageWatched, setPercentageWatched] = useState(0);
-
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const videoTotalTime = videoRef.current?.duration;
 
   const currentVideoTime = percentageWatched * videoTotalTime! / 100;
 
-  const handlePlay = () => videoRef.current && videoRef.current.play();
-  const handlePause = () => videoRef.current && videoRef.current.pause();
-  const handleSeek = (time: number) => videoRef.current && (videoRef.current.currentTime = time);
-  const handleMute = () => videoRef.current && (videoRef.current.muted = !videoRef.current.muted);
-  // const handleVolumeChange = (volume: number) => videoRef.current && (videoRef.current.volume = volume);
-  const handleSpeedChange = (speed: number) => videoRef.current && (videoRef.current.playbackRate = speed);
+  // Memoize handlers to prevent unnecessary re-renders
+  const handlePlay = React.useCallback(() => {
+    videoRef.current?.play().catch(err => console.error('Error playing video:', err));
+  }, []);
+
+  const handlePause = React.useCallback(() => {
+    videoRef.current?.pause();
+  }, []);
+
+  const handleSeek = React.useCallback((time: number) => {
+    if (videoRef.current) videoRef.current.currentTime = time;
+  }, []);
+
+  const handleMute = React.useCallback(() => {
+    if (videoRef.current) videoRef.current.muted = !videoRef.current.muted;
+  }, []);
+
+  const handleSpeedChange = React.useCallback((speed: number) => {
+    if (videoRef.current) videoRef.current.playbackRate = speed;
+  }, []);
+
+  const toggleFullscreen = React.useCallback(async () => {
+    try {
+      if (isFullscreen) {
+        await document.exitFullscreen();
+      } else if (videoRef.current) {
+        await videoRef.current.requestFullscreen();
+      }
+    } catch (error) {
+      console.error('Fullscreen error:', error);
+    }
+  }, [isFullscreen]);
+
+  // Add fullscreen change listener
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (!videoElement) return;
+
+    const handlers = {
+      pause: () => setIsPlaying(false),
+      playing: () => setIsPlaying(true),
+      volumechange: () => setIsMuted(videoElement.muted),
+      timeupdate: () => {
+        const percentage = (videoElement.currentTime / videoElement.duration) * 100;
+        setPercentageWatched(percentage);
+      }
+    };
+
+    // Add event listeners
+    Object.entries(handlers).forEach(([event, handler]) => {
+      videoElement.addEventListener(event, handler);
+    });
+
+    // Cleanup function
+    return () => {
+      Object.entries(handlers).forEach(([event, handler]) => {
+        videoElement.removeEventListener(event, handler);
+      });
+    };
+  }, []);
 
   const changeVideoSpeed = () => {
     let newSpeed = 0;
@@ -56,28 +121,6 @@ export default function Video({ src, poster }: IVideoProps) {
     const seekPercentage = (pointClick - offset.left) / e.currentTarget.clientWidth * 100;
     handleSeek(seekPercentage * videoTotalTime! / 100);
   }
-
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.onpause = () => {
-        setIsPlaying(false)
-      }
-
-      videoRef.current.onplaying = () => {
-        setIsPlaying(true)
-      }
-
-      videoRef.current.onvolumechange = () => {
-        setIsMuted(videoRef.current?.muted || false);
-      }
-
-      videoRef.current.ontimeupdate = () => {
-        if (!videoRef.current) return;
-        const percentage = (videoRef.current.currentTime / videoRef.current.duration) * 100;
-        setPercentageWatched(percentage);
-      }
-    }
-  }, [videoRef])
 
   return (
     <div className="relative group w-full aspect-video rounded-lg overflow-hidden bg-black">
@@ -111,10 +154,13 @@ export default function Video({ src, poster }: IVideoProps) {
               <p className='text-xs text-white whitespace-nowrap'>{helperUtil.convertTimeToMinutesAndSeconds(currentVideoTime)}</p>
 
             </div>
-            <div
+            <button
               onClick={changeVideoSpeed}
               className='rounded-full flex-shrink-0 bg-white size-6 grid place-items-center cursor-pointer'>
-              <p className='text-[10px] text-[#07090F]'>{videoSpeed}x</p>
+              <p className='text-[10px] text-[#07090F] select-none'>{videoSpeed}x</p>
+            </button>
+            <div onClick={toggleFullscreen} className='cursor-pointer flex-shrink-0 grid place-items-center'>
+              <IconifyIcon icon={isFullscreen ? 'ri:fullscreen-exit-fill' : 'ri:fullscreen-fill'} className='size-4 text-white' />
             </div>
           </div>
         </div>
