@@ -132,10 +132,24 @@ const extractTelegramChannelId = (url: string) => {
   return telegramChannelId;
 }
 
+const normalizeBytes = (bytes: number): string => {
+  const tb = bytes / 1024 / 1024 / 1024 / 1024;
+  const gb = bytes / 1024 / 1024 / 1024;
+  const mb = bytes / 1024 / 1024;
+
+  if (tb >= 1) {
+    return `${tb.toFixed(2)} TB`;
+  }
+  if (gb >= 1) {
+    return `${gb.toFixed(2)} GB`;
+  }
+  return `${mb.toFixed(2)} MB`;
+}
+
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs))
 }
 
-const helperUtil = { formatPhoneNumber, getTimeDelta, getTimeTo, formatDate, formatTime, convertTimeToMinutesAndSeconds, convertToNumber, capitalize, downloadFile, extractTelegramChannelId }
+const helperUtil = { formatPhoneNumber, getTimeDelta, getTimeTo, formatDate, formatTime, convertTimeToMinutesAndSeconds, convertToNumber, capitalize, downloadFile, extractTelegramChannelId, normalizeBytes }
 
 export default helperUtil
