@@ -7,7 +7,7 @@ export default function useAppMutations() {
   const axiosHandler = useAxios();
 
   const uploadFileMutation = useMutation({
-    mutationFn: async (values: { file: File, type: FileType, progressCallback: (progress: AxiosProgressEvent) => void }): Promise<string> => {
+    mutationFn: async (values: { file: File, type: FileType, progressCallback?: (progress: AxiosProgressEvent) => void }): Promise<string> => {
       const formData = new FormData();
       formData.append('file', values.file);
       formData.append('type', values.type);
@@ -17,7 +17,7 @@ export default function useAppMutations() {
           'Content-Type': 'multipart/form-data'
         },
         onUploadProgress: (progressEvent) => {
-          values.progressCallback(progressEvent)
+          values.progressCallback?.(progressEvent)
         }
       })
       return response.data
@@ -25,7 +25,7 @@ export default function useAppMutations() {
   })
 
   const uploadVideoFileMutation = useMutation({
-    mutationFn: async (values: { file: File, fileType: VideoFileType, progressCallback: (progress: AxiosProgressEvent) => void }): Promise<string> => {
+    mutationFn: async (values: { file: File, fileType: VideoFileType, progressCallback?: (progress: AxiosProgressEvent) => void }): Promise<string> => {
       const formData = new FormData();
       formData.append('file', values.file);
       formData.append('fileType', values.fileType);
@@ -36,7 +36,7 @@ export default function useAppMutations() {
           'Content-Type': 'multipart/form-data'
         },
         onUploadProgress: (progressEvent) => {
-          values.progressCallback(progressEvent)
+          values.progressCallback?.(progressEvent)
         }
       })
       return response.data
