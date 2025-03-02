@@ -1,9 +1,11 @@
-import React, { Fragment, useRef } from 'react'
+import React, { Fragment, useRef, useState } from 'react'
 import IconifyIcon from './IconifyIcon'
 import { FileType, VideoFileType } from '@/app/_module/app.type';
 import useAppMutations from '@/app/_module/app.mutations';
 import LoadingIcons from 'react-loading-icons';
-
+import { Progress } from './ui/progress';
+import { AxiosProgressEvent } from 'axios';
+import helperUtil from '@/utils/helper.util';
 interface FileUploaderProps {
   provider: 'bunny' | 'do-spaces';
   type: FileType | VideoFileType;
@@ -14,6 +16,7 @@ interface FileUploaderProps {
 export default function FileUploader({ provider, type, fileType, onChange }: FileUploaderProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const [progress, setProgress] = useState<AxiosProgressEvent | null>(null);
   const { uploadFileMutation, uploadVideoFileMutation } = useAppMutations();
 
   if (provider === 'bunny' && type !== 'course' && fileType !== 'video') {
@@ -46,11 +49,11 @@ export default function FileUploader({ provider, type, fileType, onChange }: Fil
 
     if (file) {
       if (provider === 'bunny') {
-        uploadVideoFileMutation.mutate({ file, fileType: 'course' }, {
+        uploadVideoFileMutation.mutate({ file, fileType: 'course', progressCallback: setProgress }, {
           onSuccess: (data) => onChange(data)
         });
       } else {
-        uploadFileMutation.mutate({ file, type }, {
+        uploadFileMutation.mutate({ file, type, progressCallback: setProgress }, {
           onSuccess: (data) => onChange(data)
         });
       }
@@ -63,6 +66,14 @@ export default function FileUploader({ provider, type, fileType, onChange }: Fil
         <Fragment>
           <LoadingIcons.TailSpin className='size-6' />
           <p className='text-sm text-primary-100'>Uploading...</p>
+          {progress &&
+            <div className='w-full flex flex-col gap-2'>
+              <div className='w-full flex items-start gap-10 justify-between'>
+                <p className='text-xs text-primary-100'>{helperUtil.normalizeBytes(progress.loaded)}/ {helperUtil.normalizeBytes(progress.total ?? 0)}</p>
+                <p className='text-[10px] text-primary-100'>{helperUtil.normalizeBytes(progress.rate ?? 0)}/s</p>
+              </div>
+              <Progress className='w-full h-1' value={(progress.progress ?? 0) * 100} />
+            </div>}
         </Fragment>
       }
       {!uploading && error &&
