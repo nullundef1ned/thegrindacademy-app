@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Poppins, Inter } from "next/font/google";
 import Provider from "@/providers/provider";
+import { PostHogProvider } from "@/providers/posthog.provider";
 
 import "./globals.css";
 import 'react-phone-number-input/style.css';
@@ -57,9 +58,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${gisha.variable} ${gishaBold.variable} ${poppins.variable} ${inter.variable} antialiased`}
       >
-        <Provider>
-          {children}
-        </Provider>
+        <PostHogProvider>
+          <Provider>
+            {children}
+          </Provider>
+        </PostHogProvider>
       </body>
     </html>
   );

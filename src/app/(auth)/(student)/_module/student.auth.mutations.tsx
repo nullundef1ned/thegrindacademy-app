@@ -10,6 +10,7 @@ import useURL from "@/hooks/useURL";
 import { URLKeyEnum } from "@/app/_module/app.enum";
 import { StorageKey } from "@/utils/storage.util";
 import storageUtil from "@/utils/storage.util";
+import posthog from "posthog-js";
 
 export default function useStudentAuthMutations() {
   const router = useRouter()
@@ -36,6 +37,7 @@ export default function useStudentAuthMutations() {
     onSuccess: (data: IAuthResponse) => {
       setupStudentAccount(data);
       router.push(redirect ?? '/')
+      posthog.identify(data.user.id, { email: data.user.email })
     },
     onError: (error: CustomError) => {
       notificationUtil.error(error.message)
