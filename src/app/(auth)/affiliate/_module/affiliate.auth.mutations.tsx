@@ -9,6 +9,7 @@ import { URLKeyEnum } from "@/app/_module/app.enum";
 import storageUtil, { StorageKey } from "@/utils/storage.util";
 import { queryClient } from "@/providers/tanstack-query.provder";
 import { affiliateRoutes } from "@/app/affiliate/_module/affiliate.routes";
+import posthog from "posthog-js";
 
 export default function useAffiliateAuthMutations() {
   const router = useRouter()
@@ -27,6 +28,7 @@ export default function useAffiliateAuthMutations() {
       storageUtil.saveItem(StorageKey.token, data.accessToken)
       queryClient.setQueryData(['user'], data.user)
 
+      posthog.identify(data.user.id, { email: data.user.email })
       router.push(redirect ?? affiliateRoutes.dashboard)
     },
     onError: (error: CustomError) => {
