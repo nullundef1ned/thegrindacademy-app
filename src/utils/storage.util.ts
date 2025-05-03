@@ -32,7 +32,7 @@ const deleteItem = (key: StorageKey): void => {
   localStorage.removeItem(key);
 }
 
-const getItem = <T>(key: StorageKey): T | null => {
+const getItem = <T>(key: StorageKey): T | string | null => {
   if (typeof window == "undefined") return null;
   if (!key) {
     throw new Error('Invalid key');
