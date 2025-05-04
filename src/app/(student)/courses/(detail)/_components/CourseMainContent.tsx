@@ -16,7 +16,7 @@ export default function CourseMainContent({ course, isPreview }: ICourseMainCont
 
   if (!lessonId) {
     return (
-      <Video src={media.introVideoUrl} poster={media.thumbnailUrl} />
+      <Video src={media.introVideoUrl} poster={media.thumbnailUrl} fullScreenOnPlay />
     )
   }
 

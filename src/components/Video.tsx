@@ -6,9 +6,10 @@ import { clsx } from 'clsx';
 interface IVideoProps {
   src: string;
   poster?: string;
+  fullScreenOnPlay?: boolean;
 }
 
-export default function Video({ src, poster }: IVideoProps) {
+export default function Video({ src, poster, fullScreenOnPlay = false }: IVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const [isMuted, setIsMuted] = useState(false);
@@ -23,10 +24,16 @@ export default function Video({ src, poster }: IVideoProps) {
   // Memoize handlers to prevent unnecessary re-renders
   const handlePlay = React.useCallback(() => {
     videoRef.current?.play().catch(err => console.error('Error playing video:', err));
+    if (fullScreenOnPlay) {
+      videoRef.current?.requestFullscreen();
+    }
   }, []);
 
   const handlePause = React.useCallback(() => {
     videoRef.current?.pause();
+    if (fullScreenOnPlay) {
+      document.exitFullscreen();
+    }
   }, []);
 
   const handleSeek = React.useCallback((time: number) => {
