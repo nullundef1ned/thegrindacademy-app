@@ -17,8 +17,9 @@ export default function Video({ src, poster, fullScreenOnPlay = false }: IVideoP
   const [isPlaying, setIsPlaying] = useState(false);
   const [percentageWatched, setPercentageWatched] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const videoTotalTime = videoRef.current?.duration;
+  const [isLoading, setIsLoading] = useState(false);
 
+  const videoTotalTime = videoRef.current?.duration;
   const currentVideoTime = percentageWatched * videoTotalTime! / 100;
 
   // Memoize handlers to prevent unnecessary re-renders
@@ -83,7 +84,11 @@ export default function Video({ src, poster, fullScreenOnPlay = false }: IVideoP
       timeupdate: () => {
         const percentage = (videoElement.currentTime / videoElement.duration) * 100;
         setPercentageWatched(percentage);
-      }
+      },
+      waiting: () => setIsLoading(true),
+      canplay: () => setIsLoading(false),
+      loadstart: () => setIsLoading(true),
+      loadeddata: () => setIsLoading(false)
     };
 
     // Add event listeners
@@ -135,9 +140,12 @@ export default function Video({ src, poster, fullScreenOnPlay = false }: IVideoP
         className="absolute inset-0 grid place-items-center z-10 w-full h-full group-hover:bg-[#07090F]/30 transition-all ease-linear">
         <div
           onClick={togglePlay}
-          className='rounded-full flex-shrink-0 bg-white size-16 z-20 grid place-items-center cursor-pointer opacity-0 group-hover:opacity-100 transition-all ease-linear'
+          className={clsx('rounded-full flex-shrink-0 bg-white size-16 z-20 grid place-items-center cursor-pointer opacity-0 group-hover:opacity-100 transition-all ease-linear', (!isPlaying || isLoading) && 'opacity-100')}
         >
-          <IconifyIcon icon={isPlaying ? 'ri:pause-mini-fill' : 'ri:play-mini-fill'} className="size-8 text-[#07090F]" size={32} />
+          {isLoading ?
+            <IconifyIcon icon="ri:loader-2-line" className="size-8 text-[#07090F] animate-spin" size={32} /> :
+            <IconifyIcon icon={isPlaying ? 'ri:pause-mini-fill' : 'ri:play-mini-fill'} className="size-8 text-[#07090F]" size={32} />
+          }
         </div>
       </div>
       <div className={clsx(
@@ -176,6 +184,6 @@ export default function Video({ src, poster, fullScreenOnPlay = false }: IVideoP
         <source src={src} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-    </div>
+    </div >
   )
 }

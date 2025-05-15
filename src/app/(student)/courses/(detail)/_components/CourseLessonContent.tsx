@@ -52,7 +52,7 @@ export default function CourseLessonContent({ lesson, isPreview }: ICourseLesson
           </div>
         } */}
       </div>
-      {videoUrl && <Video src={videoUrl} poster={''} />}
+      {videoUrl && <Video key={videoUrl} src={videoUrl} poster={''} fullScreenOnPlay />}
       {content && <div className="prose" dangerouslySetInnerHTML={{ __html: content }} />}
     </div>
   )
