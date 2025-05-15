@@ -1,7 +1,7 @@
-import { ICourseDetail, ICourseLesson, IEnrolledCourseDetail, IEnrolledCourseLesson } from "@/app/(student)/_module/_interfaces/course.interface";
 import Video from "@/components/Video";
 import useURL from "@/hooks/useURL";
 import CourseLessonContent from "./CourseLessonContent";
+import { ICourseDetail, ICourseLesson, IEnrolledCourseDetail, IEnrolledCourseLesson } from "@/app/(student)/_module/_interfaces/course.interface";
 
 interface ICourseMainContentProps {
   course: ICourseDetail | IEnrolledCourseDetail;
