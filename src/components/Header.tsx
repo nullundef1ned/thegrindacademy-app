@@ -41,12 +41,15 @@ export default function Header({ routes }: HeaderProps) {
             <Avatar src={user?.info.avi} alt={user?.info.firstName || ''} size={40} type='square' />
             <div className='flex flex-col'>
               <p className='font-semibold'>Good {greeting} {user?.info.firstName}</p>
-              <p className='text-sm text-accent hover:text-primary-100 cursor-pointer' onClick={handleLogout}>Logout</p>
+              <p className='text-sm hidden md:block text-accent hover:text-primary-100 cursor-pointer w-max' onClick={handleLogout}>Logout</p>
             </div>
           </div>
-          <Link href={appRoutes.home}>
-            <Image src='/logos/logo.svg' alt='Logo' width={166} height={32} />
-          </Link>
+          <div className='flex flex-col items-end'>
+            <Link href={appRoutes.home}>
+              <Image src='/logos/logo.svg' alt='Logo' width={166} height={32} />
+            </Link>
+            <p className='text-sm md:hidden text-accent hover:text-primary-100 cursor-pointer w-max' onClick={handleLogout}>Logout</p>
+          </div>
         </div>
         <div className='w-full flex items-end gap-6 overflow-x-auto'>
           {routes.map((route) => (
