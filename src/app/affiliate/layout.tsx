@@ -15,7 +15,7 @@ import { studentRoutes } from '../(student)/_module/student.routes';
 import { IBanner } from '../(student)/_module/student.interface';
 import Banner from '../(student)/(overview)/_components/Banner';
 import { useFetchAffiliateAuthenticationQuery } from '@/hooks/api/affiliate/useAffiliateAuthentication';
-import { useFetchAffiliateReferralQuery } from '@/hooks/api/affiliate/useAffiliateReferral';
+// import { useFetchAffiliateReferralQuery } from '@/hooks/api/affiliate/useAffiliateReferral';
 
 function AffiliateLayout({ children }: { children: React.ReactNode }) {
   const banners = useAffiliateStore((state) => state.banners);
@@ -32,7 +32,7 @@ function AffiliateLayout({ children }: { children: React.ReactNode }) {
   ]
 
   const { data: user, isPending, isError } = useFetchAffiliateAuthenticationQuery();
-  const { data: referral, isPending: isReferralPending } = useFetchAffiliateReferralQuery();
+  // const { data: referral, isPending: isReferralPending } = useFetchAffiliateReferralQuery();
 
   const removeBanner = (slug: string) => {
     const newBanners = banners.filter((b) => b.slug !== slug);
@@ -76,7 +76,7 @@ function AffiliateLayout({ children }: { children: React.ReactNode }) {
     // }
 
     setBanners(banners)
-  }, [referral]);
+  }, []);
 
   if (isPending || isError) {
     return (
