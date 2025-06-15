@@ -5,7 +5,7 @@ import { useFetchUserGrowthOverTime } from '../../_module/_apis/useFetchReports'
 import { ChartConfig } from '@/components/ui/chart';
 
 export default function UserGrowthOverTimeGraph() {
-  const [timeFrame, setTimeFrame] = useState(TimeFrameEnum.TWELVE_MONTHS);
+  const [timeFrame, setTimeFrame] = useState(TimeFrameEnum.SEVEN_DAYS);
 
   const { data, isPending, isFetching, isError, refetch } = useFetchUserGrowthOverTime(timeFrame);
 

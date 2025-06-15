@@ -5,7 +5,7 @@ import { ChartConfig } from '@/components/ui/chart';
 import { useFetchAffiliatePayoutTrendQuery } from '@/hooks/api/affiliate/useAffiliateReports';
 
 export default function PayoutTrendGraph() {
-  const [timeFrame, setTimeFrame] = useState(TimeFrameEnum.TWELVE_MONTHS);
+  const [timeFrame, setTimeFrame] = useState(TimeFrameEnum.SEVEN_DAYS);
 
   const { data, isPending, isFetching, isError, refetch } = useFetchAffiliatePayoutTrendQuery(timeFrame);
 

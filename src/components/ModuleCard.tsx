@@ -13,7 +13,7 @@ interface ModuleCardProps {
 export default function ModuleCard({ icon, name, description, linkText, link }: ModuleCardProps) {
   return (
     <div className="flex flex-col justify-between rounded overflow-hidden border border-[#1A2031] bg-[#1C347D1A]">
-      <div className="flex flex-col gap-2 p-4">
+      <div className="flex flex-col items-start gap-2 p-4">
         <IconifyIcon icon={icon} className='text-2xl text-primary-100' />
         <p className="text-sm font-medium">{name}</p>
         <p className="text-xs text-accent">{description}</p>

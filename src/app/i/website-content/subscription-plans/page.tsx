@@ -72,12 +72,12 @@ export default function SubscriptionPlansPage() {
                 <IconifyIcon icon="mdi:pencil" className="text-primary-100" />
                 <p className="text-primary-100 text-sm">Edit</p>
               </Link>
-              <div
+              {/* <div
                 onClick={() => openDeleteModal(subscriptionPlan)}
                 className="flex items-center gap-1 cursor-pointer">
                 <IconifyIcon icon="mdi:delete" className="text-red-300" />
                 <p className="text-red-300 text-sm">Delete</p>
-              </div>
+              </div> */}
             </div>
           </div>
         ))}
