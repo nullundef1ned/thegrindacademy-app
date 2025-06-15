@@ -58,11 +58,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${gisha.variable} ${gishaBold.variable} ${poppins.variable} ${inter.variable} antialiased`}
       >
-        {/* <PostHogProvider> */}
-        <Provider>
-          {children}
-        </Provider>
-        {/* </PostHogProvider> */}
+        <PostHogProvider>
+          <Provider>
+            {children}
+          </Provider>
+        </PostHogProvider>
       </body>
     </html>
   );
