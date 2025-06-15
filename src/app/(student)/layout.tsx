@@ -23,10 +23,10 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
 
   const router = useRouter();
 
-  const { useFetchAuthenticationQuery, useFetchReferralQuery } = StudentQueries();
+  const { useFetchAuthenticationQuery } = StudentQueries();
 
   const { data: user, isPending, isError } = useFetchAuthenticationQuery();
-  const { data: referral, isPending: isReferralPending } = useFetchReferralQuery();
+  // const { data: referral, isPending: isReferralPending } = useFetchReferralQuery();
   const { subscription, isPending: isSubscriptionPending, disableAccess } = useSubscriptionHook();
 
   const removeBanner = (slug: string) => {
@@ -115,7 +115,7 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
     // }
 
     setBanners(banners)
-  }, [subscription, referral]);
+  }, [subscription]);
 
   if (isPending || isError || isSubscriptionPending) {
     return (

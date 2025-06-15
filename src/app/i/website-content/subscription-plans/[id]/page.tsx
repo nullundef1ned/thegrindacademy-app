@@ -22,7 +22,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import pluralize from 'pluralize';
 import { useFetchPlanFeatures } from '../_apis/useSubscriptions';
 import AddFeatureForm from './_components/AddFeatureForm';
-import IconifyIcon from '@/components/IconifyIcon';
+// import IconifyIcon from '@/components/IconifyIcon';
 import { useRouter } from 'next/navigation';
 
 export default function SubscriptionPlanDetailPage({ params }: { params: { id: string } }) {
@@ -33,7 +33,7 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
   const { setTitle } = useTitle();
   const { data: features } = useFetchPlanFeatures();
   const { data, isPending } = useFetchSubscriptionPlan(id);
-  const { updateSubscriptionPlanMutation, deleteSubscriptionPlanMutation, createSubscriptionPlanMutation, deletePlanFeatureMutation } = useSubscriptionPlanMutations();
+  const { updateSubscriptionPlanMutation, deleteSubscriptionPlanMutation, createSubscriptionPlanMutation } = useSubscriptionPlanMutations();
 
   const { values, handleChange, setFieldValue, handleSubmit } = useFormik<ISubscriptionPlanForm>({
     enableReinitialize: true,
@@ -99,9 +99,9 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
     }
   }
 
-  const deleteFeature = (featureId: string) => {
-    deletePlanFeatureMutation.mutate(featureId);
-  }
+  // const deleteFeature = (featureId: string) => {
+  //   deletePlanFeatureMutation.mutate(featureId);
+  // }
 
   const openDeleteModal = (data: ISubscriptionPlan) => showModal(<ConfirmSubscriptionPlanDeletionModal subscriptionPlan={data} />);
 

@@ -4,19 +4,19 @@ import Breadcrumbs, { BreadcrumbItem } from "@/components/Breadcrumbs";
 import { adminRoutes } from "../../_module/admin.routes";
 import { Button } from "@/components/ui/button";
 import { useFetchSubscriptionPlans } from "./_apis/useFetchSubscriptionPlans";
-import { useModal } from "@/providers/modal.provider";
+// import { useModal } from "@/providers/modal.provider";
 import { ISubscriptionPlan } from "@/app/(student)/_module/student.interface";
 import useCurrency from "@/hooks/useCurrency";
 import IconifyIcon from "@/components/IconifyIcon";
 import Link from "next/link";
-import ConfirmSubscriptionPlanDeletionModal from "./_modals/ConfirmSubscriptionPlanDeletionModal";
+// import ConfirmSubscriptionPlanDeletionModal from "./_modals/ConfirmSubscriptionPlanDeletionModal";
 import pluralize from "pluralize";
 import LoadingIcons from "react-loading-icons";
 
 export default function SubscriptionPlansPage() {
 
   const { formatCurrency } = useCurrency();
-  const { showModal } = useModal();
+  // const { showModal } = useModal();
 
   const breadcrumbs: BreadcrumbItem[] = [
     { name: 'Website Content', link: adminRoutes.websiteContent.root },
@@ -31,7 +31,7 @@ export default function SubscriptionPlansPage() {
     return `every ${duration > 1 ? `${duration} ${pluralize(frequency, duration)}` : frequency}`;
   }
 
-  const openDeleteModal = (subscriptionPlan: ISubscriptionPlan) => showModal(<ConfirmSubscriptionPlanDeletionModal subscriptionPlan={subscriptionPlan} />)
+  // const openDeleteModal = (subscriptionPlan: ISubscriptionPlan) => showModal(<ConfirmSubscriptionPlanDeletionModal subscriptionPlan={subscriptionPlan} />)
 
   return (
     <div className='w-full responsive-section space-y-6'>
