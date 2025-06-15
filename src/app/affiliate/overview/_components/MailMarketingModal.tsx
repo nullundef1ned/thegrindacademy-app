@@ -80,10 +80,12 @@ export default function MailMarketingModal() {
     <Modal title='Send a mail campaign' width='lg'>
       <div className='flex flex-col gap-4'>
         <div className="grid grid-cols-1 lg:grid-cols-6 gap-4">
-          <Input icon='ri:mail-fill' className='col-span-1 lg:col-span-2' errors={errors} touched={touched}
-            onBlur={handleBlur}
-            placeholder='Subject' name='subject'
-            value={values.subject} onChange={handleChange} />
+          <div className='col-span-1 lg:col-span-2'>
+            <Input icon='ri:mail-fill' className='w-full' errors={errors} touched={touched}
+              onBlur={handleBlur}
+              placeholder='Subject' name='subject'
+              value={values.subject} onChange={handleChange} />
+          </div>
           <div className="flex gap-3 col-span-1 lg:col-span-4">
             <Input icon='ri:at-fill' className='w-full' name='bcc'
               ref={emailRef}

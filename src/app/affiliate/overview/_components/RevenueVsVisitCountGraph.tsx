@@ -5,7 +5,7 @@ import { useFetchAffiliateRefferalVsVisitCountQuery } from '@/hooks/api/affiliat
 import { ChartConfig } from '@/components/ui/chart';
 
 export default function RevenueVsVisitCountGraph() {
-  const [timeFrame, setTimeFrame] = useState(TimeFrameEnum.TWELVE_MONTHS);
+  const [timeFrame, setTimeFrame] = useState(TimeFrameEnum.SEVEN_DAYS);
 
   const { data, isPending, isFetching, isError, refetch } = useFetchAffiliateRefferalVsVisitCountQuery(timeFrame);
 

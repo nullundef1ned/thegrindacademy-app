@@ -5,7 +5,7 @@ import { useFetchCourseEnrollmentsAndCompletion } from '../../_module/_apis/useF
 import { ChartConfig } from '@/components/ui/chart';
 
 export default function CourseEnrollmentsAndCompletionGraph() {
-  const [timeFrame, setTimeFrame] = useState(TimeFrameEnum.TWELVE_MONTHS);
+  const [timeFrame, setTimeFrame] = useState(TimeFrameEnum.SEVEN_DAYS);
 
   const { data, isPending, isFetching, isError, refetch } = useFetchCourseEnrollmentsAndCompletion(timeFrame);
 

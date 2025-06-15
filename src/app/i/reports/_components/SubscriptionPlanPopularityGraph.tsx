@@ -5,7 +5,7 @@ import { useFetchSubscriptionPlanPopularity } from '../../_module/_apis/useFetch
 import { ChartConfig } from '@/components/ui/chart';
 
 export default function SubscriptionPlanPopularityGraph() {
-  const [timeFrame, setTimeFrame] = useState(TimeFrameEnum.TWELVE_MONTHS);
+  const [timeFrame, setTimeFrame] = useState(TimeFrameEnum.SEVEN_DAYS);
 
   const { data, isPending, isFetching, isError, refetch } = useFetchSubscriptionPlanPopularity(timeFrame);
 
