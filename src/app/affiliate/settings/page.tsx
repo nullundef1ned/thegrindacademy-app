@@ -1,7 +1,7 @@
 'use client';
 
 import AccountInformationSection from './_components/AccountInformationSection'
-import BankSection from './_components/BankSection';
+// import BankSection from './_components/BankSection';
 import DeleteAccountSection from './_components/DeleteAccountSection';
 import SecuritySection from './_components/SecuritySection';
 
