@@ -102,17 +102,17 @@ function StudentLayout({ children }: { children: React.ReactNode }) {
       }
     }
 
-    if (!referral && !isReferralPending) {
-      const addBankDetailsBanner: IBanner = {
-        slug: 'add-bank-details',
-        message: 'Add your bank details to receive payouts. Your referral payouts are waiting!',
-        link: '/profile#bank-information',
-        buttonText: 'Add Bank Details',
-        permanent: false,
-        type: 'info',
-      }
-      banners.push(addBankDetailsBanner)
-    }
+    // if (!referral && !isReferralPending) {
+    //   const addBankDetailsBanner: IBanner = {
+    //     slug: 'add-bank-details',
+    //     message: 'Add your bank details to receive payouts. Your referral payouts are waiting!',
+    //     link: '/profile#bank-information',
+    //     buttonText: 'Add Bank Details',
+    //     permanent: false,
+    //     type: 'info',
+    //   }
+    //   banners.push(addBankDetailsBanner)
+    // }
 
     setBanners(banners)
   }, [subscription, referral]);

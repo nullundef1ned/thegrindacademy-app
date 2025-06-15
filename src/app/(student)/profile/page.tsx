@@ -13,7 +13,7 @@ export default function ProfilePage() {
       <AccountInformationSection />
       <SubscriptionSection />
       <SecuritySection />
-      <BankSection />
+      {/* <BankSection /> */}
       <DeleteAccountSection />
     </div>
   )

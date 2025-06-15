@@ -11,7 +11,7 @@ export default function SettingsPage() {
     <div className='w-full responsive-section space-y-6'>
       <AccountInformationSection />
       <SecuritySection />
-      <BankSection />
+      {/* <BankSection /> */}
       <DeleteAccountSection />
     </div>
   )

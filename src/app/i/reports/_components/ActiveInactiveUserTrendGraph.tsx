@@ -5,7 +5,7 @@ import { useFetchActiveInactiveUserTrend } from '../../_module/_apis/useFetchRep
 import { ChartConfig } from '@/components/ui/chart';
 
 export default function ActiveInactiveUserTrendGraph() {
-  const [timeFrame, setTimeFrame] = useState(TimeFrameEnum.TWELVE_MONTHS);
+  const [timeFrame, setTimeFrame] = useState(TimeFrameEnum.SEVEN_DAYS);
 
   const { data, isPending, isFetching, isError, refetch } = useFetchActiveInactiveUserTrend(timeFrame);
 

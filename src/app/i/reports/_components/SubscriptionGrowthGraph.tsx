@@ -5,7 +5,7 @@ import { useFetchSubscriptionGrowth } from '../../_module/_apis/useFetchReports'
 import { ChartConfig } from '@/components/ui/chart';
 
 export default function SubscriptionGrowthGraph() {
-  const [timeFrame, setTimeFrame] = useState(TimeFrameEnum.TWELVE_MONTHS);
+  const [timeFrame, setTimeFrame] = useState(TimeFrameEnum.SEVEN_DAYS);
 
   const { data, isPending, isFetching, isError, refetch } = useFetchSubscriptionGrowth(timeFrame);
 

@@ -190,9 +190,9 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
                   />
                   <label htmlFor={feature.id} className="text-sm cursor-pointer">{feature.content}</label>
                 </label>
-                <div className="cursor-pointer" onClick={() => deleteFeature(feature.id)}>
+                {/* <div className="cursor-pointer" onClick={() => deleteFeature(feature.id)}>
                   <IconifyIcon icon='ri:delete-bin-7-fill' className='text-red-500' />
-                </div>
+                </div> */}
               </div>
             ))}
           </div>
