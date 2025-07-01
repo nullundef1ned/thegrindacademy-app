@@ -179,10 +179,11 @@ export interface ISubscriptionPlan {
   upSellPrice?: number;
   price: number;
   isDeal: boolean;
+  isDisabled: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
-  features: ISubscriptionPlanFeature[];
+  features: (ISubscriptionPlanFeature & { featureId: string })[];
 }
 
 export interface ICourseCommunity {

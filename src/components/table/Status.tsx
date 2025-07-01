@@ -32,6 +32,9 @@ export default function Status({ status, showIcon }: StatusProps) {
     'unpaid': 'bg-red-900 text-red-100',
     'admin': 'bg-primary text-primary-50',
     'affiliate': 'bg-green-900 text-green-100',
+    'yes': 'bg-green-900 text-green-100',
+    'no': 'bg-red-900 text-red-100',
+    'expired': 'bg-red-900 text-red-100',
   }[status]
 
   const displayText = status.replaceAll('-', ' ');

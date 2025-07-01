@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import { useFetchUserCourses, useFetchUserDetails } from "../../_module/_apis/useFetchUser";
+import { useFetchUserCourses, useFetchUserDetails, useFetchUserSubscriptionPlans } from "../../_module/_apis/useFetchUser";
 import Avatar from "@/components/Avatar";
 import IconifyIcon from "@/components/IconifyIcon";
 import helperUtil from "@/utils/helper.util";
@@ -23,9 +23,15 @@ import notificationUtil from "@/utils/notification.util";
 import Breadcrumbs, { BreadcrumbItem } from "@/components/Breadcrumbs";
 import { TableHeaderTypeEnum } from "@/components/table/table.enum";
 import UpdateUserTelegramModal from "./_modals/UpdateUserTelegramModal";
+import SubscriptionModal from "./_modals/SubscriptionModal";
+import { ISubscription } from "@/app/(student)/_module/student.interface";
+import { useState } from "react";
+import CancelSubscriptionModal from "./_modals/CancelSubscriptionModal";
 
 export default function UserPage({ params }: { params: { id: string } }) {
   const { id } = params;
+
+  const [activeTab, setActiveTab] = useState<'courses' | 'subscriptions'>('courses');
 
   const router = useRouter();
   const { setTitle } = useTitle();
@@ -33,6 +39,7 @@ export default function UserPage({ params }: { params: { id: string } }) {
   const { data, isPending } = useFetchUserDetails(id);
   const { updateUserStatusMutation } = useAdminMutations();
 
+  const { data: subscriptions } = useFetchUserSubscriptionPlans(id);
   const { data: courses, isPending: coursesPending } = useFetchUserCourses(id);
 
   if (isPending) return (
@@ -62,6 +69,15 @@ export default function UserPage({ params }: { params: { id: string } }) {
     { key: 'completionPercentage', value: 'Progress', type: TableHeaderTypeEnum.PROGRESS },
   ]
 
+  const subscriptionTableHeaders: TableHeader<ISubscription>[] = [
+    // @ts-expect-error nested object
+    { key: 'subscriptionPlan.name', value: 'Plan Name' },
+    { key: 'status', value: 'Status', type: TableHeaderTypeEnum.STATUS },
+    { key: 'autoRenewal', value: 'Auto Renewal', type: TableHeaderTypeEnum.BOOLEAN },
+    { key: 'startDate', value: 'Start Date', type: TableHeaderTypeEnum.DATE },
+    { key: 'endDate', value: 'End Date', type: TableHeaderTypeEnum.DATE },
+  ]
+
   const goToCourse = (course: IEnrolledCourse) => {
     router.push(`/i/courses/${course.course.id}`);
   }
@@ -74,9 +90,17 @@ export default function UserPage({ params }: { params: { id: string } }) {
     });
   }
 
+  const activateUser = () => {
+    updateUserStatusMutation.mutate({ id: user.id, status: 'active' }, {
+      onSuccess: () => notificationUtil.success('User activated successfully')
+    });
+  }
+
   const openDeleteUserModal = () => showModal(<DeleteUserModal user={user} />);
   const openSuspendUserModal = () => showModal(<SuspendUserModal user={user} />);
+  const openSubscriptionModal = () => showModal(<SubscriptionModal user={user} />);
   const openUpdateUserTelegramModal = () => showModal(<UpdateUserTelegramModal user={user} />);
+  const openCancelSubscriptionModal = () => showModal(<CancelSubscriptionModal user={user} subscription={subscription} />);
 
   return (
     <div className='w-full responsive-section !max-w-screen-md space-y-8'>
@@ -84,8 +108,14 @@ export default function UserPage({ params }: { params: { id: string } }) {
       <div className="flex flex-wrap gap-4 items-center justify-between">
         <p className="text-xl font-medium">User Information</p>
         <div className="flex items-center gap-3">
-          {user.status !== 'suspended' ? <Button onClick={openSuspendUserModal} size="sm">Suspend User</Button> :
-            <Button onClick={reactivateUser} loading={updateUserStatusMutation.isPending} size="sm">Reactivate User</Button>
+          {
+            user.status === 'inactive' ? (
+              <Button onClick={activateUser} loading={updateUserStatusMutation.isPending} size="sm">Activate User</Button>
+            ) : (
+              user.status !== 'suspended' ? <Button onClick={openSuspendUserModal} size="sm">Suspend User</Button> :
+                <Button onClick={reactivateUser} loading={updateUserStatusMutation.isPending} size="sm">Reactivate User</Button>
+
+            )
           }
           <Button onClick={openDeleteUserModal} size="sm" variant="destructive">Delete User</Button>
         </div>
@@ -129,31 +159,53 @@ export default function UserPage({ params }: { params: { id: string } }) {
             <p className="text-sm text-accent">No active subscription</p>
           }
         </div>
-        {subscription && (
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-2 text-primary-100">
-              <IconifyIcon icon="ri:calendar-event-fill" className="text-xl" />
-              {subscription?.autoRenewal ? <p className="text-sm font-medium">Renewal Date</p> :
-                <p className="text-sm font-medium">Expiration Date</p>
-              }
+        {subscription && user.status === 'active' && (
+          <div className="flex items-end gap-4">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-2 text-primary-100">
+                <IconifyIcon icon="ri:calendar-event-fill" className="text-xl" />
+                {subscription?.autoRenewal ? <p className="text-sm font-medium">Renewal Date</p> :
+                  <p className="text-sm font-medium">Expiration Date</p>
+                }
+              </div>
+              <p className="text-sm text-accent">{helperUtil.formatDate(subscription?.endDate)} <span className="text-xs text-muted-foreground">(in {helperUtil.getTimeTo(subscription?.endDate)})</span></p>
             </div>
-            <p className="text-sm text-accent">{helperUtil.formatDate(subscription?.endDate)} <span className="text-xs text-muted-foreground">(in {helperUtil.getTimeTo(subscription?.endDate)})</span></p>
+            <Button onClick={openCancelSubscriptionModal} size="sm" variant="destructive">Cancel Subscription</Button>
           </div>
         )}
+        {!subscription && user.status === 'active' && (
+          <Button onClick={openSubscriptionModal} size="sm">Add Plan</Button>
+        )
+        }
       </div>
       <div className="space-y-4">
-        <p className="text-sm text-accent">Enrolled Courses</p>
-        <Card>
-          <Table<IEnrolledCourse>
-            data={courses}
-            skeletonCount={4}
-            searchable={false}
-            headers={tableHeaders}
-            onRowClick={goToCourse}
-            loading={coursesPending}
-            emptyStateMessage={`No courses found`}
-          />
-        </Card>
+        <div className="flex items-center gap-4">
+          <p className={`text-sm text-accent cursor-pointer hover:text-primary-50 ${activeTab === 'courses' ? 'text-primary-100' : ''}`} onClick={() => setActiveTab('courses')}>Enrolled Courses</p>
+          <p className={`text-sm text-accent cursor-pointer hover:text-primary-50 ${activeTab === 'subscriptions' ? 'text-primary-100' : ''}`} onClick={() => setActiveTab('subscriptions')}>Subscription History</p>
+        </div>
+        {activeTab === 'courses' && (
+          <Card>
+            <Table<IEnrolledCourse>
+              data={courses}
+              skeletonCount={4}
+              searchable={false}
+              headers={tableHeaders}
+              onRowClick={goToCourse}
+              loading={coursesPending}
+              emptyStateMessage={`No courses found`}
+            />
+          </Card>
+        )}
+        {activeTab === 'subscriptions' && (
+          <Card>
+            <Table<ISubscription>
+              data={subscriptions}
+              skeletonCount={4}
+              searchable={false}
+              headers={subscriptionTableHeaders}
+            />
+          </Card>
+        )}
       </div>
     </div>
   )

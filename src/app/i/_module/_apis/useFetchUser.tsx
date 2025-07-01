@@ -36,3 +36,17 @@ export function useFetchUserCourses(id: string) {
 
   return query;
 }
+
+export function useFetchUserSubscriptionPlans(id: string) {
+  const axiosHandler = useAxios();
+
+  const query = useQuery({
+    queryKey: ['user', id, 'subscription-plans'],
+    queryFn: async (): Promise<IPagination<ISubscription>> => {
+      const response = await axiosHandler.get(`/admin/user/${id}/subscription`)
+      return response.data;
+    },
+  })
+
+  return query;
+}

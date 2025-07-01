@@ -9,14 +9,11 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import notificationUtil from '@/utils/notification.util';
 import helperUtil from '@/utils/helper.util';
-import { useModal } from '@/providers/modal.provider';
 import Link from 'next/link';
 import LoadingIcons from 'react-loading-icons';
 import { useTitle } from '@/providers/title.provider';
 import useSubscriptionPlanMutations from '../_apis/subscription-plan.mutations';
 import { ISubscriptionPlanForm } from '@/interfaces/subscription';
-import { ISubscriptionPlan } from '@/app/(student)/_module/student.interface';
-import ConfirmSubscriptionPlanDeletionModal from '../_modals/ConfirmSubscriptionPlanDeletionModal';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import pluralize from 'pluralize';
@@ -24,16 +21,16 @@ import { useFetchPlanFeatures } from '../_apis/useSubscriptions';
 import AddFeatureForm from './_components/AddFeatureForm';
 // import IconifyIcon from '@/components/IconifyIcon';
 import { useRouter } from 'next/navigation';
+import { Switch } from '@/components/ui/switch';
 
 export default function SubscriptionPlanDetailPage({ params }: { params: { id: string } }) {
   const { id } = params;
 
   const router = useRouter();
-  const { showModal } = useModal();
   const { setTitle } = useTitle();
   const { data: features } = useFetchPlanFeatures();
   const { data, isPending } = useFetchSubscriptionPlan(id);
-  const { updateSubscriptionPlanMutation, deleteSubscriptionPlanMutation, createSubscriptionPlanMutation } = useSubscriptionPlanMutations();
+  const { updateSubscriptionPlanMutation, createSubscriptionPlanMutation } = useSubscriptionPlanMutations();
 
   const { values, handleChange, setFieldValue, handleSubmit } = useFormik<ISubscriptionPlanForm>({
     enableReinitialize: true,
@@ -44,7 +41,8 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
       frequency: data?.frequency || 'month',
       duration: data?.duration || 1,
       isDeal: data?.isDeal || false,
-      features: data?.features.map((feature) => ({ featureId: feature.id })) || [],
+      isDisabled: data?.isDisabled || false,
+      features: data?.features.map(({ featureId }) => ({ featureId })) || [],
     },
     onSubmit: (values) => {
       if (values.features.length === 0) return notificationUtil.error('Please select at least one feature');
@@ -99,11 +97,19 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
     }
   }
 
+  const toggleDisabled = () => {
+    updateSubscriptionPlanMutation.mutate({ ...values, id, isDisabled: !values.isDisabled }, {
+      onSuccess: () => {
+        notificationUtil.success(`Subscription plan ${values.isDisabled ? 'disabled' : 'enabled'} successfully`);
+      }
+    });
+  }
+
   // const deleteFeature = (featureId: string) => {
   //   deletePlanFeatureMutation.mutate(featureId);
   // }
 
-  const openDeleteModal = (data: ISubscriptionPlan) => showModal(<ConfirmSubscriptionPlanDeletionModal subscriptionPlan={data} />);
+  // const openDeleteModal = (data: ISubscriptionPlan) => showModal(<ConfirmSubscriptionPlanDeletionModal subscriptionPlan={data} />);
 
   return (
     <div className='w-full responsive-detail-section space-y-6'>
@@ -116,7 +122,13 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
           }
         </div>
         {data &&
-          <Button size='sm' variant='destructive' loading={deleteSubscriptionPlanMutation.isPending} onClick={() => openDeleteModal(data)}>Delete</Button>
+          <div className="flex items-center gap-2">
+            <Switch id='isDisabled' checked={values.isDisabled} onCheckedChange={toggleDisabled} />
+            <label htmlFor='isDisabled' className='text-sm cursor-pointer'>{!values.isDisabled ? 'Disable' : 'Enable'}</label>
+            {/* {data &&
+            <Button size='sm' variant='destructive' loading={deleteSubscriptionPlanMutation.isPending} onClick={() => openDeleteModal(data)}>Delete</Button>
+          } */}
+          </div>
         }
       </div>
       <form onSubmit={handleSubmit} className='space-y-4'>

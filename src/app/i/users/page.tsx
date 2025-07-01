@@ -11,6 +11,7 @@ import { useFetchUsers } from "../_module/_apis/useFetchUsers";
 import useURL from "@/hooks/useURL";
 import { adminRoutes } from "../_module/admin.routes";
 import { useFetchUserStatistics } from "../_module/_apis/useFetchUserStatistics";
+import { Button } from '@/components/ui/button';
 
 export default function UsersPage() {
   const router = useRouter();
@@ -74,6 +75,9 @@ export default function UsersPage() {
           onRowClick={goToUser}
           emptyStateMessage={`No users found`}
           loading={isPending}
+          addComponent={
+            <Button onClick={() => router.push(`${adminRoutes.users}/new`)}>Add User</Button>
+          }
         />
       </Card>
     </div>
