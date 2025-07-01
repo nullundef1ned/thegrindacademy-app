@@ -39,6 +39,9 @@ export default function TableCellContent<T>({ row, header }: TableCellContentPro
     case TableHeaderTypeEnum.PUBLISHED:
       const published = value === 'true' ? 'published' : 'draft';
       return <Status status={published as StatusType} />
+    case TableHeaderTypeEnum.BOOLEAN:
+      const boolean = value === 'true' ? 'yes' : 'no';
+      return <Status status={boolean as StatusType} />
     case TableHeaderTypeEnum.FEATURED:
       const isFeatured = value === 'true';
       const isPublished = (row as unknown as ICourseDetail).status === 'published';

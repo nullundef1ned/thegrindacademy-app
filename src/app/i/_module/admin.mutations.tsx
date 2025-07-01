@@ -1,11 +1,13 @@
 import useAxios from '@/hooks/useAxios';
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/providers/tanstack-query.provder';
-import { IAccountInformationForm } from '@/app/_module/app.interface';
+import { IAccountInformationForm, IPagination } from '@/app/_module/app.interface';
 import { IUserStatusUpdate, IUserTelegramUpdate } from './_interfaces/user.interface';
 import { AffiliateResourceType, IAffiliateResourceForm, IAffiliateTelegramCommunityUpdate, ISendTelegramMessage } from './_interfaces/affiliate.interface';
 import helperUtil from '@/utils/helper.util';
 import notificationUtil from '@/utils/notification.util';
+import { IUserForm, IUserSubscriptionPlanCreate, IUserSubscriptionPlanUpdate } from '@/interfaces/user';
+import { ISubscription } from '@/app/(student)/_module/student.interface';
 
 export default function useAdminMutations() {
   const axiosHandler = useAxios();
@@ -17,6 +19,59 @@ export default function useAdminMutations() {
     },
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['user'] })
+    }
+  })
+
+  const registerUserMutation = useMutation({
+    mutationFn: async (values: IUserForm) => {
+      const response = await axiosHandler.post('/admin/user/register', values)
+      return response.data
+    },
+    onSettled: () => {
+      queryClient.refetchQueries({ queryKey: ['users'] })
+    }
+  })
+
+  const fetchUserSubscriptionPlansMutation = useMutation({
+    mutationFn: async (userId: string) => {
+      const response = await axiosHandler.get<IPagination<ISubscription>>(`/admin/user/${userId}/subscription`)
+      return response.data
+    }
+  })
+
+  const createUserSubscriptionPlanMutation = useMutation({
+    mutationFn: async (values: IUserSubscriptionPlanCreate) => {
+      const { userId, startDate, ...payload } = values;
+      // Append the current time to the provided startDate
+      const date = new Date(startDate!);
+      const now = new Date();
+      date.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
+      const adjustedStartDate = date.toISOString();
+      const response = await axiosHandler.post(`/admin/user/${userId}/subscription`, { ...payload, startDate: adjustedStartDate });
+      return response.data
+    },
+    onSettled: (data, variables, context) => {
+      queryClient.refetchQueries({ queryKey: ['user', context.userId] })
+      queryClient.refetchQueries({ queryKey: ['users'] })
+    }
+  })
+
+  const updateUserSubscriptionPlanMutation = useMutation({
+    mutationFn: async (values: IUserSubscriptionPlanUpdate) => {
+      const { userId, subscriptionId, ...payload } = values;
+      if (payload.status === 'active' && values.startDate) {
+        const date = new Date(values.startDate);
+        const now = new Date();
+        date.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
+        const adjustedStartDate = date.toISOString();
+        payload.startDate = adjustedStartDate;
+      }
+      const response = await axiosHandler.patch(`/admin/user/${userId}/subscription/${subscriptionId}`, payload)
+      return response.data
+    },
+    onSettled: (data, variables, context) => {
+      queryClient.refetchQueries({ queryKey: ['user', context.userId] })
+      queryClient.refetchQueries({ queryKey: ['users'] })
     }
   })
 
@@ -147,6 +202,10 @@ export default function useAdminMutations() {
     createAffiliateResourceMutation,
     createOrUpdateAffiliateTelegramCommunityMutation,
     updateAdminAccountInformationMutation,
+    registerUserMutation,
+    fetchUserSubscriptionPlansMutation,
+    createUserSubscriptionPlanMutation,
+    updateUserSubscriptionPlanMutation,
     updateUserTelegramMutation,
     updateUserStatusMutation,
     deleteUserMutation,

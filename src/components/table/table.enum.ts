@@ -16,4 +16,5 @@ export enum TableHeaderTypeEnum {
   LONG_TEXT = 'long-text',
   PUBLISHED = 'published',
   DATE_TIME = 'date-time',
+  BOOLEAN = 'boolean',
 }
