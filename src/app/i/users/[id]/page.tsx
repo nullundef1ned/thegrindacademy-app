@@ -39,8 +39,8 @@ export default function UserPage({ params }: { params: { id: string } }) {
   const { data, isPending } = useFetchUserDetails(id);
   const { updateUserStatusMutation } = useAdminMutations();
 
+  const { data: subscriptions } = useFetchUserSubscriptionPlans(id);
   const { data: courses, isPending: coursesPending } = useFetchUserCourses(id);
-  const { data: subscriptions, isPending: subscriptionsPending } = useFetchUserSubscriptionPlans(id);
 
   if (isPending) return (
     <div className="w-full h-[50vh] responsive-section !max-w-screen-md grid place-items-center">

@@ -9,14 +9,11 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import notificationUtil from '@/utils/notification.util';
 import helperUtil from '@/utils/helper.util';
-import { useModal } from '@/providers/modal.provider';
 import Link from 'next/link';
 import LoadingIcons from 'react-loading-icons';
 import { useTitle } from '@/providers/title.provider';
 import useSubscriptionPlanMutations from '../_apis/subscription-plan.mutations';
 import { ISubscriptionPlanForm } from '@/interfaces/subscription';
-import { ISubscriptionPlan } from '@/app/(student)/_module/student.interface';
-import ConfirmSubscriptionPlanDeletionModal from '../_modals/ConfirmSubscriptionPlanDeletionModal';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import pluralize from 'pluralize';
@@ -30,7 +27,6 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
   const { id } = params;
 
   const router = useRouter();
-  const { showModal } = useModal();
   const { setTitle } = useTitle();
   const { data: features } = useFetchPlanFeatures();
   const { data, isPending } = useFetchSubscriptionPlan(id);
@@ -113,7 +109,7 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
   //   deletePlanFeatureMutation.mutate(featureId);
   // }
 
-  const openDeleteModal = (data: ISubscriptionPlan) => showModal(<ConfirmSubscriptionPlanDeletionModal subscriptionPlan={data} />);
+  // const openDeleteModal = (data: ISubscriptionPlan) => showModal(<ConfirmSubscriptionPlanDeletionModal subscriptionPlan={data} />);
 
   return (
     <div className='w-full responsive-detail-section space-y-6'>

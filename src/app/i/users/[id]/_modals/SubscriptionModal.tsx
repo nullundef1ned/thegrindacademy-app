@@ -5,7 +5,7 @@ import Modal from '@/components/Modal'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { IUserSubscriptionPlanCreate, IUserSubscriptionPlanUpdate } from '@/interfaces/user';
+import { IUserSubscriptionPlanCreate } from '@/interfaces/user';
 import { useModal } from '@/providers/modal.provider';
 import notificationUtil from '@/utils/notification.util';
 import { useFormik } from 'formik';
@@ -15,7 +15,7 @@ interface ISubscriptionModalProps {
 }
 
 export default function SubscriptionModal({ user }: ISubscriptionModalProps) {
-  const { createUserSubscriptionPlanMutation, updateUserSubscriptionPlanMutation } = useAdminMutations();
+  const { createUserSubscriptionPlanMutation } = useAdminMutations();
 
   const { hideModal } = useModal();
   const { data: subscriptionPlans } = useFetchSubscriptionPlans();

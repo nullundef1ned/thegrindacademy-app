@@ -1,13 +1,11 @@
 import { ISubscription } from '@/app/(student)/_module/student.interface';
 import { IUser } from '@/app/_module/app.interface';
 import useAdminMutations from '@/app/i/_module/admin.mutations';
-import { adminRoutes } from '@/app/i/_module/admin.routes';
 import Modal from '@/components/Modal'
 import { Button } from '@/components/ui/button'
 import { useModal } from '@/providers/modal.provider';
 import { queryClient } from '@/providers/tanstack-query.provder';
 import notificationUtil from '@/utils/notification.util';
-import { useRouter } from 'next/navigation';
 
 interface IDeleteUserModalProps {
   user: IUser;
