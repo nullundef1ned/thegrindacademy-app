@@ -72,6 +72,9 @@ export default function SubscriptionPlansPage() {
                 <IconifyIcon icon="mdi:pencil" className="text-primary-100" />
                 <p className="text-primary-100 text-sm">Edit</p>
               </Link>
+              <div className={`flex items-center gap-1 ${subscriptionPlan.isDisabled ? 'bg-red-700 text-red-50' : 'bg-green-600 text-green-50'} rounded px-4 py-1 h-max w-max`}>
+                <p className="text-xs font-semibold">{subscriptionPlan.isDisabled ? 'Disabled' : 'Enabled'}</p>
+              </div>
               {/* <div
                 onClick={() => openDeleteModal(subscriptionPlan)}
                 className="flex items-center gap-1 cursor-pointer">

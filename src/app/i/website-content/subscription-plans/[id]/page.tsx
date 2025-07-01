@@ -24,6 +24,7 @@ import { useFetchPlanFeatures } from '../_apis/useSubscriptions';
 import AddFeatureForm from './_components/AddFeatureForm';
 // import IconifyIcon from '@/components/IconifyIcon';
 import { useRouter } from 'next/navigation';
+import { Switch } from '@/components/ui/switch';
 
 export default function SubscriptionPlanDetailPage({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -33,7 +34,7 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
   const { setTitle } = useTitle();
   const { data: features } = useFetchPlanFeatures();
   const { data, isPending } = useFetchSubscriptionPlan(id);
-  const { updateSubscriptionPlanMutation, deleteSubscriptionPlanMutation, createSubscriptionPlanMutation } = useSubscriptionPlanMutations();
+  const { updateSubscriptionPlanMutation, createSubscriptionPlanMutation } = useSubscriptionPlanMutations();
 
   const { values, handleChange, setFieldValue, handleSubmit } = useFormik<ISubscriptionPlanForm>({
     enableReinitialize: true,
@@ -44,7 +45,8 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
       frequency: data?.frequency || 'month',
       duration: data?.duration || 1,
       isDeal: data?.isDeal || false,
-      features: data?.features.map((feature) => ({ featureId: feature.id })) || [],
+      isDisabled: data?.isDisabled || false,
+      features: data?.features.map(({ featureId }) => ({ featureId })) || [],
     },
     onSubmit: (values) => {
       if (values.features.length === 0) return notificationUtil.error('Please select at least one feature');
@@ -99,6 +101,14 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
     }
   }
 
+  const toggleDisabled = () => {
+    updateSubscriptionPlanMutation.mutate({ ...values, id, isDisabled: !values.isDisabled }, {
+      onSuccess: () => {
+        notificationUtil.success(`Subscription plan ${values.isDisabled ? 'disabled' : 'enabled'} successfully`);
+      }
+    });
+  }
+
   // const deleteFeature = (featureId: string) => {
   //   deletePlanFeatureMutation.mutate(featureId);
   // }
@@ -116,7 +126,13 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
           }
         </div>
         {data &&
-          <Button size='sm' variant='destructive' loading={deleteSubscriptionPlanMutation.isPending} onClick={() => openDeleteModal(data)}>Delete</Button>
+          <div className="flex items-center gap-2">
+            <Switch id='isDisabled' checked={values.isDisabled} onCheckedChange={toggleDisabled} />
+            <label htmlFor='isDisabled' className='text-sm cursor-pointer'>{!values.isDisabled ? 'Disable' : 'Enable'}</label>
+            {/* {data &&
+            <Button size='sm' variant='destructive' loading={deleteSubscriptionPlanMutation.isPending} onClick={() => openDeleteModal(data)}>Delete</Button>
+          } */}
+          </div>
         }
       </div>
       <form onSubmit={handleSubmit} className='space-y-4'>

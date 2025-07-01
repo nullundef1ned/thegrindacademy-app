@@ -5,6 +5,7 @@ export interface ISubscriptionPlanForm {
   price: number;
   upSellPrice?: number;
   isDeal: boolean;
+  isDisabled: boolean;
   features: { featureId: string }[];
 }
 
