@@ -9,7 +9,6 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import notificationUtil from '@/utils/notification.util';
 import helperUtil from '@/utils/helper.util';
-import { useModal } from '@/providers/modal.provider';
 import Link from 'next/link';
 import LoadingIcons from 'react-loading-icons';
 import { useTitle } from '@/providers/title.provider';
@@ -28,7 +27,6 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
   const { id } = params;
 
   const router = useRouter();
-  const { showModal } = useModal();
   const { setTitle } = useTitle();
   const { data: features } = useFetchPlanFeatures();
   const { data, isPending } = useFetchSubscriptionPlan(id);
