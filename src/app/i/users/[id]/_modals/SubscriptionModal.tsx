@@ -24,7 +24,7 @@ export default function SubscriptionModal({ user }: ISubscriptionModalProps) {
     initialValues: {
       subscriptionPlanId: '',
       userId: user.id,
-      startDate: new Date().toISOString().split('T')[0],
+      startDate: new Date().toISOString(),
     },
     onSubmit: (values) => {
       createUserSubscriptionPlanMutation.mutate(values, {
@@ -60,8 +60,8 @@ export default function SubscriptionModal({ user }: ISubscriptionModalProps) {
         <Input
           name='startDate'
           title='Start Date'
-          type='date'
-          min={new Date().toISOString().split('T')[0]}
+          type='datetime-local'
+          min={new Date().toISOString()}
           value={values.startDate}
           onChange={handleChange}
         />

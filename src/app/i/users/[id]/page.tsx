@@ -74,8 +74,8 @@ export default function UserPage({ params }: { params: { id: string } }) {
     { key: 'subscriptionPlan.name', value: 'Plan Name' },
     { key: 'status', value: 'Status', type: TableHeaderTypeEnum.STATUS },
     { key: 'autoRenewal', value: 'Auto Renewal', type: TableHeaderTypeEnum.BOOLEAN },
-    { key: 'startDate', value: 'Start Date', type: TableHeaderTypeEnum.DATE },
-    { key: 'endDate', value: 'End Date', type: TableHeaderTypeEnum.DATE },
+    { key: 'startDate', value: 'Start Date', type: TableHeaderTypeEnum.DATE_TIME },
+    { key: 'endDate', value: 'End Date', type: TableHeaderTypeEnum.DATE_TIME },
   ]
 
   const goToCourse = (course: IEnrolledCourse) => {
