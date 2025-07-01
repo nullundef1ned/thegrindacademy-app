@@ -15,8 +15,6 @@ import LoadingIcons from 'react-loading-icons';
 import { useTitle } from '@/providers/title.provider';
 import useSubscriptionPlanMutations from '../_apis/subscription-plan.mutations';
 import { ISubscriptionPlanForm } from '@/interfaces/subscription';
-import { ISubscriptionPlan } from '@/app/(student)/_module/student.interface';
-import ConfirmSubscriptionPlanDeletionModal from '../_modals/ConfirmSubscriptionPlanDeletionModal';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import pluralize from 'pluralize';
@@ -113,7 +111,7 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
   //   deletePlanFeatureMutation.mutate(featureId);
   // }
 
-  const openDeleteModal = (data: ISubscriptionPlan) => showModal(<ConfirmSubscriptionPlanDeletionModal subscriptionPlan={data} />);
+  // const openDeleteModal = (data: ISubscriptionPlan) => showModal(<ConfirmSubscriptionPlanDeletionModal subscriptionPlan={data} />);
 
   return (
     <div className='w-full responsive-detail-section space-y-6'>
