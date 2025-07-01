@@ -100,7 +100,7 @@ export default function SubscriptionPlanDetailPage({ params }: { params: { id: s
   const toggleDisabled = () => {
     updateSubscriptionPlanMutation.mutate({ ...values, id, isDisabled: !values.isDisabled }, {
       onSuccess: () => {
-        notificationUtil.success(`Subscription plan ${values.isDisabled ? 'disabled' : 'enabled'} successfully`);
+        notificationUtil.success(`Subscription plan ${!values.isDisabled ? 'disabled' : 'enabled'} successfully`);
       }
     });
   }
