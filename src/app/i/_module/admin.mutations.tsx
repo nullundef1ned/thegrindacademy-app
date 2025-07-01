@@ -41,13 +41,11 @@ export default function useAdminMutations() {
 
   const createUserSubscriptionPlanMutation = useMutation({
     mutationFn: async (values: IUserSubscriptionPlanCreate) => {
-      const { userId, startDate, ...payload } = values;
-      // Append the current time to the provided startDate
-      const date = new Date(startDate!);
-      const now = new Date();
-      date.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
-      const adjustedStartDate = date.toISOString();
-      const response = await axiosHandler.post(`/admin/user/${userId}/subscription`, { ...payload, startDate: adjustedStartDate });
+      const { userId, ...payload } = values;
+      const date = new Date(payload.startDate!);
+      date.setMinutes(date.getMinutes() + 1);
+      payload.startDate = date.toISOString();
+      const response = await axiosHandler.post(`/admin/user/${userId}/subscription`, payload);
       return response.data
     },
     onSettled: (data, variables, context) => {
@@ -59,12 +57,10 @@ export default function useAdminMutations() {
   const updateUserSubscriptionPlanMutation = useMutation({
     mutationFn: async (values: IUserSubscriptionPlanUpdate) => {
       const { userId, subscriptionId, ...payload } = values;
-      if (payload.status === 'active' && values.startDate) {
-        const date = new Date(values.startDate);
-        const now = new Date();
-        date.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
-        const adjustedStartDate = date.toISOString();
-        payload.startDate = adjustedStartDate;
+      if (payload.startDate) {
+        const date = new Date(payload.startDate!);
+        date.setMinutes(date.getMinutes() + 1);
+        payload.startDate = date.toISOString();
       }
       const response = await axiosHandler.patch(`/admin/user/${userId}/subscription/${subscriptionId}`, payload)
       return response.data

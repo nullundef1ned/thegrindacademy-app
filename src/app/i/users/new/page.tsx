@@ -135,7 +135,7 @@ export default function NewUserPage() {
           <Input
             name='startDate'
             title='Start Date'
-            type='date'
+            type='datetime-local'
             min={new Date().toISOString().split('T')[0]}
             value={values.startDate}
             onChange={handleChange}
