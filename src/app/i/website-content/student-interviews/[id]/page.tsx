@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import FileUploader from '@/components/FileUploader';
+import Image from 'next/image';
 import notificationUtil from '@/utils/notification.util';
 import { useRouter } from 'next/navigation';
 import helperUtil from '@/utils/helper.util';
@@ -19,7 +20,6 @@ import LoadingIcons from 'react-loading-icons';
 import { useTitle } from '@/providers/title.provider';
 import useStudentInterviewMutations from '../_apis/student-interview.mutations';
 import ConfirmStudentInterviewDeletionModal from './_modals/ConfirmStudentInterviewDeletionModal';
-import Video from '@/components/Video';
 
 export default function DynamicContentDetailPage({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -123,7 +123,7 @@ export default function DynamicContentDetailPage({ params }: { params: { id: str
                 <p className='text-white text-sm'>Remove Video</p>
               </div>
             </div>
-            <Video src={values.mediaUrl} />
+            <Image src={values.mediaUrl} alt='Media' fill className='object-cover absolute' />
           </div>
         }
         <Button disabled={!isFormValid}
